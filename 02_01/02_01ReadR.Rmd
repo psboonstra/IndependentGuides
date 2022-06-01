@@ -1,8 +1,8 @@
 ---
 title: "Independent Guide: 2.1 - readr"
 output: 
-  html_notebook:
   html_document:
+  html_notebook:
 editor_options: 
   chunk_output_type: inline
 ---
@@ -54,9 +54,9 @@ We've saved the Global Findex data into a file called `micro_world.csv`, and it
 exists in the same folder as our project, which I can see from looking at the 
 bottom-right panel of my RStudio session:
 
-```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics("project_files.png")
-```
+
+![Files in your GlobalFindex folder](project_files.png)
+
 
 Go back to `IndicatorTable.R` and type the following line of code, which will
 read in the Global Findex data and assign it as an object in your R session entitled
@@ -75,14 +75,10 @@ about the numbers of rows and columns in your data and the variable (column) nam
 The last thing to do is save your work. Right now, you should see that your 
 file is in red font and has an asterisk after the R:
 
-```{r, echo = FALSE, out.width="40%"}
-knitr::include_graphics("unsaved_script.png")
-```
+![What your script looks like before saving](unsaved_script.png)
+
 
 Press Cmd+S (Mac) or Ctrl+S (Windows) to save your work, and it should change to
 black font with no asterisk:
 
-```{r, echo = FALSE, out.width="40%"}
-knitr::include_graphics("saved_script.png")
-```
-
+![What your script looks like after saving](saved_script.png)
