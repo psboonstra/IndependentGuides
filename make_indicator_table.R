@@ -41,7 +41,8 @@ account_gap_female <-
 # income gaps in holding accounts
 account_gap_inc <- 
   micro_world %>%
-  group_by(economy, lower_inc = inc_q <= 2) %>% 
+  mutate(lower_inc = inc_q <= 2) %>%
+  group_by(economy, lower_inc) %>% 
   summarize(account = 
               100 * weighted.mean(account, w = wgt),
             .groups = "drop") %>%
