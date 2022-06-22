@@ -61,7 +61,9 @@ indicator_table <-
             by = "economy") %>%
   full_join(account_gap_inc, 
             by = "economy") %>%
-  mutate(account = round(account))
+  mutate(account = round(account),
+         gap_female = round(gap_female),
+         gap_inc = round(gap_inc))
 
 # auxiliary table,
 # dropping the results that
