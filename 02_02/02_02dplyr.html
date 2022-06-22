@@ -631,7 +631,7 @@ at least one condition is true.</p>
 ## 5 002        2       5.5      54.9
 ## 6 002        3       6.6      57</code></pre>
 <p>Remember to save the work you’ve done. Try saving the script you’ve
-been working in as filter.R for later reference.</p>
+been working in as <code>filter.R</code> for later reference.</p>
 </div>
 <div id="group_by-and-summarize" class="section level2">
 <h2>group_by() and summarize()</h2>
@@ -648,8 +648,8 @@ structure for using both functions follow:
 <code>group_by(data, variable)</code> and
 <code>summarize(grouped_data, summary_function(variable))</code>.</p>
 <p>For example, if we were interested in assessing the typical weight of
-infants using the growth_data, it would make sense to group the
-observations by month and obtain the average weight for each month
+infants using the <code>growth_data</code>, it would make sense to group
+the observations by month and obtain the average weight for each month
 rather than combine all observations across time into a single
 average.</p>
 <p>First, we would start by grouping the data by month.</p>
@@ -667,7 +667,7 @@ average.</p>
 ## 7 002        2       5.5      54.9
 ## 8 002        3       6.6      57</code></pre>
 <p>Notice that this returns a grouped data frame that isn’t different in
-appearance from the original growth_data.</p>
+appearance from the original <code>growth_data</code>.</p>
 <p>Next, we can wrap this command in a summarize command by specifying
 the grouped data frame as the first argument of the
 <code>summarize</code> function. The second argument will be the desired
@@ -734,8 +734,8 @@ using the assignment operator.</p>
   group_by(months) %&gt;%
   summarize(mean(weight_kg))</code></pre>
 <p>Just as before, remember to save the work you’ve done. Try saving the
-script you’ve been working in as groupby_summarize.R for later
-reference.</p>
+script you’ve been working in as <code>groupby_summarize.R</code> for
+later reference.</p>
 </div>
 
 

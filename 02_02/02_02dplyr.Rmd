@@ -76,7 +76,7 @@ filter(growth_data, weight_kg  > 5.0 | height_cm > 50)
 ```
 
 Remember to save the work you've done. Try saving the script you've been working
-in as filter.R for later reference.
+in as `filter.R` for later reference.
 
 ## group_by() and summarize()
 
@@ -92,7 +92,7 @@ sub-dataset. The general structure for using both functions follow:
 `group_by(data, variable)` and `summarize(grouped_data, summary_function(variable))`.
 
 For example, if we were interested in assessing the typical weight of infants
-using the growth_data, it would make sense to group the observations by month
+using the `growth_data`, it would make sense to group the observations by month
 and obtain the average weight for each month rather than combine all
 observations across time into a single average.
 
@@ -103,7 +103,7 @@ group_by(growth_data, months)
 ```
 
 Notice that this returns a grouped data frame that isn't different in appearance
-from the original growth_data.
+from the original `growth_data`.
 
 Next, we can wrap this command in a summarize command by specifying the grouped
 data frame as the first argument of the `summarize` function. The second
@@ -159,4 +159,4 @@ growth_data_weights <-
 ```
 
 Just as before, remember to save the work you've done. Try saving the script
-you've been working in as groupby_summarize.R for later reference.
+you've been working in as `groupby_summarize.R` for later reference.
