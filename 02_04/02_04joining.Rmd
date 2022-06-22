@@ -1,0 +1,136 @@
+---
+title: "Independent Guide: 2.4 - Joining Data"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In the fourth lesson of Week 2, you were introduced to the concept of joining
+data. To practice using the joining functions, open the R project called
+`Lessons.Rproj` and a blank R script. Before we can begin, you'll also need to
+load the necessary packages into the current R session.
+
+```{r}
+library(healthds)
+library(tidyverse)
+```
+
+## full_join()
+
+Let's consider the `growth_data_aux` dataset from the healthds package. This
+dataset contains measurements on the same infants from the `growth_data`.
+However, there are four timepoints per infant in the `growth_data` while there
+are only three timepoints per infant in the `growth_data_aux` dataset. The
+`growth_data_aux` dataset also includes measurements of head circumfrance taken
+at those timepoints.
+
+```{r}
+growth_data_aux
+```
+
+Notice that both datasets include the ID and month variables. These variables
+serve as identifiers that help us identify the observations, as well as match
+and link data from different datasets via joining.
+
+The `full_join` functions expects two datasets to join. By performing a full
+join of the datasets, we obtain a data frame of eight observations across five
+variables.
+
+```{r}
+full_join(growth_data, growth_data_aux)
+```
+
+Since head circumfrance measurements weren't taken at three months, R represents
+these missing values as NA for "not available." In this case, the missing values
+occur because a full join returns a row for every unique combination of the
+identifier variables (e.g., ID and month variables).
+
+## left_join() and right_join()
+
+The `left_join` function ensures that every unique combination of the identifier
+variables from the first dataset are returned in the joined data.
+
+```{r}
+left_join(growth_data, growth_data_aux)
+```
+
+This left join appears the same as the full join since every unique combination
+of the identifier variables is captured in the first dataset.
+
+On the other hand, the `right_join` function returns only the unique
+combinations of the identifier variables that exist in the second dataset.
+
+```{r}
+right_join(growth_data, growth_data_aux)
+```
+
+Since the `growth_data_aux` dataset only contains measurements taken at three
+timepoints, the joined data does not include the rows from the `growth_data` for
+measurements taken at month three.
+
+## inner_join()
+
+The `inner_join` function returns the unique combinations of the identifier
+variables that exist in both datasets.
+
+```{r}
+inner_join(growth_data, growth_data_aux)
+```
+
+This inner join appears the same as the right join since the measurements taken
+at month three do not exist in both datasets. However, it won't always be the
+case that full and left joins return the same results, and the same is true for
+right and inner joins. This behavior depends on the specific qualities of both
+datasets.
+
+Remember to save the work you've done. Try saving the script you've been working
+in as `joining.R` for later reference.
+
+## Help Pages
+
+As discussed in the lecture, every R function ought to have a help page, which
+is an incredibly useful tool for familiarizing yourself with a function.
+
+To view the help page of a function, you can type a question mark and the name
+of the function (e.g., `?pivot_wider`) in the console. The help page will appear
+in the Help tab, which is typically in the lower right pane in RStudio.
+
+Try pulling up the help page for the `pivot_wider` function. You'll notice that
+this help page is comprised of a few different sections. The Description section
+describes in plain language the intended behavior of the function. The Usage
+section provides both the name of the function and all the possible function
+arguments that you can specify. The Arguments section describes each argument in
+more detail and the values that an argument accepts.
+
+The Examples section provides example code of how the function is used. You can
+try replicating the first example from the `pivot_wider` help page.
+
+```{r}
+fish_encounters
+```
+
+```{r}
+fish_encounters %>%
+  pivot_wider(names_from = station, values_from = seen)
+```
+
+Now try pulling up the help page for the `select` function (i.e., `?select`).
+You'll notice that this help page also gives an overview of the selection helper
+functions (e.g., the `everything` function), which we discussed in the previous
+lesson. Each of these helper functions also has their own help page. In this
+case, the Arugments section isn't especially helpful since the arguments to
+the `select` function are specific to a particular dataset in the form of
+variable names.
+
+Once again, you can try replicating the first example from the Examples section
+of the help page.
+
+```{r}
+starwars %>% select(height)
+```
