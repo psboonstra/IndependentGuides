@@ -54,9 +54,19 @@ account_gap_inc <-
   select(economy, gap_inc)
 
 # join the results above to make the table, 
-# round the results after dropping the results
-# that fall below the margin of error
+# rounding the results
 indicator_table <- 
+  full_join(overall_account, 
+            account_gap_female, 
+            by = "economy") %>%
+  full_join(account_gap_inc, 
+            by = "economy") %>%
+  mutate(account = round(account))
+
+# auxiliary table,
+# dropping the results that
+# fall below the margin of error
+aux_indicator_table <- 
   full_join(overall_account, 
             account_gap_female, 
             by = "economy") %>%
@@ -76,4 +86,3 @@ indicator_table <-
              TRUE ~ "-"
            )) %>% 
   select(economy, account, gap_female, gap_inc)
-
