@@ -32,20 +32,18 @@ By this point of Week 2, you should now have created a data frame of the overall
 percentage of adults with an account by country, as well as a data frame of the
 percentage of adults with an account by both country and gender.
 
-```{r}
+```{r, message = FALSE}
 # overall account ownership
 overall_account <- 
   micro_world %>%
   group_by(economy) %>% 
-  summarize(account = 100 * weighted.mean(account, w = wgt),
-            .groups = "drop")
+  summarize(account = 100 * weighted.mean(account, w = wgt))
 
 # account ownership by gender
 account_gap_female <- 
   micro_world %>%
   group_by(economy, female) %>% 
-  summarize(account = 100 * weighted.mean(account, w = wgt),
-            .groups = "drop")
+  summarize(account = 100 * weighted.mean(account, w = wgt))
 ```
 
 # Lesson 3
@@ -60,27 +58,24 @@ micro_world <- read_csv("micro_world.csv")
 overall_account <- 
   micro_world %>%
   group_by(economy) %>% 
-  summarize(account = 100 * weighted.mean(account, w = wgt),
-            .groups = "drop")
+  summarize(account = 100 * weighted.mean(account, w = wgt))
 
 # account ownership by gender
 account_gap_female <- 
   micro_world %>%
   group_by(economy, female) %>% 
-  summarize(account = 100 * weighted.mean(account, w = wgt),
-            .groups = "drop")
+  summarize(account = 100 * weighted.mean(account, w = wgt))
 ```
 
 Building on the previous assessment, you should now have the code for obtaining
 both the gender gap and income gap in account ownership.
 
-```{r}
+```{r, message = FALSE}
 # gender gap in account ownership
 account_gap_female <- 
   micro_world %>%
   group_by(economy, female) %>% 
-  summarize(account = 100 * weighted.mean(account, w = wgt),
-            .groups = "drop") %>%
+  summarize(account = 100 * weighted.mean(account, w = wgt)) %>%
   pivot_wider(id_cols = economy, 
               names_from = female, 
               names_prefix = "female",
@@ -93,8 +88,7 @@ account_gap_inc <-
   micro_world %>%
   mutate(lower_inc = inc_q <= 2) %>%
   group_by(economy, lower_inc) %>% 
-  summarize(account = 100 * weighted.mean(account, w = wgt),
-            .groups = "drop") %>%
+  summarize(account = 100 * weighted.mean(account, w = wgt)) %>%
   pivot_wider(id_cols = economy, 
               names_from = lower_inc, 
               names_prefix = "lower_inc",
@@ -115,15 +109,13 @@ micro_world <- read_csv("micro_world.csv")
 overall_account <- 
   micro_world %>%
   group_by(economy) %>% 
-  summarize(account = 100 * weighted.mean(account, w = wgt),
-            .groups = "drop")
+  summarize(account = 100 * weighted.mean(account, w = wgt))
 
 # gender gap in account ownership
 account_gap_female <- 
   micro_world %>%
   group_by(economy, female) %>% 
-  summarize(account = 100 * weighted.mean(account, w = wgt),
-            .groups = "drop") %>%
+  summarize(account = 100 * weighted.mean(account, w = wgt)) %>%
   pivot_wider(id_cols = economy, 
               names_from = female, 
               names_prefix = "female",
@@ -136,8 +128,7 @@ account_gap_inc <-
   micro_world %>%
   mutate(lower_inc = inc_q <= 2) %>%
   group_by(economy, lower_inc) %>% 
-  summarize(account = 100 * weighted.mean(account, w = wgt),
-            .groups = "drop") %>%
+  summarize(account = 100 * weighted.mean(account, w = wgt)) %>%
   pivot_wider(id_cols = economy, 
               names_from = lower_inc, 
               names_prefix = "lower_inc",
@@ -149,7 +140,7 @@ account_gap_inc <-
 Finally, you should now have the code necessary to reproduce the Indicator Table
 by joining the data frames that you've created in the two previous assessments.
 
-```{r}
+```{r, message = FALSE}
 # indicator table
 indicator_table <- 
   full_join(overall_account, 
@@ -170,14 +161,13 @@ gaps falling within the margin of error) are replaced with a dash (--), and the
 `case_when` function is used to accomplish this task. Consider exploring the
 help page of the `case_when` function to familiarize yourself with its usage.  
 
-```{r}
+```{r, message = FALSE}
 # margin of error
 moe <- 
   micro_world %>% 
   group_by(economy, pop_adult) %>% 
   summarize(design_effect = n() * sum(wgt^2) / (sum(wgt)^2),
-            moe = 100 * sqrt(0.25 / n()) * 1.96 * sqrt(design_effect),
-            .groups = "drop")
+            moe = 100 * sqrt(0.25 / n()) * 1.96 * sqrt(design_effect))
 
 # auxiliary table
 aux_indicator_table <- 

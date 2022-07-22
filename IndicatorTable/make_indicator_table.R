@@ -13,24 +13,21 @@ moe <-
   micro_world %>% 
   group_by(economy, pop_adult) %>% 
   summarize(design_effect = n() * sum(wgt^2) / (sum(wgt)^2),
-            moe = 100 * sqrt(0.25 / n()) * 1.96 * sqrt(design_effect),
-            .groups = "drop")
+            moe = 100 * sqrt(0.25 / n()) * 1.96 * sqrt(design_effect))
 
 # overall proportions of those holding an account
 overall_account <- 
   micro_world %>%
   group_by(economy) %>% 
   summarize(account = 
-              100 * weighted.mean(account, w = wgt),
-            .groups = "drop")
+              100 * weighted.mean(account, w = wgt))
 
 # gender gap in holding accounts
 account_gap_female <- 
   micro_world %>%
   group_by(economy, female) %>% 
   summarize(account = 
-              100 * weighted.mean(account, w = wgt),
-            .groups = "drop") %>%
+              100 * weighted.mean(account, w = wgt)) %>%
   pivot_wider(id_cols = economy, 
               names_from = female, 
               names_prefix = "female",
@@ -44,8 +41,7 @@ account_gap_inc <-
   mutate(lower_inc = inc_q <= 2) %>%
   group_by(economy, lower_inc) %>% 
   summarize(account = 
-              100 * weighted.mean(account, w = wgt),
-            .groups = "drop") %>%
+              100 * weighted.mean(account, w = wgt)) %>%
   pivot_wider(id_cols = economy, 
               names_from = lower_inc, 
               names_prefix = "lower_inc",
