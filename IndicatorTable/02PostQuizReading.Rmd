@@ -10,6 +10,13 @@ library(tidyverse)
 
 # Lesson 1
 
+In case you had difficulty with coming up with the code for the practice quiz,
+the correct code is provided here. This code will be provided to you after each
+practice quiz in the module and will serve as a resource for when you’re stuck.
+It will remain locked until you first attempt the practice quiz, and the code
+will be updated each time to reflect the progress made on the Indicator Table up
+to that point.
+
 In preparation for reproducing the Indicator Table from the Global Findex
 database report, the data first needs to be saved as an object in your global
 environment.
