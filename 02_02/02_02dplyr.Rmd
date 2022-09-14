@@ -11,7 +11,7 @@ editor_options:
 klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 ```
 
-In the second lesson of Week 2, you were introduced to dplyr, which is a package
+In the second lesson of Module 2, you were introduced to dplyr, which is a package
 included in the tidyverse that provides a set of verbs for data wrangling.
 
 To practice using the functions from the dplyr package, open the R project called
@@ -23,7 +23,7 @@ library(healthds)
 library(tidyverse)
 ```
 
-## filter()
+## `filter()`
 
 The `filter` function allows us to include or exclude observations
 (i.e., rows) from a dataset based on one or more conditions. The general
@@ -37,8 +37,8 @@ observations across four variables.
 growth_data
 ```
 
-If you were interested in the observations for when the infants were three
-months old, you would write the following line of code:
+If you want to filter out the infants' three-month observations, you would write 
+the following line of code:
 
 ```{r}
 filter(growth_data, months == 3)
@@ -46,26 +46,27 @@ filter(growth_data, months == 3)
 
 Notice the use of two equal signs in the above line of code. In R, two equal
 signs is used to denote "is equal to", which is different than using a single
-equal sign to set an argument value.
+equal sign to set an argument value. Think of two equal signs as asking a question 
+and one equal sign as making a declaration. 
 
-Similarly, you would write the following line of code if you were instead
-interested in the observations for when the infants were two months old:
+Similarly, you would write the following line of code if you wanted to filter
+out the infants' two-month observations:
 
 ```{r}
 filter(growth_data, months == 2)
 ```
 
-The `filter` function can also be used to specify conditions other than an
-equality. For example, we can filter by a two-sided inequality by using != to
-denote "is not equal to." Of course, it's possible to filter by one-sided
-inequalities as well, which are represented in R as <, <=, >, and >=.
+The `filter` function can also be used to specify conditions other than
+equality. For example, we can filter by a two-sided inequality by using `!=` to
+denote "is not equal to". It is possible to filter by one-sided
+inequalities as well, which are represented in R as `<`, `<=`, `>`, and `>=`.
 
 ```{r}
 filter(growth_data, months != 2)
 filter(growth_data, months > 2)
 ```
 
-We can also filter by multiple conditions using the AND (&) and OR (|)
+We can also filter by multiple conditions using the AND (`&`) and OR (`|`)
 operators. The AND operator returns the observations where both conditions are
 true, and the OR operator returns the observations where at least one condition
 is true.
@@ -75,10 +76,10 @@ filter(growth_data, weight_kg  > 5.0 & height_cm > 50)
 filter(growth_data, weight_kg  > 5.0 | height_cm > 50)
 ```
 
-Remember to save the work you've done. Try saving the script you've been working
+Remember to save the work you've done. Save the script you've been working
 in as `filter.R` for later reference.
 
-## group_by() and summarize()
+## `group_by()` and `summarize()`
 
 To practice additional functions from the dplyr package, open another blank
 script within the same R project.
@@ -91,7 +92,7 @@ future actions, such as the `summarize` function, are applied separately to each
 sub-dataset. The general structure for using both functions follow:
 `group_by(data, variable)` and `summarize(grouped_data, summary_function(variable))`.
 
-For example, if we were interested in assessing the typical weight of infants
+For example, if we want to assess the typical weight of infants
 using the `growth_data`, it would make sense to group the observations by month
 and obtain the average weight for each month rather than combine all
 observations across time into a single average.
@@ -114,20 +115,20 @@ of the weight variable.
 summarize(group_by(growth_data, months), mean(weight_kg))
 ```
 
-This returns a data frame where the number of rows is equal to the number of
+This command returns a dataset where the number of rows is equal to the number of
 sub-datasets. The first column is defined by the grouping variable and the
 second column contains the calculated summary statistics.
 
 However, wrapping commands in this nested manner can make it confusing to
 follow the chronology of commands. For this reason, the dplyr package provides
-the use of the pipe operator (%>%), which improves the readability of your code.
+the use of the pipe operator (`%>%`), which improves the readability of your code.
 The pipe operator takes the contents to the left of the operator and passes it
 into to the function on the right of the operator, making it easier to
 understand the chronology of commands when manipulating data. Returning back to
 our example, using the pipe operator returns the same results as the above line
 of code.
 
-```{r}
+```{r, eval = FALSE}
 group_by(growth_data, months) %>% summarize(mean(weight_kg))
 ```
 
@@ -135,18 +136,21 @@ It's even possible to use more than one pipe operator in succession. In this
 case, we can instead use the pipe operator to pass the data into the `group_by`
 function rather than provide it as the first argument of the function.
 
-```{r}
+```{r, eval = FALSE}
 growth_data %>% group_by(months) %>% summarize(mean(weight_kg))
 ```
 
 We can also use line breaks after each pipe operator, which will automatically
 be indented after the first line to represent the code as a single expression.
 
-```{r}
+```{r, eval = FALSE}
 growth_data %>%
   group_by(months) %>%
   summarize(mean(weight_kg))
 ```
+
+To be clear, all four of the previous chunks of code give the same result. For 
+space-saving purposes, we've suppressed the printed output. 
 
 Try saving these results as an object in your global environment using the
 assignment operator.

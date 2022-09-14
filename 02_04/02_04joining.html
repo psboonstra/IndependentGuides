@@ -530,8 +530,8 @@ pre code {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy', 'Copied!');
 </script>
-<p>In the fourth lesson of Week 2, you were introduced to the concept of
-joining data. To practice using the joining functions, open the R
+<p>In the fourth lesson of Module 2, you were introduced to the concept
+of joining data. To practice using the joining functions, open the R
 project called <code>Lessons.Rproj</code> and a blank R script. Before
 we can begin, you’ll also need to load the necessary packages into the
 current R session.</p>
@@ -546,7 +546,7 @@ library(tidyverse)</code></pre>
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="full_join" class="section level2">
-<h2>full_join()</h2>
+<h2><code>full_join()</code></h2>
 <p>Let’s consider the <code>growth_data_aux</code> dataset from the
 healthds package. This dataset contains measurements on the same infants
 from the <code>growth_data</code>. However, there are four timepoints
@@ -565,11 +565,12 @@ circumfrance taken at those timepoints.</p>
 ## 5 002        1       39.2
 ## 6 002        2       41.4</code></pre>
 <p>Notice that both datasets include the ID and month variables. These
-variables serve as identifiers that help us identify the observations,
-as well as match and link data from different datasets via joining.</p>
-<p>The <code>full_join</code> functions expects two datasets to join. By
-performing a full join of the datasets, we obtain a data frame of eight
-observations across five variables.</p>
+variables serve as identifiers that help us identify the observations as
+well as match and link data from different datasets via joining.</p>
+<p>The <code>full_join</code> functions requires that you provide the
+names of the two datasets to join. By performing a full join of the
+datasets, we obtain a data frame of eight observations across five
+variables.</p>
 <pre class="r"><code>full_join(growth_data, growth_data_aux)</code></pre>
 <pre><code>## Joining, by = c(&quot;id&quot;, &quot;months&quot;)</code></pre>
 <pre><code>## # A tibble: 8 × 5
@@ -590,7 +591,7 @@ unique combination of the identifier variables (e.g., ID and month
 variables).</p>
 </div>
 <div id="left_join-and-right_join" class="section level2">
-<h2>left_join() and right_join()</h2>
+<h2><code>left_join()</code> and <code>right_join()</code></h2>
 <p>The <code>left_join</code> function ensures that every unique
 combination of the identifier variables from the first dataset are
 returned in the joined data.</p>
@@ -628,9 +629,13 @@ second dataset.</p>
 measurements taken at three timepoints, the joined data does not include
 the rows from the <code>growth_data</code> for measurements taken at
 month three.</p>
+<p>To check your understanding on the difference between these types of
+joins, try to convince yourself why <code>left_join(x, y)</code> will
+yield the same result as <code>right_join(y, x)</code> (except that the
+order of the columns will be different).</p>
 </div>
 <div id="inner_join" class="section level2">
-<h2>inner_join()</h2>
+<h2><code>inner_join()</code></h2>
 <p>The <code>inner_join</code> function returns the unique combinations
 of the identifier variables that exist in both datasets.</p>
 <pre class="r"><code>inner_join(growth_data, growth_data_aux)</code></pre>

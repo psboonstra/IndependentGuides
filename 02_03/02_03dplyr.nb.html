@@ -1772,286 +1772,529 @@ pre code {
 <!-- rnb-chunk-begin -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>In the third lesson of Week 2, you were introduced to additional
+<p>In the third lesson of Module 2, you were introduced to additional
 functions from the dplyr package. To practice using these functions,
 open the R project called <code>Lessons.Rproj</code> and a blank R
 script. Before we can begin, you’ll also need to load the necessary
 packages into the current R session.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZWFsdGhkcylcbmxpYnJhcnkodGlkeXZlcnNlKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZWFsdGhkcylcbmxpYnJhcnkoaGVhbHRoZHMpXG5saWJyYXJ5KHRpZHl2ZXJzZSlcblxuYGBgIn0= -->
 <pre class="r"><code>library(healthds)
-library(tidyverse)</code></pre>
+library(healthds)
+library(tidyverse)
+</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4xIOKUgOKUgFxu4pyUIGdncGxvdDIgMy4zLjYgICAgIOKclCBwdXJyciAgIDAuMy40XG7inJQgdGliYmxlICAzLjEuNyAgICAg4pyUIGRwbHlyICAgMS4wLjlcbuKclCB0aWR5ciAgIDEuMi4wICAgICDinJQgc3RyaW5nciAxLjQuMFxu4pyUIHJlYWRyICAgMi4xLjIgICAgIOKclCBmb3JjYXRzIDAuNS4xXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG7inJYgZHBseXI6OmZpbHRlcigpIG1hc2tzIHN0YXRzOjpmaWx0ZXIoKVxu4pyWIGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbiJ9 -->
+<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
+  method         from
+  print.tbl_lazy     
+  print.tbl_sql      
+── Attaching packages ───────────────────────────────────── tidyverse 1.3.1 ──
+✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.7     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1
+── Conflicts ──────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="pivot_wider" class="section level2">
-<h2>pivot_wider()</h2>
+<h2><code>pivot_wider()</code></h2>
 <p>Replicating the example from the lecture, we can pivot the
 <code>growth_data</code> from long format into wide format using the
 <code>pivot_wider</code> function so that all measurements from an
 infant are contained in a single row.</p>
 <p>To use the <code>pivot_wider</code> function, there are a few
-required arguments, as well as several optional arguments. In general,
-as long as the arguments are explicitly named, the arguments do not have
-to be in any particular order. The <code>id_cols</code> argument
+required arguments as well as several optional arguments. In general, as
+long as the arguments are explicitly named, the arguments do not have to
+be provided in any particular order. The <code>id_cols</code> argument
 specifies the variable that uniquely identifies each row, which is the
 infant ID variable in this example. The <code>names_from</code> argument
 specifies the variable that indicates the repeated measurements within
-the subject ID (e.g., the months variable). Lastly, the
+the subject ID (e.g. the months variable). Lastly, the
 <code>values_from</code> argument specifies the variable to use for
 filling in the cell values of the table (e.g., the weight variable).</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHBpdm90X3dpZGVyKGlkX2NvbHMgPSBpZCxcbiAgICAgICAgICAgICAgbmFtZXNfZnJvbSA9IG1vbnRocyxcbiAgICAgICAgICAgICAgdmFsdWVzX2Zyb20gPSB3ZWlnaHRfa2cpXG5gYGAifQ== -->
-<pre class="r"><code>growth_data %&gt;%
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHBpdm90X3dpZGVyKGlkX2NvbHMgPSBpZCxcbiAgICAgICAgICAgICAgbmFtZXNfZnJvbSA9IG1vbnRocyxcbiAgICAgICAgICAgICAgdmFsdWVzX2Zyb20gPSB3ZWlnaHRfa2cpXG5gYGBcbmBgYCJ9 -->
+<pre class="r"><code>```r
+growth_data %&gt;%
   pivot_wider(id_cols = id,
               names_from = months,
               values_from = weight_kg)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Notice that R doesn’t allow numeric variable names, so backticks are
-placed around the number in each column to create valid variable names.
-However, these variable names are not particularly informative of the
-data contained in each column. In this case, the
-<code>names_prefix</code> argument is useful for adding a string before
-every variable name. Returning to our example, this argument allows us
-to provide a prefix that conveys both the timing of the measurements
-(i.e., month) and the type of measurement (i.e., weight).</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHBpdm90X3dpZGVyKGlkX2NvbHMgPSBpZCxcbiAgICAgICAgICAgICAgbmFtZXNfZnJvbSA9IG1vbnRocyxcbiAgICAgICAgICAgICAgbmFtZXNfcHJlZml4ID0gXCJ3ZWlnaHRfbW9udGhcIixcbiAgICAgICAgICAgICAgdmFsdWVzX2Zyb20gPSB3ZWlnaHRfa2cpXG5gYGAifQ== -->
-<pre class="r"><code>growth_data %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+R doesn&#39;t allow numeric variable names and thus, in the printed result, it 
+has put so-called &#39;backticks&#39; around the number in each column to create valid 
+variable names. However, these variable names are not particularly informative 
+of the data contained in each
+column. In this case, the `names_prefix` argument is useful for adding a string
+before every variable name. Returning to our example, this argument allows you
+provide a prefix that conveys both the timing of the measurements (i.e. month)
+and the type of measurement (i.e. weight):
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHBpdm90X3dpZGVyKGlkX2NvbHMgPSBpZCxcbiAgICAgICAgICAgICAgbmFtZXNfZnJvbSA9IG1vbnRocyxcbiAgICAgICAgICAgICAgbmFtZXNfcHJlZml4ID0gXFx3ZWlnaHRfbW9udGhcXCxcbiAgICAgICAgICAgICAgdmFsdWVzX2Zyb20gPSB3ZWlnaHRfa2cpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+growth_data %&gt;%
   pivot_wider(id_cols = id,
               names_from = months,
-              names_prefix = &quot;weight_month&quot;,
+              names_prefix = \weight_month\,
               values_from = weight_kg)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Let’s assign this data frame to an object.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX3dpZGVfd2VpZ2h0IDwtXG4gIGdyb3d0aF9kYXRhICU+JVxuICBwaXZvdF93aWRlcihpZF9jb2xzID0gaWQsXG4gICAgICAgICAgICAgIG5hbWVzX2Zyb20gPSBtb250aHMsXG4gICAgICAgICAgICAgIG5hbWVzX3ByZWZpeCA9IFwid2VpZ2h0X21vbnRoXCIsXG4gICAgICAgICAgICAgIHZhbHVlc19mcm9tID0gd2VpZ2h0X2tnKVxuYGBgIn0= -->
-<pre class="r"><code>growth_wide_weight &lt;-
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Let&#39;s assign this data frame to an object:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX3dpZGVfd2VpZ2h0IDwtXG4gIGdyb3d0aF9kYXRhICU+JVxuICBwaXZvdF93aWRlcihpZF9jb2xzID0gaWQsXG4gICAgICAgICAgICAgIG5hbWVzX2Zyb20gPSBtb250aHMsXG4gICAgICAgICAgICAgIG5hbWVzX3ByZWZpeCA9IFxcd2VpZ2h0X21vbnRoXFwsXG4gICAgICAgICAgICAgIHZhbHVlc19mcm9tID0gd2VpZ2h0X2tnKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+growth_wide_weight &lt;-
   growth_data %&gt;%
   pivot_wider(id_cols = id,
               names_from = months,
-              names_prefix = &quot;weight_month&quot;,
+              names_prefix = \weight_month\,
               values_from = weight_kg)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Recall that the <code>pivot_wider</code> and
-<code>pivot_longer</code> functions are inverses of each other. The
-<code>pivot_longer</code> requires the <code>cols</code> argument to
-identify the columns to pivot into long format, and we can also use the
-NOT operator (!) to denote “all columns except” within this argument
-(e.g., pivot all columns except the infant ID variable).</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX3dpZGVfd2VpZ2h0ICU+JVxuICBwaXZvdF9sb25nZXIoY29scyA9ICFpZClcbmBgYCJ9 -->
-<pre class="r"><code>growth_wide_weight %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Recall that the `pivot_wider` and `pivot_longer` functions are inverses of each
+other. The `pivot_longer` requires the `cols` argument to identify the columns
+to pivot into long format, and we can also use the NOT operator (`!`) to denote
+&quot;all columns except...&quot; within this argument. Below we pivot all columns except the
+infant ID variable:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX3dpZGVfd2VpZ2h0ICU+JVxuICBwaXZvdF9sb25nZXIoY29scyA9ICFpZClcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+growth_wide_weight %&gt;%
   pivot_longer(cols = !id)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>If we want to change the variable names to something more
-informative, we can use the <code>names_to</code> and
-<code>values_to</code> arguments.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX3dpZGVfd2VpZ2h0ICU+JVxuICBwaXZvdF9sb25nZXIoY29scyA9ICFpZCxcbiAgICAgICAgICAgICAgIG5hbWVzX3RvID0gXCJtb250aHNcIixcbiAgICAgICAgICAgICAgIHZhbHVlc190byA9IFwid2VpZ2h0X2tnXCIpXG5gYGAifQ== -->
-<pre class="r"><code>growth_wide_weight %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+If we want to change the variable names to something more informative, we can
+use the `names_to` and `values_to` arguments:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX3dpZGVfd2VpZ2h0ICU+JVxuICBwaXZvdF9sb25nZXIoY29scyA9ICFpZCxcbiAgICAgICAgICAgICAgIG5hbWVzX3RvID0gXFxtb250aHNcXCxcbiAgICAgICAgICAgICAgIHZhbHVlc190byA9IFxcd2VpZ2h0X2tnXFwpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+growth_wide_weight %&gt;%
   pivot_longer(cols = !id,
-               names_to = &quot;months&quot;,
-               values_to = &quot;weight_kg&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Notice that the results resemble the original
-<code>growth_data</code>, demonstrating that the
-<code>pivot_wider</code> anf <code>pivot_longer</code> functions are
-natural complements of each other.</p>
-<p>Remember to save the work you’ve done. Try saving the script you’ve
-been working in as <code>pivot_wider.R</code> for later reference.</p>
-</div>
-<div id="mutate" class="section level2">
-<h2>mutate()</h2>
-<p>To practice the <code>mutate</code> function from the dplyr package,
-open another blank script within the same R project.</p>
-<p>Let’s consider the task of creating a BMI variable using the height
-and weight measurements from the <code>growth_data</code>. Within the
-<code>mutate</code> function, we name the new variable to create and
-specify how this variable is defined (i.e., BMI formula).</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIG11dGF0ZShibWkgPSB3ZWlnaHRfa2cgLyAoaGVpZ2h0X2NtIC8gMTAwKV4yKVxuYGBgIn0= -->
-<pre class="r"><code>growth_data %&gt;%
+               names_to = \months\,
+               values_to = \weight_kg\)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Notice that the results resemble the original `growth_data`, demonstrating that
+the `pivot_wider` anf `pivot_longer` functions are natural complements of each
+other.
+
+Remember to save the work you&#39;ve done. Try saving the script you&#39;ve been working
+in as `pivot_wider.R` for later reference.
+
+## `mutate()`
+
+To practice the `mutate` function from the dplyr package, open another blank
+script within the same R project.
+
+Let&#39;s consider the task of creating a BMI variable using the height and weight
+measurements from the `growth_data`. Within the `mutate` function, we name the
+new variable to create and specify how this variable is defined (i.e. BMI
+formula).
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIG11dGF0ZShibWkgPSB3ZWlnaHRfa2cgLyAoaGVpZ2h0X2NtIC8gMTAwKV4yKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+growth_data %&gt;%
   mutate(bmi = weight_kg / (height_cm / 100)^2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Notice that this returns the original <code>growth_data</code> along
-with the new variable that has performed the requested calculations.</p>
-<p>The nice thing about the <code>mutate</code> function is that we can
-create multiple new variables within one function call and even
-reference variables that were just previously created in that same
-function call. For example, we can create a height variable that
-performs a unit conversion from centimeters to meters prior to creating
-the BMI variable.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIG11dGF0ZShoZWlnaHRfbSA9IGhlaWdodF9jbSAvIDEwMCxcbiAgICAgICAgIGJtaSA9IHdlaWdodF9rZyAvIGhlaWdodF9tXjIpXG5gYGAifQ== -->
-<pre class="r"><code>growth_data %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Notice that this returns the original `growth_data` along with the new variable
+that has performed the requested calculations.
+
+The nice thing about the `mutate` function is that we can create multiple new
+variables within one function call and even reference variables that were just
+previously created in that same function call. For example, we can create
+a height variable that performs a unit conversion from centimeters to meters
+prior to creating the BMI variable.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIG11dGF0ZShoZWlnaHRfbSA9IGhlaWdodF9jbSAvIDEwMCxcbiAgICAgICAgIGJtaSA9IHdlaWdodF9rZyAvIGhlaWdodF9tXjIpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+growth_data %&gt;%
   mutate(height_m = height_cm / 100,
          bmi = weight_kg / height_m^2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>This code returns the original <code>growth_data</code> along with
-two new columns, where the calculated values for BMI are the same as
-before.</p>
-<p>We could assign this data frame to an object, particularly if we plan
-on performing subsequent calculations on the BMI measurements. Without
-assignment, R does not save the new variables that were created.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGFfZXhwYW5kZWQgPC1cbiAgZ3Jvd3RoX2RhdGEgJT4lXG4gIG11dGF0ZShoZWlnaHRfbSA9IGhlaWdodF9jbSAvIDEwMCxcbiAgICAgICAgIGJtaSA9IHdlaWdodF9rZyAvIGhlaWdodF9tXjIpXG5gYGAifQ== -->
-<pre class="r"><code>growth_data_expanded &lt;-
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+This code returns the original `growth_data` along with two new columns, where
+the calculated values for BMI are the same as before.
+
+We could assign this data frame to an object, particularly if we plan on
+performing subsequent calculations on the BMI measurements. Without assignment,
+R does not save the new variables that were created.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGFfZXhwYW5kZWQgPC1cbiAgZ3Jvd3RoX2RhdGEgJT4lXG4gIG11dGF0ZShoZWlnaHRfbSA9IGhlaWdodF9jbSAvIDEwMCxcbiAgICAgICAgIGJtaSA9IHdlaWdodF9rZyAvIGhlaWdodF9tXjIpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+growth_data_expanded &lt;-
   growth_data %&gt;%
   mutate(height_m = height_cm / 100,
          bmi = weight_kg / height_m^2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Just as before, remember to save the work you’ve done. Try saving the
-script you’ve been working in as <code>mutate.R</code> for later
-reference.</p>
-</div>
-<div id="arrange-and-select" class="section level2">
-<h2>arrange() and select()</h2>
-<ul>
-<li>not every data wrangling step will be for dramatic changes or
-additions to data</li>
-<li>focus on certain columns or sort rows of data based on values of
-particular variables</li>
-<li>information in data will remain the same (re-arranging order of
-rows)</li>
-<li>arrange order of rows, even by multiple variables (breaking
-ties)</li>
-<li>extracting only a few variables to view reduced version of data
-(select function)</li>
-<li>select based upon negations (- or !)</li>
-</ul>
-<p>To practice the <code>arrange</code> and <code>select</code>
-functions from the dplyr package, open another blank script within the
-same R project.</p>
-<p>The <code>arrange</code> function requires the variable by which to
-sort or arrange the data. The following code sorts the data by the month
-variable in ascending order:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIGFycmFuZ2UobW9udGhzKVxuYGBgIn0= -->
-<pre class="r"><code>growth_data %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Just as before, remember to save the work you&#39;ve done. Try saving the script
+you&#39;ve been working in as `mutate.R` for later reference.
+
+## `arrange()` and `select()`
+
+Some of your data-wrangling steps will not be for purposes of changing the information in the data but rather focusing your attention on certain columns using `select` or sorting rows using `arrange`. To practice the `arrange` and `select` functions from the dplyr package, open another blank script within the same R project.
+
+The `arrange` function requires the variable by which to sort or arrange the
+data. The following code sorts the data by the month variable in ascending
+order:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIGFycmFuZ2UobW9udGhzKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+growth_data %&gt;%
   arrange(months)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>We can also sort the data by multiple variables. In this case, the
-data is first sorted by the month variable followed by the weight
-variable within tied values of the month variable.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIGFycmFuZ2UobW9udGhzLCB3ZWlnaHRfa2cpXG5gYGAifQ== -->
-<pre class="r"><code>growth_data %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+We can also sort the data by multiple variables. In this case, the data is first
+sorted by the month variable followed by the weight variable within tied values
+of the month variable:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIGFycmFuZ2UobW9udGhzLCB3ZWlnaHRfa2cpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+growth_data %&gt;%
   arrange(months, weight_kg)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>The default setting is for variables to be sorted in ascending order,
-but variables can also be sorted in descending order using the
-<code>desc</code> function.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIGFycmFuZ2UoZGVzYyhtb250aHMpLCB3ZWlnaHRfa2cpXG5gYGAifQ== -->
-<pre class="r"><code>growth_data %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+The default setting is for variables to be sorted in ascending order, but
+variables can also be sorted in descending order using the `desc` function:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIGFycmFuZ2UoZGVzYyhtb250aHMpLCB3ZWlnaHRfa2cpXG5gYGAifQ== --&gt;
+
+```r
+growth_data %&gt;%
   arrange(desc(months), weight_kg)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>To be clear, what the above code does is sort first by
+<code>months</code> in <em>decreasing</em> order and then, among
+observations having common values of the motnh, sorting by increasing
+(the default direction) values of <code>weight_kg</code>.</p>
 <p>The <code>select</code> function chooses columns in the data
-frame.</p>
+frame:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChpZCwgbW9udGhzKVxuYGBgIn0= -->
-<pre class="r"><code>growth_data %&gt;%
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChpZCwgbW9udGhzKVxuYGBgXG5gYGAifQ== -->
+<pre class="r"><code>```r
+growth_data %&gt;%
   select(id, months)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Using the NOT (!) operator, we can also select everything except a
-particular column.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdCghd2VpZ2h0X2tnKVxuYGBgIn0= -->
-<pre class="r"><code>growth_data %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Using the NOT (!) operator, we can also select everything except a particular
+column:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdCghd2VpZ2h0X2tnKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+growth_data %&gt;%
   select(!weight_kg)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>The <code>select</code> function is particularly useful for
-re-ordering columns.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChpZCwgd2VpZ2h0X2tnLCBoZWlnaHRfY20sIG1vbnRocylcbmBgYCJ9 -->
-<pre class="r"><code>growth_data %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+The `select` function is particularly useful for re-ordering columns:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChpZCwgd2VpZ2h0X2tnLCBoZWlnaHRfY20sIG1vbnRocylcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+growth_data %&gt;%
   select(id, weight_kg, height_cm, months)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>However, it’s not always efficient to name every column, especially
-if there are several columns in the data frame. In this case, there are
-helper functions that help us more easily select columns. For example,
-we can use the <code>everything</code> function to name columns prior to
-selecting the rest of the columns.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChtb250aHMsIGV2ZXJ5dGhpbmcoKSlcbmBgYCJ9 -->
-<pre class="r"><code>growth_data %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+However, it&#39;s not always easy to name every column, especially if there are
+many columns in your data frame. In this case, there are helper functions that
+help us more easily select columns. For example, we can use the `everything`
+function to name columns prior to selecting the rest of the columns.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChtb250aHMsIGV2ZXJ5dGhpbmcoKSlcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+growth_data %&gt;%
   select(months, everything())</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>The <code>starts_with</code> function allows us to provide the
-beginning of the column name that we would like to select.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChtb250aHMsIHN0YXJ0c193aXRoKFwid1wiKSlcbmBgYCJ9 -->
-<pre class="r"><code>growth_data %&gt;%
-  select(months, starts_with(&quot;w&quot;))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Similarly, the <code>ends_with</code> function allows us to provide
-the end of the column name that we would like to select.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChtb250aHMsIGVuZHNfd2l0aChcImNtXCIpKVxuYGBgIn0= -->
-<pre class="r"><code>growth_data %&gt;%
-  select(months, ends_with(&quot;cm&quot;))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>The <code>contains</code> function matches the string argument
-anywhere in the column name. For example, the “ght” string returns both
-the height and weight variables to select.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChtb250aHMsIGNvbnRhaW5zKFwiZ2h0XCIpKVxuYGBgIn0= -->
-<pre class="r"><code>growth_data %&gt;%
-  select(months, contains(&quot;ght&quot;))</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+The `starts_with` function allows us to provide the beginning of the column name
+that we would like to select.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChtb250aHMsIHN0YXJ0c193aXRoKFxcd1xcKSlcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+growth_data %&gt;%
+  select(months, starts_with(\w\))</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Similarly, the `ends_with` function allows us to provide the end of the column
+name that we would like to select.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChtb250aHMsIGVuZHNfd2l0aChcXGNtXFwpKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+growth_data %&gt;%
+  select(months, ends_with(\cm\))</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+The `contains` function matches the string argument anywhere in the column name.
+For example, the &quot;ght&quot; string returns both the height and weight variables to
+select.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIHNlbGVjdChtb250aHMsIGNvbnRhaW5zKFxcZ2h0XFwpKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+growth_data %&gt;%
+  select(months, contains(\ght\))</code></pre>
+<p>```</p>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2061,7 +2304,7 @@ reference.</p>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5kZXBlbmRlbnQgR3VpZGU6IDIuMyAtIGRwbHlyIgpvdXRwdXQ6IAogIGh0bWxfZG9jdW1lbnQ6CiAgaHRtbF9ub3RlYm9vazoKZWRpdG9yX29wdGlvbnM6IAogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUKLS0tCgpgYGB7ciBrbGlwcHksIGVjaG8gPSBGQUxTRSwgaW5jbHVkZSA9IFRSVUV9CmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygidG9wIiwgInJpZ2h0IiksIHRvb2x0aXBfbWVzc2FnZSA9ICJDb3B5IikKYGBgCgpJbiB0aGUgdGhpcmQgbGVzc29uIG9mIFdlZWsgMiwgeW91IHdlcmUgaW50cm9kdWNlZCB0byBhZGRpdGlvbmFsIGZ1bmN0aW9ucyBmcm9tCnRoZSBkcGx5ciBwYWNrYWdlLiBUbyBwcmFjdGljZSB1c2luZyB0aGVzZSBmdW5jdGlvbnMsIG9wZW4gdGhlIFIgcHJvamVjdCBjYWxsZWQKYExlc3NvbnMuUnByb2pgIGFuZCBhIGJsYW5rIFIgc2NyaXB0LiBCZWZvcmUgd2UgY2FuIGJlZ2luLCB5b3UnbGwgYWxzbyBuZWVkIHRvCmxvYWQgdGhlIG5lY2Vzc2FyeSBwYWNrYWdlcyBpbnRvIHRoZSBjdXJyZW50IFIgc2Vzc2lvbi4KCmBgYHtyfQpsaWJyYXJ5KGhlYWx0aGRzKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIyBwaXZvdF93aWRlcigpCgpSZXBsaWNhdGluZyB0aGUgZXhhbXBsZSBmcm9tIHRoZSBsZWN0dXJlLCB3ZSBjYW4gcGl2b3QgdGhlIGBncm93dGhfZGF0YWAgZnJvbQpsb25nIGZvcm1hdCBpbnRvIHdpZGUgZm9ybWF0IHVzaW5nIHRoZSBgcGl2b3Rfd2lkZXJgIGZ1bmN0aW9uIHNvIHRoYXQgYWxsCm1lYXN1cmVtZW50cyBmcm9tIGFuIGluZmFudCBhcmUgY29udGFpbmVkIGluIGEgc2luZ2xlIHJvdy4KClRvIHVzZSB0aGUgYHBpdm90X3dpZGVyYCBmdW5jdGlvbiwgdGhlcmUgYXJlIGEgZmV3IHJlcXVpcmVkIGFyZ3VtZW50cywgYXMgd2VsbAphcyBzZXZlcmFsIG9wdGlvbmFsIGFyZ3VtZW50cy4gSW4gZ2VuZXJhbCwgYXMgbG9uZyBhcyB0aGUgYXJndW1lbnRzIGFyZQpleHBsaWNpdGx5IG5hbWVkLCB0aGUgYXJndW1lbnRzIGRvIG5vdCBoYXZlIHRvIGJlIGluIGFueSBwYXJ0aWN1bGFyIG9yZGVyLiBUaGUKYGlkX2NvbHNgIGFyZ3VtZW50IHNwZWNpZmllcyB0aGUgdmFyaWFibGUgdGhhdCB1bmlxdWVseSBpZGVudGlmaWVzIGVhY2ggcm93LAp3aGljaCBpcyB0aGUgaW5mYW50IElEIHZhcmlhYmxlIGluIHRoaXMgZXhhbXBsZS4gVGhlIGBuYW1lc19mcm9tYCBhcmd1bWVudApzcGVjaWZpZXMgdGhlIHZhcmlhYmxlIHRoYXQgaW5kaWNhdGVzIHRoZSByZXBlYXRlZCBtZWFzdXJlbWVudHMgd2l0aGluIHRoZQpzdWJqZWN0IElEIChlLmcuLCB0aGUgbW9udGhzIHZhcmlhYmxlKS4gTGFzdGx5LCB0aGUgYHZhbHVlc19mcm9tYCBhcmd1bWVudApzcGVjaWZpZXMgdGhlIHZhcmlhYmxlIHRvIHVzZSBmb3IgZmlsbGluZyBpbiB0aGUgY2VsbCB2YWx1ZXMgb2YgdGhlIHRhYmxlIChlLmcuLAp0aGUgd2VpZ2h0IHZhcmlhYmxlKS4KCmBgYHtyfQpncm93dGhfZGF0YSAlPiUKICBwaXZvdF93aWRlcihpZF9jb2xzID0gaWQsCiAgICAgICAgICAgICAgbmFtZXNfZnJvbSA9IG1vbnRocywKICAgICAgICAgICAgICB2YWx1ZXNfZnJvbSA9IHdlaWdodF9rZykKYGBgCgpOb3RpY2UgdGhhdCBSIGRvZXNuJ3QgYWxsb3cgbnVtZXJpYyB2YXJpYWJsZSBuYW1lcywgc28gYmFja3RpY2tzIGFyZSBwbGFjZWQKYXJvdW5kIHRoZSBudW1iZXIgaW4gZWFjaCBjb2x1bW4gdG8gY3JlYXRlIHZhbGlkIHZhcmlhYmxlIG5hbWVzLiBIb3dldmVyLCB0aGVzZQp2YXJpYWJsZSBuYW1lcyBhcmUgbm90IHBhcnRpY3VsYXJseSBpbmZvcm1hdGl2ZSBvZiB0aGUgZGF0YSBjb250YWluZWQgaW4gZWFjaApjb2x1bW4uIEluIHRoaXMgY2FzZSwgdGhlIGBuYW1lc19wcmVmaXhgIGFyZ3VtZW50IGlzIHVzZWZ1bCBmb3IgYWRkaW5nIGEgc3RyaW5nCmJlZm9yZSBldmVyeSB2YXJpYWJsZSBuYW1lLiBSZXR1cm5pbmcgdG8gb3VyIGV4YW1wbGUsIHRoaXMgYXJndW1lbnQgYWxsb3dzIHVzIHRvCnByb3ZpZGUgYSBwcmVmaXggdGhhdCBjb252ZXlzIGJvdGggdGhlIHRpbWluZyBvZiB0aGUgbWVhc3VyZW1lbnRzIChpLmUuLCBtb250aCkKYW5kIHRoZSB0eXBlIG9mIG1lYXN1cmVtZW50IChpLmUuLCB3ZWlnaHQpLgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIHBpdm90X3dpZGVyKGlkX2NvbHMgPSBpZCwKICAgICAgICAgICAgICBuYW1lc19mcm9tID0gbW9udGhzLAogICAgICAgICAgICAgIG5hbWVzX3ByZWZpeCA9ICJ3ZWlnaHRfbW9udGgiLAogICAgICAgICAgICAgIHZhbHVlc19mcm9tID0gd2VpZ2h0X2tnKQpgYGAKCkxldCdzIGFzc2lnbiB0aGlzIGRhdGEgZnJhbWUgdG8gYW4gb2JqZWN0LgoKYGBge3J9Cmdyb3d0aF93aWRlX3dlaWdodCA8LQogIGdyb3d0aF9kYXRhICU+JQogIHBpdm90X3dpZGVyKGlkX2NvbHMgPSBpZCwKICAgICAgICAgICAgICBuYW1lc19mcm9tID0gbW9udGhzLAogICAgICAgICAgICAgIG5hbWVzX3ByZWZpeCA9ICJ3ZWlnaHRfbW9udGgiLAogICAgICAgICAgICAgIHZhbHVlc19mcm9tID0gd2VpZ2h0X2tnKQpgYGAKClJlY2FsbCB0aGF0IHRoZSBgcGl2b3Rfd2lkZXJgIGFuZCBgcGl2b3RfbG9uZ2VyYCBmdW5jdGlvbnMgYXJlIGludmVyc2VzIG9mIGVhY2gKb3RoZXIuIFRoZSBgcGl2b3RfbG9uZ2VyYCByZXF1aXJlcyB0aGUgYGNvbHNgIGFyZ3VtZW50IHRvIGlkZW50aWZ5IHRoZSBjb2x1bW5zCnRvIHBpdm90IGludG8gbG9uZyBmb3JtYXQsIGFuZCB3ZSBjYW4gYWxzbyB1c2UgdGhlIE5PVCBvcGVyYXRvciAoISkgdG8gZGVub3RlCiJhbGwgY29sdW1ucyBleGNlcHQiIHdpdGhpbiB0aGlzIGFyZ3VtZW50IChlLmcuLCBwaXZvdCBhbGwgY29sdW1ucyBleGNlcHQgdGhlCmluZmFudCBJRCB2YXJpYWJsZSkuCgpgYGB7cn0KZ3Jvd3RoX3dpZGVfd2VpZ2h0ICU+JQogIHBpdm90X2xvbmdlcihjb2xzID0gIWlkKQpgYGAKCklmIHdlIHdhbnQgdG8gY2hhbmdlIHRoZSB2YXJpYWJsZSBuYW1lcyB0byBzb21ldGhpbmcgbW9yZSBpbmZvcm1hdGl2ZSwgd2UgY2FuCnVzZSB0aGUgYG5hbWVzX3RvYCBhbmQgYHZhbHVlc190b2AgYXJndW1lbnRzLgoKYGBge3J9Cmdyb3d0aF93aWRlX3dlaWdodCAlPiUKICBwaXZvdF9sb25nZXIoY29scyA9ICFpZCwKICAgICAgICAgICAgICAgbmFtZXNfdG8gPSAibW9udGhzIiwKICAgICAgICAgICAgICAgdmFsdWVzX3RvID0gIndlaWdodF9rZyIpCmBgYAoKTm90aWNlIHRoYXQgdGhlIHJlc3VsdHMgcmVzZW1ibGUgdGhlIG9yaWdpbmFsIGBncm93dGhfZGF0YWAsIGRlbW9uc3RyYXRpbmcgdGhhdAp0aGUgYHBpdm90X3dpZGVyYCBhbmYgYHBpdm90X2xvbmdlcmAgZnVuY3Rpb25zIGFyZSBuYXR1cmFsIGNvbXBsZW1lbnRzIG9mIGVhY2gKb3RoZXIuCgpSZW1lbWJlciB0byBzYXZlIHRoZSB3b3JrIHlvdSd2ZSBkb25lLiBUcnkgc2F2aW5nIHRoZSBzY3JpcHQgeW91J3ZlIGJlZW4gd29ya2luZwppbiBhcyBgcGl2b3Rfd2lkZXIuUmAgZm9yIGxhdGVyIHJlZmVyZW5jZS4KCiMjIG11dGF0ZSgpCgpUbyBwcmFjdGljZSB0aGUgYG11dGF0ZWAgZnVuY3Rpb24gZnJvbSB0aGUgZHBseXIgcGFja2FnZSwgb3BlbiBhbm90aGVyIGJsYW5rCnNjcmlwdCB3aXRoaW4gdGhlIHNhbWUgUiBwcm9qZWN0LgoKTGV0J3MgY29uc2lkZXIgdGhlIHRhc2sgb2YgY3JlYXRpbmcgYSBCTUkgdmFyaWFibGUgdXNpbmcgdGhlIGhlaWdodCBhbmQgd2VpZ2h0Cm1lYXN1cmVtZW50cyBmcm9tIHRoZSBgZ3Jvd3RoX2RhdGFgLiBXaXRoaW4gdGhlIGBtdXRhdGVgIGZ1bmN0aW9uLCB3ZSBuYW1lIHRoZQpuZXcgdmFyaWFibGUgdG8gY3JlYXRlIGFuZCBzcGVjaWZ5IGhvdyB0aGlzIHZhcmlhYmxlIGlzIGRlZmluZWQgKGkuZS4sIEJNSQpmb3JtdWxhKS4KCmBgYHtyfQpncm93dGhfZGF0YSAlPiUKICBtdXRhdGUoYm1pID0gd2VpZ2h0X2tnIC8gKGhlaWdodF9jbSAvIDEwMCleMikKYGBgCgpOb3RpY2UgdGhhdCB0aGlzIHJldHVybnMgdGhlIG9yaWdpbmFsIGBncm93dGhfZGF0YWAgYWxvbmcgd2l0aCB0aGUgbmV3IHZhcmlhYmxlCnRoYXQgaGFzIHBlcmZvcm1lZCB0aGUgcmVxdWVzdGVkIGNhbGN1bGF0aW9ucy4KClRoZSBuaWNlIHRoaW5nIGFib3V0IHRoZSBgbXV0YXRlYCBmdW5jdGlvbiBpcyB0aGF0IHdlIGNhbiBjcmVhdGUgbXVsdGlwbGUgbmV3CnZhcmlhYmxlcyB3aXRoaW4gb25lIGZ1bmN0aW9uIGNhbGwgYW5kIGV2ZW4gcmVmZXJlbmNlIHZhcmlhYmxlcyB0aGF0IHdlcmUganVzdApwcmV2aW91c2x5IGNyZWF0ZWQgaW4gdGhhdCBzYW1lIGZ1bmN0aW9uIGNhbGwuIEZvciBleGFtcGxlLCB3ZSBjYW4gY3JlYXRlCmEgaGVpZ2h0IHZhcmlhYmxlIHRoYXQgcGVyZm9ybXMgYSB1bml0IGNvbnZlcnNpb24gZnJvbSBjZW50aW1ldGVycyB0byBtZXRlcnMKcHJpb3IgdG8gY3JlYXRpbmcgdGhlIEJNSSB2YXJpYWJsZS4KCmBgYHtyfQpncm93dGhfZGF0YSAlPiUKICBtdXRhdGUoaGVpZ2h0X20gPSBoZWlnaHRfY20gLyAxMDAsCiAgICAgICAgIGJtaSA9IHdlaWdodF9rZyAvIGhlaWdodF9tXjIpCmBgYAoKVGhpcyBjb2RlIHJldHVybnMgdGhlIG9yaWdpbmFsIGBncm93dGhfZGF0YWAgYWxvbmcgd2l0aCB0d28gbmV3IGNvbHVtbnMsIHdoZXJlCnRoZSBjYWxjdWxhdGVkIHZhbHVlcyBmb3IgQk1JIGFyZSB0aGUgc2FtZSBhcyBiZWZvcmUuCgpXZSBjb3VsZCBhc3NpZ24gdGhpcyBkYXRhIGZyYW1lIHRvIGFuIG9iamVjdCwgcGFydGljdWxhcmx5IGlmIHdlIHBsYW4gb24KcGVyZm9ybWluZyBzdWJzZXF1ZW50IGNhbGN1bGF0aW9ucyBvbiB0aGUgQk1JIG1lYXN1cmVtZW50cy4gV2l0aG91dCBhc3NpZ25tZW50LApSIGRvZXMgbm90IHNhdmUgdGhlIG5ldyB2YXJpYWJsZXMgdGhhdCB3ZXJlIGNyZWF0ZWQuCgpgYGB7cn0KZ3Jvd3RoX2RhdGFfZXhwYW5kZWQgPC0KICBncm93dGhfZGF0YSAlPiUKICBtdXRhdGUoaGVpZ2h0X20gPSBoZWlnaHRfY20gLyAxMDAsCiAgICAgICAgIGJtaSA9IHdlaWdodF9rZyAvIGhlaWdodF9tXjIpCmBgYAoKSnVzdCBhcyBiZWZvcmUsIHJlbWVtYmVyIHRvIHNhdmUgdGhlIHdvcmsgeW91J3ZlIGRvbmUuIFRyeSBzYXZpbmcgdGhlIHNjcmlwdAp5b3UndmUgYmVlbiB3b3JraW5nIGluIGFzIGBtdXRhdGUuUmAgZm9yIGxhdGVyIHJlZmVyZW5jZS4KCiMjIGFycmFuZ2UoKSBhbmQgc2VsZWN0KCkKCiogbm90IGV2ZXJ5IGRhdGEgd3JhbmdsaW5nIHN0ZXAgd2lsbCBiZSBmb3IgZHJhbWF0aWMgY2hhbmdlcyBvciBhZGRpdGlvbnMgdG8gZGF0YQoqIGZvY3VzIG9uIGNlcnRhaW4gY29sdW1ucyBvciBzb3J0IHJvd3Mgb2YgZGF0YSBiYXNlZCBvbiB2YWx1ZXMgb2YgcGFydGljdWxhciB2YXJpYWJsZXMKKiBpbmZvcm1hdGlvbiBpbiBkYXRhIHdpbGwgcmVtYWluIHRoZSBzYW1lIChyZS1hcnJhbmdpbmcgb3JkZXIgb2Ygcm93cykKKiBhcnJhbmdlIG9yZGVyIG9mIHJvd3MsIGV2ZW4gIGJ5IG11bHRpcGxlIHZhcmlhYmxlcyAoYnJlYWtpbmcgdGllcykKKiBleHRyYWN0aW5nIG9ubHkgYSBmZXcgdmFyaWFibGVzIHRvIHZpZXcgcmVkdWNlZCB2ZXJzaW9uIG9mIGRhdGEgKHNlbGVjdCBmdW5jdGlvbikKKiBzZWxlY3QgYmFzZWQgdXBvbiBuZWdhdGlvbnMgKC0gb3IgISkKClRvIHByYWN0aWNlIHRoZSBgYXJyYW5nZWAgYW5kIGBzZWxlY3RgIGZ1bmN0aW9ucyBmcm9tIHRoZSBkcGx5ciBwYWNrYWdlLCBvcGVuCmFub3RoZXIgYmxhbmsgc2NyaXB0IHdpdGhpbiB0aGUgc2FtZSBSIHByb2plY3QuCgpUaGUgYGFycmFuZ2VgIGZ1bmN0aW9uIHJlcXVpcmVzIHRoZSB2YXJpYWJsZSBieSB3aGljaCB0byBzb3J0IG9yIGFycmFuZ2UgdGhlCmRhdGEuIFRoZSBmb2xsb3dpbmcgY29kZSBzb3J0cyB0aGUgZGF0YSBieSB0aGUgbW9udGggdmFyaWFibGUgaW4gYXNjZW5kaW5nCm9yZGVyOgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIGFycmFuZ2UobW9udGhzKQpgYGAKCldlIGNhbiBhbHNvIHNvcnQgdGhlIGRhdGEgYnkgbXVsdGlwbGUgdmFyaWFibGVzLiBJbiB0aGlzIGNhc2UsIHRoZSBkYXRhIGlzIGZpcnN0CnNvcnRlZCBieSB0aGUgbW9udGggdmFyaWFibGUgZm9sbG93ZWQgYnkgdGhlIHdlaWdodCB2YXJpYWJsZSB3aXRoaW4gdGllZCB2YWx1ZXMKb2YgdGhlIG1vbnRoIHZhcmlhYmxlLgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIGFycmFuZ2UobW9udGhzLCB3ZWlnaHRfa2cpCmBgYAoKVGhlIGRlZmF1bHQgc2V0dGluZyBpcyBmb3IgdmFyaWFibGVzIHRvIGJlIHNvcnRlZCBpbiBhc2NlbmRpbmcgb3JkZXIsIGJ1dAp2YXJpYWJsZXMgY2FuIGFsc28gYmUgc29ydGVkIGluIGRlc2NlbmRpbmcgb3JkZXIgdXNpbmcgdGhlIGBkZXNjYCBmdW5jdGlvbi4KCmBgYHtyfQpncm93dGhfZGF0YSAlPiUKICBhcnJhbmdlKGRlc2MobW9udGhzKSwgd2VpZ2h0X2tnKQpgYGAKClRoZSBgc2VsZWN0YCBmdW5jdGlvbiBjaG9vc2VzIGNvbHVtbnMgaW4gdGhlIGRhdGEgZnJhbWUuCgpgYGB7cn0KZ3Jvd3RoX2RhdGEgJT4lCiAgc2VsZWN0KGlkLCBtb250aHMpCmBgYAoKVXNpbmcgdGhlIE5PVCAoISkgb3BlcmF0b3IsIHdlIGNhbiBhbHNvIHNlbGVjdCBldmVyeXRoaW5nIGV4Y2VwdCBhIHBhcnRpY3VsYXIKY29sdW1uLgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIHNlbGVjdCghd2VpZ2h0X2tnKQpgYGAKClRoZSBgc2VsZWN0YCBmdW5jdGlvbiBpcyBwYXJ0aWN1bGFybHkgdXNlZnVsIGZvciByZS1vcmRlcmluZyBjb2x1bW5zLgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIHNlbGVjdChpZCwgd2VpZ2h0X2tnLCBoZWlnaHRfY20sIG1vbnRocykKYGBgCgpIb3dldmVyLCBpdCdzIG5vdCBhbHdheXMgZWZmaWNpZW50IHRvIG5hbWUgZXZlcnkgY29sdW1uLCBlc3BlY2lhbGx5IGlmIHRoZXJlIGFyZQpzZXZlcmFsIGNvbHVtbnMgaW4gdGhlIGRhdGEgZnJhbWUuIEluIHRoaXMgY2FzZSwgdGhlcmUgYXJlIGhlbHBlciBmdW5jdGlvbnMgdGhhdApoZWxwIHVzIG1vcmUgZWFzaWx5IHNlbGVjdCBjb2x1bW5zLiBGb3IgZXhhbXBsZSwgd2UgY2FuIHVzZSB0aGUgYGV2ZXJ5dGhpbmdgCmZ1bmN0aW9uIHRvIG5hbWUgY29sdW1ucyBwcmlvciB0byBzZWxlY3RpbmcgdGhlIHJlc3Qgb2YgdGhlIGNvbHVtbnMuCgpgYGB7cn0KZ3Jvd3RoX2RhdGEgJT4lCiAgc2VsZWN0KG1vbnRocywgZXZlcnl0aGluZygpKQpgYGAKClRoZSBgc3RhcnRzX3dpdGhgIGZ1bmN0aW9uIGFsbG93cyB1cyB0byBwcm92aWRlIHRoZSBiZWdpbm5pbmcgb2YgdGhlIGNvbHVtbiBuYW1lCnRoYXQgd2Ugd291bGQgbGlrZSB0byBzZWxlY3QuCgpgYGB7cn0KZ3Jvd3RoX2RhdGEgJT4lCiAgc2VsZWN0KG1vbnRocywgc3RhcnRzX3dpdGgoInciKSkKYGBgCgpTaW1pbGFybHksIHRoZSBgZW5kc193aXRoYCBmdW5jdGlvbiBhbGxvd3MgdXMgdG8gcHJvdmlkZSB0aGUgZW5kIG9mIHRoZSBjb2x1bW4KbmFtZSB0aGF0IHdlIHdvdWxkIGxpa2UgdG8gc2VsZWN0LgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIHNlbGVjdChtb250aHMsIGVuZHNfd2l0aCgiY20iKSkKYGBgCgpUaGUgYGNvbnRhaW5zYCBmdW5jdGlvbiBtYXRjaGVzIHRoZSBzdHJpbmcgYXJndW1lbnQgYW55d2hlcmUgaW4gdGhlIGNvbHVtbiBuYW1lLgpGb3IgZXhhbXBsZSwgdGhlICJnaHQiIHN0cmluZyByZXR1cm5zIGJvdGggdGhlIGhlaWdodCBhbmQgd2VpZ2h0IHZhcmlhYmxlcyB0bwpzZWxlY3QuCgpgYGB7cn0KZ3Jvd3RoX2RhdGEgJT4lCiAgc2VsZWN0KG1vbnRocywgY29udGFpbnMoImdodCIpKQpgYGAKClJlbWVtYmVyIHRvIHNhdmUgdGhlIHdvcmsgeW91J3ZlIGRvbmUuIFRyeSBzYXZpbmcgdGhlIHNjcmlwdCB5b3UndmUgYmVlbiB3b3JraW5nCmluIGFzIGBhcnJhbmdlX3NlbGVjdC5SYCBmb3IgbGF0ZXIgcmVmZXJlbmNlLgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5kZXBlbmRlbnQgR3VpZGU6IDIuMyAtIGRwbHlyIgpvdXRwdXQ6IAogIGh0bWxfZG9jdW1lbnQ6CiAgaHRtbF9ub3RlYm9vazoKZWRpdG9yX29wdGlvbnM6IAogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUKLS0tCgpgYGB7ciBrbGlwcHksIGVjaG8gPSBGQUxTRSwgaW5jbHVkZSA9IFRSVUV9CmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygidG9wIiwgInJpZ2h0IiksIHRvb2x0aXBfbWVzc2FnZSA9ICJDb3B5IikKYGBgCgpJbiB0aGUgdGhpcmQgbGVzc29uIG9mIE1vZHVsZSAyLCB5b3Ugd2VyZSBpbnRyb2R1Y2VkIHRvIGFkZGl0aW9uYWwgZnVuY3Rpb25zIGZyb20KdGhlIGRwbHlyIHBhY2thZ2UuIFRvIHByYWN0aWNlIHVzaW5nIHRoZXNlIGZ1bmN0aW9ucywgb3BlbiB0aGUgUiBwcm9qZWN0IGNhbGxlZApgTGVzc29ucy5ScHJvamAgYW5kIGEgYmxhbmsgUiBzY3JpcHQuIEJlZm9yZSB3ZSBjYW4gYmVnaW4sIHlvdSdsbCBhbHNvIG5lZWQgdG8KbG9hZCB0aGUgbmVjZXNzYXJ5IHBhY2thZ2VzIGludG8gdGhlIGN1cnJlbnQgUiBzZXNzaW9uLgoKYGBge3J9CmxpYnJhcnkoaGVhbHRoZHMpCmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCiMjIGBwaXZvdF93aWRlcigpYAoKUmVwbGljYXRpbmcgdGhlIGV4YW1wbGUgZnJvbSB0aGUgbGVjdHVyZSwgd2UgY2FuIHBpdm90IHRoZSBgZ3Jvd3RoX2RhdGFgIGZyb20KbG9uZyBmb3JtYXQgaW50byB3aWRlIGZvcm1hdCB1c2luZyB0aGUgYHBpdm90X3dpZGVyYCBmdW5jdGlvbiBzbyB0aGF0IGFsbAptZWFzdXJlbWVudHMgZnJvbSBhbiBpbmZhbnQgYXJlIGNvbnRhaW5lZCBpbiBhIHNpbmdsZSByb3cuCgpUbyB1c2UgdGhlIGBwaXZvdF93aWRlcmAgZnVuY3Rpb24sIHRoZXJlIGFyZSBhIGZldyByZXF1aXJlZCBhcmd1bWVudHMgYXMgd2VsbAphcyBzZXZlcmFsIG9wdGlvbmFsIGFyZ3VtZW50cy4gSW4gZ2VuZXJhbCwgYXMgbG9uZyBhcyB0aGUgYXJndW1lbnRzIGFyZQpleHBsaWNpdGx5IG5hbWVkLCB0aGUgYXJndW1lbnRzIGRvIG5vdCBoYXZlIHRvIGJlIHByb3ZpZGVkIGluIGFueSBwYXJ0aWN1bGFyIG9yZGVyLiAKVGhlIGBpZF9jb2xzYCBhcmd1bWVudCBzcGVjaWZpZXMgdGhlIHZhcmlhYmxlIHRoYXQgCnVuaXF1ZWx5IGlkZW50aWZpZXMgZWFjaCByb3csIHdoaWNoIGlzIHRoZSBpbmZhbnQgSUQgdmFyaWFibGUgaW4gdGhpcyBleGFtcGxlLiAKVGhlIGBuYW1lc19mcm9tYCBhcmd1bWVudApzcGVjaWZpZXMgdGhlIHZhcmlhYmxlIHRoYXQgaW5kaWNhdGVzIHRoZSByZXBlYXRlZCBtZWFzdXJlbWVudHMgd2l0aGluIHRoZQpzdWJqZWN0IElEIChlLmcuIHRoZSBtb250aHMgdmFyaWFibGUpLiBMYXN0bHksIHRoZSBgdmFsdWVzX2Zyb21gIGFyZ3VtZW50CnNwZWNpZmllcyB0aGUgdmFyaWFibGUgdG8gdXNlIGZvciBmaWxsaW5nIGluIHRoZSBjZWxsIHZhbHVlcyBvZiB0aGUgdGFibGUgKGUuZy4sCnRoZSB3ZWlnaHQgdmFyaWFibGUpLgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIHBpdm90X3dpZGVyKGlkX2NvbHMgPSBpZCwKICAgICAgICAgICAgICBuYW1lc19mcm9tID0gbW9udGhzLAogICAgICAgICAgICAgIHZhbHVlc19mcm9tID0gd2VpZ2h0X2tnKQpgYGAKClIgZG9lc24ndCBhbGxvdyBudW1lcmljIHZhcmlhYmxlIG5hbWVzIGFuZCB0aHVzLCBpbiB0aGUgcHJpbnRlZCByZXN1bHQsIGl0IApoYXMgcHV0IHNvLWNhbGxlZCAnYmFja3RpY2tzJyBhcm91bmQgdGhlIG51bWJlciBpbiBlYWNoIGNvbHVtbiB0byBjcmVhdGUgdmFsaWQgCnZhcmlhYmxlIG5hbWVzLiBIb3dldmVyLCB0aGVzZSB2YXJpYWJsZSBuYW1lcyBhcmUgbm90IHBhcnRpY3VsYXJseSBpbmZvcm1hdGl2ZSAKb2YgdGhlIGRhdGEgY29udGFpbmVkIGluIGVhY2gKY29sdW1uLiBJbiB0aGlzIGNhc2UsIHRoZSBgbmFtZXNfcHJlZml4YCBhcmd1bWVudCBpcyB1c2VmdWwgZm9yIGFkZGluZyBhIHN0cmluZwpiZWZvcmUgZXZlcnkgdmFyaWFibGUgbmFtZS4gUmV0dXJuaW5nIHRvIG91ciBleGFtcGxlLCB0aGlzIGFyZ3VtZW50IGFsbG93cyB5b3UKcHJvdmlkZSBhIHByZWZpeCB0aGF0IGNvbnZleXMgYm90aCB0aGUgdGltaW5nIG9mIHRoZSBtZWFzdXJlbWVudHMgKGkuZS4gbW9udGgpCmFuZCB0aGUgdHlwZSBvZiBtZWFzdXJlbWVudCAoaS5lLiB3ZWlnaHQpOgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIHBpdm90X3dpZGVyKGlkX2NvbHMgPSBpZCwKICAgICAgICAgICAgICBuYW1lc19mcm9tID0gbW9udGhzLAogICAgICAgICAgICAgIG5hbWVzX3ByZWZpeCA9ICJ3ZWlnaHRfbW9udGgiLAogICAgICAgICAgICAgIHZhbHVlc19mcm9tID0gd2VpZ2h0X2tnKQpgYGAKCkxldCdzIGFzc2lnbiB0aGlzIGRhdGEgZnJhbWUgdG8gYW4gb2JqZWN0OgoKYGBge3J9Cmdyb3d0aF93aWRlX3dlaWdodCA8LQogIGdyb3d0aF9kYXRhICU+JQogIHBpdm90X3dpZGVyKGlkX2NvbHMgPSBpZCwKICAgICAgICAgICAgICBuYW1lc19mcm9tID0gbW9udGhzLAogICAgICAgICAgICAgIG5hbWVzX3ByZWZpeCA9ICJ3ZWlnaHRfbW9udGgiLAogICAgICAgICAgICAgIHZhbHVlc19mcm9tID0gd2VpZ2h0X2tnKQpgYGAKClJlY2FsbCB0aGF0IHRoZSBgcGl2b3Rfd2lkZXJgIGFuZCBgcGl2b3RfbG9uZ2VyYCBmdW5jdGlvbnMgYXJlIGludmVyc2VzIG9mIGVhY2gKb3RoZXIuIFRoZSBgcGl2b3RfbG9uZ2VyYCByZXF1aXJlcyB0aGUgYGNvbHNgIGFyZ3VtZW50IHRvIGlkZW50aWZ5IHRoZSBjb2x1bW5zCnRvIHBpdm90IGludG8gbG9uZyBmb3JtYXQsIGFuZCB3ZSBjYW4gYWxzbyB1c2UgdGhlIE5PVCBvcGVyYXRvciAoYCFgKSB0byBkZW5vdGUKImFsbCBjb2x1bW5zIGV4Y2VwdC4uLiIgd2l0aGluIHRoaXMgYXJndW1lbnQuIEJlbG93IHdlIHBpdm90IGFsbCBjb2x1bW5zIGV4Y2VwdCB0aGUKaW5mYW50IElEIHZhcmlhYmxlOgoKYGBge3J9Cmdyb3d0aF93aWRlX3dlaWdodCAlPiUKICBwaXZvdF9sb25nZXIoY29scyA9ICFpZCkKYGBgCgpJZiB3ZSB3YW50IHRvIGNoYW5nZSB0aGUgdmFyaWFibGUgbmFtZXMgdG8gc29tZXRoaW5nIG1vcmUgaW5mb3JtYXRpdmUsIHdlIGNhbgp1c2UgdGhlIGBuYW1lc190b2AgYW5kIGB2YWx1ZXNfdG9gIGFyZ3VtZW50czoKCmBgYHtyfQpncm93dGhfd2lkZV93ZWlnaHQgJT4lCiAgcGl2b3RfbG9uZ2VyKGNvbHMgPSAhaWQsCiAgICAgICAgICAgICAgIG5hbWVzX3RvID0gIm1vbnRocyIsCiAgICAgICAgICAgICAgIHZhbHVlc190byA9ICJ3ZWlnaHRfa2ciKQpgYGAKCk5vdGljZSB0aGF0IHRoZSByZXN1bHRzIHJlc2VtYmxlIHRoZSBvcmlnaW5hbCBgZ3Jvd3RoX2RhdGFgLCBkZW1vbnN0cmF0aW5nIHRoYXQKdGhlIGBwaXZvdF93aWRlcmAgYW5mIGBwaXZvdF9sb25nZXJgIGZ1bmN0aW9ucyBhcmUgbmF0dXJhbCBjb21wbGVtZW50cyBvZiBlYWNoCm90aGVyLgoKUmVtZW1iZXIgdG8gc2F2ZSB0aGUgd29yayB5b3UndmUgZG9uZS4gVHJ5IHNhdmluZyB0aGUgc2NyaXB0IHlvdSd2ZSBiZWVuIHdvcmtpbmcKaW4gYXMgYHBpdm90X3dpZGVyLlJgIGZvciBsYXRlciByZWZlcmVuY2UuCgojIyBgbXV0YXRlKClgCgpUbyBwcmFjdGljZSB0aGUgYG11dGF0ZWAgZnVuY3Rpb24gZnJvbSB0aGUgZHBseXIgcGFja2FnZSwgb3BlbiBhbm90aGVyIGJsYW5rCnNjcmlwdCB3aXRoaW4gdGhlIHNhbWUgUiBwcm9qZWN0LgoKTGV0J3MgY29uc2lkZXIgdGhlIHRhc2sgb2YgY3JlYXRpbmcgYSBCTUkgdmFyaWFibGUgdXNpbmcgdGhlIGhlaWdodCBhbmQgd2VpZ2h0Cm1lYXN1cmVtZW50cyBmcm9tIHRoZSBgZ3Jvd3RoX2RhdGFgLiBXaXRoaW4gdGhlIGBtdXRhdGVgIGZ1bmN0aW9uLCB3ZSBuYW1lIHRoZQpuZXcgdmFyaWFibGUgdG8gY3JlYXRlIGFuZCBzcGVjaWZ5IGhvdyB0aGlzIHZhcmlhYmxlIGlzIGRlZmluZWQgKGkuZS4gQk1JCmZvcm11bGEpLgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIG11dGF0ZShibWkgPSB3ZWlnaHRfa2cgLyAoaGVpZ2h0X2NtIC8gMTAwKV4yKQpgYGAKCk5vdGljZSB0aGF0IHRoaXMgcmV0dXJucyB0aGUgb3JpZ2luYWwgYGdyb3d0aF9kYXRhYCBhbG9uZyB3aXRoIHRoZSBuZXcgdmFyaWFibGUKdGhhdCBoYXMgcGVyZm9ybWVkIHRoZSByZXF1ZXN0ZWQgY2FsY3VsYXRpb25zLgoKVGhlIG5pY2UgdGhpbmcgYWJvdXQgdGhlIGBtdXRhdGVgIGZ1bmN0aW9uIGlzIHRoYXQgd2UgY2FuIGNyZWF0ZSBtdWx0aXBsZSBuZXcKdmFyaWFibGVzIHdpdGhpbiBvbmUgZnVuY3Rpb24gY2FsbCBhbmQgZXZlbiByZWZlcmVuY2UgdmFyaWFibGVzIHRoYXQgd2VyZSBqdXN0CnByZXZpb3VzbHkgY3JlYXRlZCBpbiB0aGF0IHNhbWUgZnVuY3Rpb24gY2FsbC4gRm9yIGV4YW1wbGUsIHdlIGNhbiBjcmVhdGUKYSBoZWlnaHQgdmFyaWFibGUgdGhhdCBwZXJmb3JtcyBhIHVuaXQgY29udmVyc2lvbiBmcm9tIGNlbnRpbWV0ZXJzIHRvIG1ldGVycwpwcmlvciB0byBjcmVhdGluZyB0aGUgQk1JIHZhcmlhYmxlLgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIG11dGF0ZShoZWlnaHRfbSA9IGhlaWdodF9jbSAvIDEwMCwKICAgICAgICAgYm1pID0gd2VpZ2h0X2tnIC8gaGVpZ2h0X21eMikKYGBgCgpUaGlzIGNvZGUgcmV0dXJucyB0aGUgb3JpZ2luYWwgYGdyb3d0aF9kYXRhYCBhbG9uZyB3aXRoIHR3byBuZXcgY29sdW1ucywgd2hlcmUKdGhlIGNhbGN1bGF0ZWQgdmFsdWVzIGZvciBCTUkgYXJlIHRoZSBzYW1lIGFzIGJlZm9yZS4KCldlIGNvdWxkIGFzc2lnbiB0aGlzIGRhdGEgZnJhbWUgdG8gYW4gb2JqZWN0LCBwYXJ0aWN1bGFybHkgaWYgd2UgcGxhbiBvbgpwZXJmb3JtaW5nIHN1YnNlcXVlbnQgY2FsY3VsYXRpb25zIG9uIHRoZSBCTUkgbWVhc3VyZW1lbnRzLiBXaXRob3V0IGFzc2lnbm1lbnQsClIgZG9lcyBub3Qgc2F2ZSB0aGUgbmV3IHZhcmlhYmxlcyB0aGF0IHdlcmUgY3JlYXRlZC4KCmBgYHtyfQpncm93dGhfZGF0YV9leHBhbmRlZCA8LQogIGdyb3d0aF9kYXRhICU+JQogIG11dGF0ZShoZWlnaHRfbSA9IGhlaWdodF9jbSAvIDEwMCwKICAgICAgICAgYm1pID0gd2VpZ2h0X2tnIC8gaGVpZ2h0X21eMikKYGBgCgpKdXN0IGFzIGJlZm9yZSwgcmVtZW1iZXIgdG8gc2F2ZSB0aGUgd29yayB5b3UndmUgZG9uZS4gVHJ5IHNhdmluZyB0aGUgc2NyaXB0CnlvdSd2ZSBiZWVuIHdvcmtpbmcgaW4gYXMgYG11dGF0ZS5SYCBmb3IgbGF0ZXIgcmVmZXJlbmNlLgoKIyMgYGFycmFuZ2UoKWAgYW5kIGBzZWxlY3QoKWAKClNvbWUgb2YgeW91ciBkYXRhLXdyYW5nbGluZyBzdGVwcyB3aWxsIG5vdCBiZSBmb3IgcHVycG9zZXMgb2YgY2hhbmdpbmcgdGhlIGluZm9ybWF0aW9uIGluIHRoZSBkYXRhIGJ1dCByYXRoZXIgZm9jdXNpbmcgeW91ciBhdHRlbnRpb24gb24gY2VydGFpbiBjb2x1bW5zIHVzaW5nIGBzZWxlY3RgIG9yIHNvcnRpbmcgcm93cyB1c2luZyBgYXJyYW5nZWAuIFRvIHByYWN0aWNlIHRoZSBgYXJyYW5nZWAgYW5kIGBzZWxlY3RgIGZ1bmN0aW9ucyBmcm9tIHRoZSBkcGx5ciBwYWNrYWdlLCBvcGVuIGFub3RoZXIgYmxhbmsgc2NyaXB0IHdpdGhpbiB0aGUgc2FtZSBSIHByb2plY3QuCgpUaGUgYGFycmFuZ2VgIGZ1bmN0aW9uIHJlcXVpcmVzIHRoZSB2YXJpYWJsZSBieSB3aGljaCB0byBzb3J0IG9yIGFycmFuZ2UgdGhlCmRhdGEuIFRoZSBmb2xsb3dpbmcgY29kZSBzb3J0cyB0aGUgZGF0YSBieSB0aGUgbW9udGggdmFyaWFibGUgaW4gYXNjZW5kaW5nCm9yZGVyOgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIGFycmFuZ2UobW9udGhzKQpgYGAKCldlIGNhbiBhbHNvIHNvcnQgdGhlIGRhdGEgYnkgbXVsdGlwbGUgdmFyaWFibGVzLiBJbiB0aGlzIGNhc2UsIHRoZSBkYXRhIGlzIGZpcnN0CnNvcnRlZCBieSB0aGUgbW9udGggdmFyaWFibGUgZm9sbG93ZWQgYnkgdGhlIHdlaWdodCB2YXJpYWJsZSB3aXRoaW4gdGllZCB2YWx1ZXMKb2YgdGhlIG1vbnRoIHZhcmlhYmxlOgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIGFycmFuZ2UobW9udGhzLCB3ZWlnaHRfa2cpCmBgYAoKVGhlIGRlZmF1bHQgc2V0dGluZyBpcyBmb3IgdmFyaWFibGVzIHRvIGJlIHNvcnRlZCBpbiBhc2NlbmRpbmcgb3JkZXIsIGJ1dAp2YXJpYWJsZXMgY2FuIGFsc28gYmUgc29ydGVkIGluIGRlc2NlbmRpbmcgb3JkZXIgdXNpbmcgdGhlIGBkZXNjYCBmdW5jdGlvbjoKCmBgYHtyfQpncm93dGhfZGF0YSAlPiUKICBhcnJhbmdlKGRlc2MobW9udGhzKSwgd2VpZ2h0X2tnKQpgYGAKClRvIGJlIGNsZWFyLCB3aGF0IHRoZSBhYm92ZSBjb2RlIGRvZXMgaXMgc29ydCBmaXJzdCBieSBgbW9udGhzYCBpbiAqZGVjcmVhc2luZyogb3JkZXIgYW5kIHRoZW4sIGFtb25nIG9ic2VydmF0aW9ucyBoYXZpbmcgY29tbW9uIHZhbHVlcyBvZiB0aGUgbW90bmgsIHNvcnRpbmcgYnkgaW5jcmVhc2luZyAodGhlIGRlZmF1bHQgZGlyZWN0aW9uKSB2YWx1ZXMgb2YgYHdlaWdodF9rZ2AuIAoKVGhlIGBzZWxlY3RgIGZ1bmN0aW9uIGNob29zZXMgY29sdW1ucyBpbiB0aGUgZGF0YSBmcmFtZToKCmBgYHtyfQpncm93dGhfZGF0YSAlPiUKICBzZWxlY3QoaWQsIG1vbnRocykKYGBgCgpVc2luZyB0aGUgTk9UICghKSBvcGVyYXRvciwgd2UgY2FuIGFsc28gc2VsZWN0IGV2ZXJ5dGhpbmcgZXhjZXB0IGEgcGFydGljdWxhcgpjb2x1bW46CgpgYGB7cn0KZ3Jvd3RoX2RhdGEgJT4lCiAgc2VsZWN0KCF3ZWlnaHRfa2cpCmBgYAoKVGhlIGBzZWxlY3RgIGZ1bmN0aW9uIGlzIHBhcnRpY3VsYXJseSB1c2VmdWwgZm9yIHJlLW9yZGVyaW5nIGNvbHVtbnM6CgpgYGB7cn0KZ3Jvd3RoX2RhdGEgJT4lCiAgc2VsZWN0KGlkLCB3ZWlnaHRfa2csIGhlaWdodF9jbSwgbW9udGhzKQpgYGAKCkhvd2V2ZXIsIGl0J3Mgbm90IGFsd2F5cyBlYXN5IHRvIG5hbWUgZXZlcnkgY29sdW1uLCBlc3BlY2lhbGx5IGlmIHRoZXJlIGFyZQptYW55IGNvbHVtbnMgaW4geW91ciBkYXRhIGZyYW1lLiBJbiB0aGlzIGNhc2UsIHRoZXJlIGFyZSBoZWxwZXIgZnVuY3Rpb25zIHRoYXQKaGVscCB1cyBtb3JlIGVhc2lseSBzZWxlY3QgY29sdW1ucy4gRm9yIGV4YW1wbGUsIHdlIGNhbiB1c2UgdGhlIGBldmVyeXRoaW5nYApmdW5jdGlvbiB0byBuYW1lIGNvbHVtbnMgcHJpb3IgdG8gc2VsZWN0aW5nIHRoZSByZXN0IG9mIHRoZSBjb2x1bW5zLgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIHNlbGVjdChtb250aHMsIGV2ZXJ5dGhpbmcoKSkKYGBgCgpUaGUgYHN0YXJ0c193aXRoYCBmdW5jdGlvbiBhbGxvd3MgdXMgdG8gcHJvdmlkZSB0aGUgYmVnaW5uaW5nIG9mIHRoZSBjb2x1bW4gbmFtZQp0aGF0IHdlIHdvdWxkIGxpa2UgdG8gc2VsZWN0LgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIHNlbGVjdChtb250aHMsIHN0YXJ0c193aXRoKCJ3IikpCmBgYAoKU2ltaWxhcmx5LCB0aGUgYGVuZHNfd2l0aGAgZnVuY3Rpb24gYWxsb3dzIHVzIHRvIHByb3ZpZGUgdGhlIGVuZCBvZiB0aGUgY29sdW1uCm5hbWUgdGhhdCB3ZSB3b3VsZCBsaWtlIHRvIHNlbGVjdC4KCmBgYHtyfQpncm93dGhfZGF0YSAlPiUKICBzZWxlY3QobW9udGhzLCBlbmRzX3dpdGgoImNtIikpCmBgYAoKVGhlIGBjb250YWluc2AgZnVuY3Rpb24gbWF0Y2hlcyB0aGUgc3RyaW5nIGFyZ3VtZW50IGFueXdoZXJlIGluIHRoZSBjb2x1bW4gbmFtZS4KRm9yIGV4YW1wbGUsIHRoZSAiZ2h0IiBzdHJpbmcgcmV0dXJucyBib3RoIHRoZSBoZWlnaHQgYW5kIHdlaWdodCB2YXJpYWJsZXMgdG8Kc2VsZWN0LgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JQogIHNlbGVjdChtb250aHMsIGNvbnRhaW5zKCJnaHQiKSkKYGBgCgpSZW1lbWJlciB0byBzYXZlIHRoZSB3b3JrIHlvdSd2ZSBkb25lLiBUcnkgc2F2aW5nIHRoZSBzY3JpcHQgeW91J3ZlIGJlZW4gd29ya2luZwppbiBhcyBgYXJyYW5nZV9zZWxlY3QuUmAgZm9yIGxhdGVyIHJlZmVyZW5jZS4K</div>
 
 
 

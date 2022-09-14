@@ -7,11 +7,15 @@ editor_options:
   chunk_output_type: inline
 ---
 
-In this first video of Week 2, you were introduced to the tidyverse, a package
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In this first lesson of Module 2, you were introduced to the tidyverse, a package
 of packages that provides you with all of the tools for translating your data
 into useful information and knowledge. 
 
-In Week 1 you created an R project called `GlobalFindex.Rproj` and in that same
+In Module 1, you created an R project called `GlobalFindex.Rproj` and in that same
 folder you created a script called `IndicatorTable.R`. Open the `GlobalFindex.Rproj`
 now. Doing so will open an Rstudio session. 
 
@@ -36,10 +40,11 @@ which you can do with the following code:
 library(tidyverse)
 ```
 
-Type this code on the first line of your `IndicatorTable.R` script and then run 
-it by simultaneously pressing Cmd+Enter (on your Mac) or Ctrl+Enter (on your Windows
-computer). Your 'enter' key may be labeled as 'return' -- on American keyboards
-its the button at the far right. 
+You see a couple of messages here. First, remembering that the tidyverse is in
+fact a package of packages, we are told which packages are loaded, and their version numbers. Second, we are told that two functions in the tidyverse, `filter` and `lag`, already
+existed in our R sessions and are now 'masked' by their tidyverse variants.  
+
+If you haven't yet done so, type this code (that is, `library(tidyverse)`) on the first line of your `IndicatorTable.R` script and then run it by simultaneously pressing Cmd+Enter (on your Mac) or Ctrl+Enter (on your Windows computer). Your 'enter' key may be labeled as 'return' -- on American keyboards its the button at the far right. 
 
 ## `read_csv()`
 

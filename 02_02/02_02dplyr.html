@@ -548,7 +548,7 @@ library(tidyverse)</code></pre>
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="filter" class="section level2">
-<h2>filter()</h2>
+<h2><code>filter()</code></h2>
 <p>The <code>filter</code> function allows us to include or exclude
 observations (i.e., rows) from a dataset based on one or more
 conditions. The general structure for using this function follows:
@@ -568,8 +568,8 @@ is performed. There are eight observations across four variables.</p>
 ## 6 002        1       4.2      52.6
 ## 7 002        2       5.5      54.9
 ## 8 002        3       6.6      57</code></pre>
-<p>If you were interested in the observations for when the infants were
-three months old, you would write the following line of code:</p>
+<p>If you want to filter out the infants’ three-month observations, you
+would write the following line of code:</p>
 <pre class="r"><code>filter(growth_data, months == 3)</code></pre>
 <pre><code>## # A tibble: 2 × 4
 ##   id    months weight_kg height_cm
@@ -578,10 +578,11 @@ three months old, you would write the following line of code:</p>
 ## 2 002        3       6.6      57</code></pre>
 <p>Notice the use of two equal signs in the above line of code. In R,
 two equal signs is used to denote “is equal to”, which is different than
-using a single equal sign to set an argument value.</p>
-<p>Similarly, you would write the following line of code if you were
-instead interested in the observations for when the infants were two
-months old:</p>
+using a single equal sign to set an argument value. Think of two equal
+signs as asking a question and one equal sign as making a
+declaration.</p>
+<p>Similarly, you would write the following line of code if you wanted
+to filter out the infants’ two-month observations:</p>
 <pre class="r"><code>filter(growth_data, months == 2)</code></pre>
 <pre><code>## # A tibble: 2 × 4
 ##   id    months weight_kg height_cm
@@ -589,10 +590,11 @@ months old:</p>
 ## 1 001        2       4.9      53.9
 ## 2 002        2       5.5      54.9</code></pre>
 <p>The <code>filter</code> function can also be used to specify
-conditions other than an equality. For example, we can filter by a
-two-sided inequality by using != to denote “is not equal to.” Of course,
-it’s possible to filter by one-sided inequalities as well, which are
-represented in R as &lt;, &lt;=, &gt;, and &gt;=.</p>
+conditions other than equality. For example, we can filter by a
+two-sided inequality by using <code>!=</code> to denote “is not equal
+to”. It is possible to filter by one-sided inequalities as well, which
+are represented in R as <code>&lt;</code>, <code>&lt;=</code>,
+<code>&gt;</code>, and <code>&gt;=</code>.</p>
 <pre class="r"><code>filter(growth_data, months != 2)</code></pre>
 <pre><code>## # A tibble: 6 × 4
 ##   id    months weight_kg height_cm
@@ -609,10 +611,11 @@ represented in R as &lt;, &lt;=, &gt;, and &gt;=.</p>
 ##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 001        3       5.5      58.1
 ## 2 002        3       6.6      57</code></pre>
-<p>We can also filter by multiple conditions using the AND (&amp;) and
-OR (|) operators. The AND operator returns the observations where both
-conditions are true, and the OR operator returns the observations where
-at least one condition is true.</p>
+<p>We can also filter by multiple conditions using the AND
+(<code>&amp;</code>) and OR (<code>|</code>) operators. The AND operator
+returns the observations where both conditions are true, and the OR
+operator returns the observations where at least one condition is
+true.</p>
 <pre class="r"><code>filter(growth_data, weight_kg  &gt; 5.0 &amp; height_cm &gt; 50)</code></pre>
 <pre><code>## # A tibble: 3 × 4
 ##   id    months weight_kg height_cm
@@ -630,11 +633,11 @@ at least one condition is true.</p>
 ## 4 002        1       4.2      52.6
 ## 5 002        2       5.5      54.9
 ## 6 002        3       6.6      57</code></pre>
-<p>Remember to save the work you’ve done. Try saving the script you’ve
-been working in as <code>filter.R</code> for later reference.</p>
+<p>Remember to save the work you’ve done. Save the script you’ve been
+working in as <code>filter.R</code> for later reference.</p>
 </div>
 <div id="group_by-and-summarize" class="section level2">
-<h2>group_by() and summarize()</h2>
+<h2><code>group_by()</code> and <code>summarize()</code></h2>
 <p>To practice additional functions from the dplyr package, open another
 blank script within the same R project.</p>
 <p>The <code>group_by</code> function allows us to group data into
@@ -647,9 +650,9 @@ function, are applied separately to each sub-dataset. The general
 structure for using both functions follow:
 <code>group_by(data, variable)</code> and
 <code>summarize(grouped_data, summary_function(variable))</code>.</p>
-<p>For example, if we were interested in assessing the typical weight of
-infants using the <code>growth_data</code>, it would make sense to group
-the observations by month and obtain the average weight for each month
+<p>For example, if we want to assess the typical weight of infants using
+the <code>growth_data</code>, it would make sense to group the
+observations by month and obtain the average weight for each month
 rather than combine all observations across time into a single
 average.</p>
 <p>First, we would start by grouping the data by month.</p>
@@ -681,52 +684,34 @@ variable.</p>
 ## 2      1              4.15
 ## 3      2              5.2 
 ## 4      3              6.05</code></pre>
-<p>This returns a data frame where the number of rows is equal to the
-number of sub-datasets. The first column is defined by the grouping
+<p>This command returns a dataset where the number of rows is equal to
+the number of sub-datasets. The first column is defined by the grouping
 variable and the second column contains the calculated summary
 statistics.</p>
 <p>However, wrapping commands in this nested manner can make it
 confusing to follow the chronology of commands. For this reason, the
-dplyr package provides the use of the pipe operator (%&gt;%), which
-improves the readability of your code. The pipe operator takes the
-contents to the left of the operator and passes it into to the function
-on the right of the operator, making it easier to understand the
-chronology of commands when manipulating data. Returning back to our
-example, using the pipe operator returns the same results as the above
-line of code.</p>
+dplyr package provides the use of the pipe operator
+(<code>%&gt;%</code>), which improves the readability of your code. The
+pipe operator takes the contents to the left of the operator and passes
+it into to the function on the right of the operator, making it easier
+to understand the chronology of commands when manipulating data.
+Returning back to our example, using the pipe operator returns the same
+results as the above line of code.</p>
 <pre class="r"><code>group_by(growth_data, months) %&gt;% summarize(mean(weight_kg))</code></pre>
-<pre><code>## # A tibble: 4 × 2
-##   months `mean(weight_kg)`
-##    &lt;dbl&gt;             &lt;dbl&gt;
-## 1      0              2.95
-## 2      1              4.15
-## 3      2              5.2 
-## 4      3              6.05</code></pre>
 <p>It’s even possible to use more than one pipe operator in succession.
 In this case, we can instead use the pipe operator to pass the data into
 the <code>group_by</code> function rather than provide it as the first
 argument of the function.</p>
 <pre class="r"><code>growth_data %&gt;% group_by(months) %&gt;% summarize(mean(weight_kg))</code></pre>
-<pre><code>## # A tibble: 4 × 2
-##   months `mean(weight_kg)`
-##    &lt;dbl&gt;             &lt;dbl&gt;
-## 1      0              2.95
-## 2      1              4.15
-## 3      2              5.2 
-## 4      3              6.05</code></pre>
 <p>We can also use line breaks after each pipe operator, which will
 automatically be indented after the first line to represent the code as
 a single expression.</p>
 <pre class="r"><code>growth_data %&gt;%
   group_by(months) %&gt;%
   summarize(mean(weight_kg))</code></pre>
-<pre><code>## # A tibble: 4 × 2
-##   months `mean(weight_kg)`
-##    &lt;dbl&gt;             &lt;dbl&gt;
-## 1      0              2.95
-## 2      1              4.15
-## 3      2              5.2 
-## 4      3              6.05</code></pre>
+<p>To be clear, all four of the previous chunks of code give the same
+result. For space-saving purposes, we’ve suppressed the printed
+output.</p>
 <p>Try saving these results as an object in your global environment
 using the assignment operator.</p>
 <pre class="r"><code>growth_data_weights &lt;-

@@ -530,7 +530,7 @@ pre code {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy', 'Copied!');
 </script>
-<p>In the third lesson of Week 2, you were introduced to additional
+<p>In the third lesson of Module 2, you were introduced to additional
 functions from the dplyr package. To practice using these functions,
 open the R project called <code>Lessons.Rproj</code> and a blank R
 script. Before we can begin, you’ll also need to load the necessary
@@ -546,19 +546,19 @@ library(tidyverse)</code></pre>
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="pivot_wider" class="section level2">
-<h2>pivot_wider()</h2>
+<h2><code>pivot_wider()</code></h2>
 <p>Replicating the example from the lecture, we can pivot the
 <code>growth_data</code> from long format into wide format using the
 <code>pivot_wider</code> function so that all measurements from an
 infant are contained in a single row.</p>
 <p>To use the <code>pivot_wider</code> function, there are a few
-required arguments, as well as several optional arguments. In general,
-as long as the arguments are explicitly named, the arguments do not have
-to be in any particular order. The <code>id_cols</code> argument
+required arguments as well as several optional arguments. In general, as
+long as the arguments are explicitly named, the arguments do not have to
+be provided in any particular order. The <code>id_cols</code> argument
 specifies the variable that uniquely identifies each row, which is the
 infant ID variable in this example. The <code>names_from</code> argument
 specifies the variable that indicates the repeated measurements within
-the subject ID (e.g., the months variable). Lastly, the
+the subject ID (e.g. the months variable). Lastly, the
 <code>values_from</code> argument specifies the variable to use for
 filling in the cell values of the table (e.g., the weight variable).</p>
 <pre class="r"><code>growth_data %&gt;%
@@ -570,14 +570,15 @@ filling in the cell values of the table (e.g., the weight variable).</p>
 ##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1 001     3     4.1   4.9   5.5
 ## 2 002     2.9   4.2   5.5   6.6</code></pre>
-<p>Notice that R doesn’t allow numeric variable names, so backticks are
-placed around the number in each column to create valid variable names.
-However, these variable names are not particularly informative of the
-data contained in each column. In this case, the
-<code>names_prefix</code> argument is useful for adding a string before
-every variable name. Returning to our example, this argument allows us
-to provide a prefix that conveys both the timing of the measurements
-(i.e., month) and the type of measurement (i.e., weight).</p>
+<p>Notice that R doesn’t allow numeric variable names, so, in the
+printed result, R has put so-called ‘backticks’ around the number in
+each column to create valid variable names. However, these variable
+names are not particularly informative of the data contained in each
+column. In this case, the <code>names_prefix</code> argument is useful
+for adding a string before every variable name. Returning to our
+example, this argument allows you provide a prefix that conveys both the
+timing of the measurements (i.e. month) and the type of measurement
+(i.e. weight):</p>
 <pre class="r"><code>growth_data %&gt;%
   pivot_wider(id_cols = id,
               names_from = months,
@@ -588,7 +589,7 @@ to provide a prefix that conveys both the timing of the measurements
 ##   &lt;chr&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
 ## 1 001             3             4.1           4.9           5.5
 ## 2 002             2.9           4.2           5.5           6.6</code></pre>
-<p>Let’s assign this data frame to an object.</p>
+<p>Let’s assign this data frame to an object:</p>
 <pre class="r"><code>growth_wide_weight &lt;-
   growth_data %&gt;%
   pivot_wider(id_cols = id,
@@ -599,8 +600,9 @@ to provide a prefix that conveys both the timing of the measurements
 <code>pivot_longer</code> functions are inverses of each other. The
 <code>pivot_longer</code> requires the <code>cols</code> argument to
 identify the columns to pivot into long format, and we can also use the
-NOT operator (!) to denote “all columns except” within this argument
-(e.g., pivot all columns except the infant ID variable).</p>
+NOT operator (<code>!</code>) to denote “all columns except…” within
+this argument. Below we pivot all columns except the infant ID
+variable:</p>
 <pre class="r"><code>growth_wide_weight %&gt;%
   pivot_longer(cols = !id)</code></pre>
 <pre><code>## # A tibble: 8 × 3
@@ -616,7 +618,7 @@ NOT operator (!) to denote “all columns except” within this argument
 ## 8 002   weight_month3   6.6</code></pre>
 <p>If we want to change the variable names to something more
 informative, we can use the <code>names_to</code> and
-<code>values_to</code> arguments.</p>
+<code>values_to</code> arguments:</p>
 <pre class="r"><code>growth_wide_weight %&gt;%
   pivot_longer(cols = !id,
                names_to = &quot;months&quot;,
@@ -640,13 +642,13 @@ natural complements of each other.</p>
 been working in as <code>pivot_wider.R</code> for later reference.</p>
 </div>
 <div id="mutate" class="section level2">
-<h2>mutate()</h2>
+<h2><code>mutate()</code></h2>
 <p>To practice the <code>mutate</code> function from the dplyr package,
 open another blank script within the same R project.</p>
 <p>Let’s consider the task of creating a BMI variable using the height
 and weight measurements from the <code>growth_data</code>. Within the
 <code>mutate</code> function, we name the new variable to create and
-specify how this variable is defined (i.e., BMI formula).</p>
+specify how this variable is defined (i.e. BMI formula).</p>
 <pre class="r"><code>growth_data %&gt;%
   mutate(bmi = weight_kg / (height_cm / 100)^2)</code></pre>
 <pre><code>## # A tibble: 8 × 5
@@ -697,23 +699,13 @@ script you’ve been working in as <code>mutate.R</code> for later
 reference.</p>
 </div>
 <div id="arrange-and-select" class="section level2">
-<h2>arrange() and select()</h2>
-<ul>
-<li>not every data wrangling step will be for dramatic changes or
-additions to data</li>
-<li>focus on certain columns or sort rows of data based on values of
-particular variables</li>
-<li>information in data will remain the same (re-arranging order of
-rows)</li>
-<li>arrange order of rows, even by multiple variables (breaking
-ties)</li>
-<li>extracting only a few variables to view reduced version of data
-(select function)</li>
-<li>select based upon negations (- or !)</li>
-</ul>
-<p>To practice the <code>arrange</code> and <code>select</code>
-functions from the dplyr package, open another blank script within the
-same R project.</p>
+<h2><code>arrange()</code> and <code>select()</code></h2>
+<p>Some of your data-wrangling steps will not be for purposes of
+changing the information in the data but rather focusing your attention
+on certain columns using <code>select</code> or sorting rows using
+<code>arrange</code>. To practice the <code>arrange</code> and
+<code>select</code> functions from the dplyr package, open another blank
+script within the same R project.</p>
 <p>The <code>arrange</code> function requires the variable by which to
 sort or arrange the data. The following code sorts the data by the month
 variable in ascending order:</p>
@@ -732,7 +724,7 @@ variable in ascending order:</p>
 ## 8 002        3       6.6      57</code></pre>
 <p>We can also sort the data by multiple variables. In this case, the
 data is first sorted by the month variable followed by the weight
-variable within tied values of the month variable.</p>
+variable within tied values of the month variable:</p>
 <pre class="r"><code>growth_data %&gt;%
   arrange(months, weight_kg)</code></pre>
 <pre><code>## # A tibble: 8 × 4
@@ -748,7 +740,7 @@ variable within tied values of the month variable.</p>
 ## 8 002        3       6.6      57</code></pre>
 <p>The default setting is for variables to be sorted in ascending order,
 but variables can also be sorted in descending order using the
-<code>desc</code> function.</p>
+<code>desc</code> function:</p>
 <pre class="r"><code>growth_data %&gt;%
   arrange(desc(months), weight_kg)</code></pre>
 <pre><code>## # A tibble: 8 × 4
@@ -762,8 +754,12 @@ but variables can also be sorted in descending order using the
 ## 6 002        1       4.2      52.6
 ## 7 002        0       2.9      48.6
 ## 8 001        0       3        47</code></pre>
+<p>To be clear, what the above code does is sort first by
+<code>months</code> in <em>decreasing</em> order and then, among
+observations having common values of the motnh, sorting by increasing
+(the default direction) values of <code>weight_kg</code>.</p>
 <p>The <code>select</code> function chooses columns in the data
-frame.</p>
+frame:</p>
 <pre class="r"><code>growth_data %&gt;%
   select(id, months)</code></pre>
 <pre><code>## # A tibble: 8 × 2
@@ -778,7 +774,7 @@ frame.</p>
 ## 7 002        2
 ## 8 002        3</code></pre>
 <p>Using the NOT (!) operator, we can also select everything except a
-particular column.</p>
+particular column:</p>
 <pre class="r"><code>growth_data %&gt;%
   select(!weight_kg)</code></pre>
 <pre><code>## # A tibble: 8 × 3
@@ -793,7 +789,7 @@ particular column.</p>
 ## 7 002        2      54.9
 ## 8 002        3      57</code></pre>
 <p>The <code>select</code> function is particularly useful for
-re-ordering columns.</p>
+re-ordering columns:</p>
 <pre class="r"><code>growth_data %&gt;%
   select(id, weight_kg, height_cm, months)</code></pre>
 <pre><code>## # A tibble: 8 × 4
@@ -807,8 +803,8 @@ re-ordering columns.</p>
 ## 6 002         4.2      52.6      1
 ## 7 002         5.5      54.9      2
 ## 8 002         6.6      57        3</code></pre>
-<p>However, it’s not always efficient to name every column, especially
-if there are several columns in the data frame. In this case, there are
+<p>However, it’s not always easy to name every column, especially if
+there are many columns in your data frame. In this case, there are
 helper functions that help us more easily select columns. For example,
 we can use the <code>everything</code> function to name columns prior to
 selecting the rest of the columns.</p>

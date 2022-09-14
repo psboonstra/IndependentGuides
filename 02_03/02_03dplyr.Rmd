@@ -11,7 +11,7 @@ editor_options:
 klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 ```
 
-In the third lesson of Week 2, you were introduced to additional functions from
+In the third lesson of Module 2, you were introduced to additional functions from
 the dplyr package. To practice using these functions, open the R project called
 `Lessons.Rproj` and a blank R script. Before we can begin, you'll also need to
 load the necessary packages into the current R session.
@@ -21,19 +21,20 @@ library(healthds)
 library(tidyverse)
 ```
 
-## pivot_wider()
+## `pivot_wider()`
 
 Replicating the example from the lecture, we can pivot the `growth_data` from
 long format into wide format using the `pivot_wider` function so that all
 measurements from an infant are contained in a single row.
 
-To use the `pivot_wider` function, there are a few required arguments, as well
+To use the `pivot_wider` function, there are a few required arguments as well
 as several optional arguments. In general, as long as the arguments are
-explicitly named, the arguments do not have to be in any particular order. The
-`id_cols` argument specifies the variable that uniquely identifies each row,
-which is the infant ID variable in this example. The `names_from` argument
+explicitly named, the arguments do not have to be provided in any particular order. 
+The `id_cols` argument specifies the variable that 
+uniquely identifies each row, which is the infant ID variable in this example. 
+The `names_from` argument
 specifies the variable that indicates the repeated measurements within the
-subject ID (e.g., the months variable). Lastly, the `values_from` argument
+subject ID (e.g. the months variable). Lastly, the `values_from` argument
 specifies the variable to use for filling in the cell values of the table (e.g.,
 the weight variable).
 
@@ -44,13 +45,14 @@ growth_data %>%
               values_from = weight_kg)
 ```
 
-Notice that R doesn't allow numeric variable names, so backticks are placed
-around the number in each column to create valid variable names. However, these
-variable names are not particularly informative of the data contained in each
+R doesn't allow numeric variable names and thus, in the printed result, it 
+has put so-called 'backticks' around the number in each column to create valid 
+variable names. However, these variable names are not particularly informative 
+of the data contained in each
 column. In this case, the `names_prefix` argument is useful for adding a string
-before every variable name. Returning to our example, this argument allows us to
-provide a prefix that conveys both the timing of the measurements (i.e., month)
-and the type of measurement (i.e., weight).
+before every variable name. Returning to our example, this argument allows you
+provide a prefix that conveys both the timing of the measurements (i.e. month)
+and the type of measurement (i.e. weight):
 
 ```{r}
 growth_data %>%
@@ -60,7 +62,7 @@ growth_data %>%
               values_from = weight_kg)
 ```
 
-Let's assign this data frame to an object.
+Let's assign this data frame to an object:
 
 ```{r}
 growth_wide_weight <-
@@ -73,9 +75,9 @@ growth_wide_weight <-
 
 Recall that the `pivot_wider` and `pivot_longer` functions are inverses of each
 other. The `pivot_longer` requires the `cols` argument to identify the columns
-to pivot into long format, and we can also use the NOT operator (!) to denote
-"all columns except" within this argument (e.g., pivot all columns except the
-infant ID variable).
+to pivot into long format, and we can also use the NOT operator (`!`) to denote
+"all columns except..." within this argument. Below we pivot all columns except the
+infant ID variable:
 
 ```{r}
 growth_wide_weight %>%
@@ -83,7 +85,7 @@ growth_wide_weight %>%
 ```
 
 If we want to change the variable names to something more informative, we can
-use the `names_to` and `values_to` arguments.
+use the `names_to` and `values_to` arguments:
 
 ```{r}
 growth_wide_weight %>%
@@ -99,14 +101,14 @@ other.
 Remember to save the work you've done. Try saving the script you've been working
 in as `pivot_wider.R` for later reference.
 
-## mutate()
+## `mutate()`
 
 To practice the `mutate` function from the dplyr package, open another blank
 script within the same R project.
 
 Let's consider the task of creating a BMI variable using the height and weight
 measurements from the `growth_data`. Within the `mutate` function, we name the
-new variable to create and specify how this variable is defined (i.e., BMI
+new variable to create and specify how this variable is defined (i.e. BMI
 formula).
 
 ```{r}
@@ -146,17 +148,9 @@ growth_data_expanded <-
 Just as before, remember to save the work you've done. Try saving the script
 you've been working in as `mutate.R` for later reference.
 
-## arrange() and select()
+## `arrange()` and `select()`
 
-* not every data wrangling step will be for dramatic changes or additions to data
-* focus on certain columns or sort rows of data based on values of particular variables
-* information in data will remain the same (re-arranging order of rows)
-* arrange order of rows, even  by multiple variables (breaking ties)
-* extracting only a few variables to view reduced version of data (select function)
-* select based upon negations (- or !)
-
-To practice the `arrange` and `select` functions from the dplyr package, open
-another blank script within the same R project.
+Some of your data-wrangling steps will not be for purposes of changing the information in the data but rather focusing your attention on certain columns using `select` or sorting rows using `arrange`. To practice the `arrange` and `select` functions from the dplyr package, open another blank script within the same R project.
 
 The `arrange` function requires the variable by which to sort or arrange the
 data. The following code sorts the data by the month variable in ascending
@@ -169,7 +163,7 @@ growth_data %>%
 
 We can also sort the data by multiple variables. In this case, the data is first
 sorted by the month variable followed by the weight variable within tied values
-of the month variable.
+of the month variable:
 
 ```{r}
 growth_data %>%
@@ -177,14 +171,16 @@ growth_data %>%
 ```
 
 The default setting is for variables to be sorted in ascending order, but
-variables can also be sorted in descending order using the `desc` function.
+variables can also be sorted in descending order using the `desc` function:
 
 ```{r}
 growth_data %>%
   arrange(desc(months), weight_kg)
 ```
 
-The `select` function chooses columns in the data frame.
+To be clear, what the above code does is sort first by `months` in *decreasing* order and then, among observations having common values of the motnh, sorting by increasing (the default direction) values of `weight_kg`. 
+
+The `select` function chooses columns in the data frame:
 
 ```{r}
 growth_data %>%
@@ -192,22 +188,22 @@ growth_data %>%
 ```
 
 Using the NOT (!) operator, we can also select everything except a particular
-column.
+column:
 
 ```{r}
 growth_data %>%
   select(!weight_kg)
 ```
 
-The `select` function is particularly useful for re-ordering columns.
+The `select` function is particularly useful for re-ordering columns:
 
 ```{r}
 growth_data %>%
   select(id, weight_kg, height_cm, months)
 ```
 
-However, it's not always efficient to name every column, especially if there are
-several columns in the data frame. In this case, there are helper functions that
+However, it's not always easy to name every column, especially if there are
+many columns in your data frame. In this case, there are helper functions that
 help us more easily select columns. For example, we can use the `everything`
 function to name columns prior to selecting the rest of the columns.
 

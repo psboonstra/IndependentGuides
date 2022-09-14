@@ -11,7 +11,7 @@ editor_options:
 klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 ```
 
-In the fourth lesson of Week 2, you were introduced to the concept of joining
+In the fourth lesson of Module 2, you were introduced to the concept of joining
 data. To practice using the joining functions, open the R project called
 `Lessons.Rproj` and a blank R script. Before we can begin, you'll also need to
 load the necessary packages into the current R session.
@@ -21,7 +21,7 @@ library(healthds)
 library(tidyverse)
 ```
 
-## full_join()
+## `full_join()`
 
 Let's consider the `growth_data_aux` dataset from the healthds package. This
 dataset contains measurements on the same infants from the `growth_data`.
@@ -35,12 +35,12 @@ growth_data_aux
 ```
 
 Notice that both datasets include the ID and month variables. These variables
-serve as identifiers that help us identify the observations, as well as match
+serve as identifiers that help us identify the observations as well as match
 and link data from different datasets via joining.
 
-The `full_join` functions expects two datasets to join. By performing a full
-join of the datasets, we obtain a data frame of eight observations across five
-variables.
+The `full_join` functions requires that you provide the names of the two datasets 
+to join. By performing a full join of the datasets, we obtain a data frame of 
+eight observations across five variables.
 
 ```{r}
 full_join(growth_data, growth_data_aux)
@@ -51,7 +51,7 @@ these missing values as NA for "not available." In this case, the missing values
 occur because a full join returns a row for every unique combination of the
 identifier variables (e.g., ID and month variables).
 
-## left_join() and right_join()
+## `left_join()` and `right_join()`
 
 The `left_join` function ensures that every unique combination of the identifier
 variables from the first dataset are returned in the joined data.
@@ -74,7 +74,11 @@ Since the `growth_data_aux` dataset only contains measurements taken at three
 timepoints, the joined data does not include the rows from the `growth_data` for
 measurements taken at month three.
 
-## inner_join()
+To check your understanding on the difference between these types of joins, try
+to convince yourself why `left_join(x, y)` will yield the same result as `right_join(y, x)` (except
+that the order of the columns will be different). 
+
+## `inner_join()`
 
 The `inner_join` function returns the unique combinations of the identifier
 variables that exist in both datasets.

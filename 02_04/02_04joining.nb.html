@@ -1772,156 +1772,276 @@ pre code {
 <!-- rnb-chunk-begin -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>In the fourth lesson of Week 2, you were introduced to the concept of
-joining data. To practice using the joining functions, open the R
+<p>In the fourth lesson of Module 2, you were introduced to the concept
+of joining data. To practice using the joining functions, open the R
 project called <code>Lessons.Rproj</code> and a blank R script. Before
 we can begin, you’ll also need to load the necessary packages into the
 current R session.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZWFsdGhkcylcbmxpYnJhcnkodGlkeXZlcnNlKVxuYGBgIn0= -->
-<pre class="r"><code>library(healthds)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeShoZWFsdGhkcylcbmxpYnJhcnkodGlkeXZlcnNlKVxuYGBgXG5gYGAifQ== -->
+<pre class="r"><code>```r
+library(healthds)
 library(tidyverse)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<div id="full_join" class="section level2">
-<h2>full_join()</h2>
-<p>Let’s consider the <code>growth_data_aux</code> dataset from the
-healthds package. This dataset contains measurements on the same infants
-from the <code>growth_data</code>. However, there are four timepoints
-per infant in the <code>growth_data</code> while there are only three
-timepoints per infant in the <code>growth_data_aux</code> dataset. The
-<code>growth_data_aux</code> dataset also includes measurements of head
-circumfrance taken at those timepoints.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGFfYXV4XG5gYGAifQ== -->
-<pre class="r"><code>growth_data_aux</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Notice that both datasets include the ID and month variables. These
-variables serve as identifiers that help us identify the observations,
-as well as match and link data from different datasets via joining.</p>
-<p>The <code>full_join</code> functions expects two datasets to join. By
-performing a full join of the datasets, we obtain a data frame of eight
-observations across five variables.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnVsbF9qb2luKGdyb3d0aF9kYXRhLCBncm93dGhfZGF0YV9hdXgpXG5gYGAifQ== -->
-<pre class="r"><code>full_join(growth_data, growth_data_aux)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Since head circumfrance measurements weren’t taken at three months, R
-represents these missing values as NA for “not available.” In this case,
-the missing values occur because a full join returns a row for every
-unique combination of the identifier variables (e.g., ID and month
-variables).</p>
-</div>
-<div id="left_join-and-right_join" class="section level2">
-<h2>left_join() and right_join()</h2>
-<p>The <code>left_join</code> function ensures that every unique
-combination of the identifier variables from the first dataset are
-returned in the joined data.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGVmdF9qb2luKGdyb3d0aF9kYXRhLCBncm93dGhfZGF0YV9hdXgpXG5gYGAifQ== -->
-<pre class="r"><code>left_join(growth_data, growth_data_aux)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>This left join appears the same as the full join since every unique
-combination of the identifier variables is captured in the first
-dataset.</p>
-<p>On the other hand, the <code>right_join</code> function returns only
-the unique combinations of the identifier variables that exist in the
-second dataset.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmlnaHRfam9pbihncm93dGhfZGF0YSwgZ3Jvd3RoX2RhdGFfYXV4KVxuYGBgIn0= -->
-<pre class="r"><code>right_join(growth_data, growth_data_aux)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Since the <code>growth_data_aux</code> dataset only contains
-measurements taken at three timepoints, the joined data does not include
-the rows from the <code>growth_data</code> for measurements taken at
-month three.</p>
-</div>
-<div id="inner_join" class="section level2">
-<h2>inner_join()</h2>
-<p>The <code>inner_join</code> function returns the unique combinations
-of the identifier variables that exist in both datasets.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5uZXJfam9pbihncm93dGhfZGF0YSwgZ3Jvd3RoX2RhdGFfYXV4KVxuYGBgIn0= -->
-<pre class="r"><code>inner_join(growth_data, growth_data_aux)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>This inner join appears the same as the right join since the
-measurements taken at month three do not exist in both datasets.
-However, it won’t always be the case that full and left joins return the
-same results, and the same is true for right and inner joins. This
-behavior depends on the specific qualities of both datasets.</p>
-<p>Remember to save the work you’ve done. Try saving the script you’ve
-been working in as <code>joining.R</code> for later reference.</p>
-</div>
-<div id="help-pages" class="section level2">
-<h2>Help Pages</h2>
-<p>As discussed in the lecture, every R function ought to have a help
-page, which is an incredibly useful tool for familiarizing yourself with
-a function.</p>
-<p>To view the help page of a function, you can type a question mark and
-the name of the function (e.g., <code>?pivot_wider</code>) in the
-console. The help page will appear in the Help tab, which is typically
-in the lower right pane in RStudio.</p>
-<p>Try pulling up the help page for the <code>pivot_wider</code>
-function. You’ll notice that this help page is comprised of a few
-different sections. The Description section describes in plain language
-the intended behavior of the function. The Usage section provides both
-the name of the function and all the possible function arguments that
-you can specify. The Arguments section describes each argument in more
-detail and the values that an argument accepts.</p>
-<p>The Examples section provides example code of how the function is
-used. You can try replicating the first example from the
-<code>pivot_wider</code> help page.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlzaF9lbmNvdW50ZXJzXG5gYGAifQ== -->
-<pre class="r"><code>fish_encounters</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlzaF9lbmNvdW50ZXJzICU+JVxuICBwaXZvdF93aWRlcihuYW1lc19mcm9tID0gc3RhdGlvbiwgdmFsdWVzX2Zyb20gPSBzZWVuKVxuYGBgIn0= -->
-<pre class="r"><code>fish_encounters %&gt;%
-  pivot_wider(names_from = station, values_from = seen)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Now try pulling up the help page for the <code>select</code> function
-(i.e., <code>?select</code>). You’ll notice that this help page also
-gives an overview of the selection helper functions (e.g., the
-<code>everything</code> function), which we discussed in the previous
-lesson. Each of these helper functions also has their own help page. In
-this case, the Arugments section isn’t especially helpful since the
-arguments to the <code>select</code> function are specific to a
-particular dataset in the form of variable names.</p>
-<p>Once again, you can try replicating the first example from the
-Examples section of the help page.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhcndhcnMgJT4lIHNlbGVjdChoZWlnaHQpXG5gYGAifQ== -->
-<pre class="r"><code>starwars %&gt;% select(height)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-</div>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5kZXBlbmRlbnQgR3VpZGU6IDIuNCAtIEpvaW5pbmcgRGF0YSIKb3V0cHV0OiAKICBodG1sX2RvY3VtZW50OgogIGh0bWxfbm90ZWJvb2s6CmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lCi0tLQoKYGBge3Iga2xpcHB5LCBlY2hvID0gRkFMU0UsIGluY2x1ZGUgPSBUUlVFfQprbGlwcHk6OmtsaXBweShwb3NpdGlvbiA9IGMoInRvcCIsICJyaWdodCIpLCB0b29sdGlwX21lc3NhZ2UgPSAiQ29weSIpCmBgYAoKSW4gdGhlIGZvdXJ0aCBsZXNzb24gb2YgV2VlayAyLCB5b3Ugd2VyZSBpbnRyb2R1Y2VkIHRvIHRoZSBjb25jZXB0IG9mIGpvaW5pbmcKZGF0YS4gVG8gcHJhY3RpY2UgdXNpbmcgdGhlIGpvaW5pbmcgZnVuY3Rpb25zLCBvcGVuIHRoZSBSIHByb2plY3QgY2FsbGVkCmBMZXNzb25zLlJwcm9qYCBhbmQgYSBibGFuayBSIHNjcmlwdC4gQmVmb3JlIHdlIGNhbiBiZWdpbiwgeW91J2xsIGFsc28gbmVlZCB0bwpsb2FkIHRoZSBuZWNlc3NhcnkgcGFja2FnZXMgaW50byB0aGUgY3VycmVudCBSIHNlc3Npb24uCgpgYGB7cn0KbGlicmFyeShoZWFsdGhkcykKbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKIyMgZnVsbF9qb2luKCkKCkxldCdzIGNvbnNpZGVyIHRoZSBgZ3Jvd3RoX2RhdGFfYXV4YCBkYXRhc2V0IGZyb20gdGhlIGhlYWx0aGRzIHBhY2thZ2UuIFRoaXMKZGF0YXNldCBjb250YWlucyBtZWFzdXJlbWVudHMgb24gdGhlIHNhbWUgaW5mYW50cyBmcm9tIHRoZSBgZ3Jvd3RoX2RhdGFgLgpIb3dldmVyLCB0aGVyZSBhcmUgZm91ciB0aW1lcG9pbnRzIHBlciBpbmZhbnQgaW4gdGhlIGBncm93dGhfZGF0YWAgd2hpbGUgdGhlcmUKYXJlIG9ubHkgdGhyZWUgdGltZXBvaW50cyBwZXIgaW5mYW50IGluIHRoZSBgZ3Jvd3RoX2RhdGFfYXV4YCBkYXRhc2V0LiBUaGUKYGdyb3d0aF9kYXRhX2F1eGAgZGF0YXNldCBhbHNvIGluY2x1ZGVzIG1lYXN1cmVtZW50cyBvZiBoZWFkIGNpcmN1bWZyYW5jZSB0YWtlbgphdCB0aG9zZSB0aW1lcG9pbnRzLgoKYGBge3J9Cmdyb3d0aF9kYXRhX2F1eApgYGAKCk5vdGljZSB0aGF0IGJvdGggZGF0YXNldHMgaW5jbHVkZSB0aGUgSUQgYW5kIG1vbnRoIHZhcmlhYmxlcy4gVGhlc2UgdmFyaWFibGVzCnNlcnZlIGFzIGlkZW50aWZpZXJzIHRoYXQgaGVscCB1cyBpZGVudGlmeSB0aGUgb2JzZXJ2YXRpb25zLCBhcyB3ZWxsIGFzIG1hdGNoCmFuZCBsaW5rIGRhdGEgZnJvbSBkaWZmZXJlbnQgZGF0YXNldHMgdmlhIGpvaW5pbmcuCgpUaGUgYGZ1bGxfam9pbmAgZnVuY3Rpb25zIGV4cGVjdHMgdHdvIGRhdGFzZXRzIHRvIGpvaW4uIEJ5IHBlcmZvcm1pbmcgYSBmdWxsCmpvaW4gb2YgdGhlIGRhdGFzZXRzLCB3ZSBvYnRhaW4gYSBkYXRhIGZyYW1lIG9mIGVpZ2h0IG9ic2VydmF0aW9ucyBhY3Jvc3MgZml2ZQp2YXJpYWJsZXMuCgpgYGB7cn0KZnVsbF9qb2luKGdyb3d0aF9kYXRhLCBncm93dGhfZGF0YV9hdXgpCmBgYAoKU2luY2UgaGVhZCBjaXJjdW1mcmFuY2UgbWVhc3VyZW1lbnRzIHdlcmVuJ3QgdGFrZW4gYXQgdGhyZWUgbW9udGhzLCBSIHJlcHJlc2VudHMKdGhlc2UgbWlzc2luZyB2YWx1ZXMgYXMgTkEgZm9yICJub3QgYXZhaWxhYmxlLiIgSW4gdGhpcyBjYXNlLCB0aGUgbWlzc2luZyB2YWx1ZXMKb2NjdXIgYmVjYXVzZSBhIGZ1bGwgam9pbiByZXR1cm5zIGEgcm93IGZvciBldmVyeSB1bmlxdWUgY29tYmluYXRpb24gb2YgdGhlCmlkZW50aWZpZXIgdmFyaWFibGVzIChlLmcuLCBJRCBhbmQgbW9udGggdmFyaWFibGVzKS4KCiMjIGxlZnRfam9pbigpIGFuZCByaWdodF9qb2luKCkKClRoZSBgbGVmdF9qb2luYCBmdW5jdGlvbiBlbnN1cmVzIHRoYXQgZXZlcnkgdW5pcXVlIGNvbWJpbmF0aW9uIG9mIHRoZSBpZGVudGlmaWVyCnZhcmlhYmxlcyBmcm9tIHRoZSBmaXJzdCBkYXRhc2V0IGFyZSByZXR1cm5lZCBpbiB0aGUgam9pbmVkIGRhdGEuCgpgYGB7cn0KbGVmdF9qb2luKGdyb3d0aF9kYXRhLCBncm93dGhfZGF0YV9hdXgpCmBgYAoKVGhpcyBsZWZ0IGpvaW4gYXBwZWFycyB0aGUgc2FtZSBhcyB0aGUgZnVsbCBqb2luIHNpbmNlIGV2ZXJ5IHVuaXF1ZSBjb21iaW5hdGlvbgpvZiB0aGUgaWRlbnRpZmllciB2YXJpYWJsZXMgaXMgY2FwdHVyZWQgaW4gdGhlIGZpcnN0IGRhdGFzZXQuCgpPbiB0aGUgb3RoZXIgaGFuZCwgdGhlIGByaWdodF9qb2luYCBmdW5jdGlvbiByZXR1cm5zIG9ubHkgdGhlIHVuaXF1ZQpjb21iaW5hdGlvbnMgb2YgdGhlIGlkZW50aWZpZXIgdmFyaWFibGVzIHRoYXQgZXhpc3QgaW4gdGhlIHNlY29uZCBkYXRhc2V0LgoKYGBge3J9CnJpZ2h0X2pvaW4oZ3Jvd3RoX2RhdGEsIGdyb3d0aF9kYXRhX2F1eCkKYGBgCgpTaW5jZSB0aGUgYGdyb3d0aF9kYXRhX2F1eGAgZGF0YXNldCBvbmx5IGNvbnRhaW5zIG1lYXN1cmVtZW50cyB0YWtlbiBhdCB0aHJlZQp0aW1lcG9pbnRzLCB0aGUgam9pbmVkIGRhdGEgZG9lcyBub3QgaW5jbHVkZSB0aGUgcm93cyBmcm9tIHRoZSBgZ3Jvd3RoX2RhdGFgIGZvcgptZWFzdXJlbWVudHMgdGFrZW4gYXQgbW9udGggdGhyZWUuCgojIyBpbm5lcl9qb2luKCkKClRoZSBgaW5uZXJfam9pbmAgZnVuY3Rpb24gcmV0dXJucyB0aGUgdW5pcXVlIGNvbWJpbmF0aW9ucyBvZiB0aGUgaWRlbnRpZmllcgp2YXJpYWJsZXMgdGhhdCBleGlzdCBpbiBib3RoIGRhdGFzZXRzLgoKYGBge3J9CmlubmVyX2pvaW4oZ3Jvd3RoX2RhdGEsIGdyb3d0aF9kYXRhX2F1eCkKYGBgCgpUaGlzIGlubmVyIGpvaW4gYXBwZWFycyB0aGUgc2FtZSBhcyB0aGUgcmlnaHQgam9pbiBzaW5jZSB0aGUgbWVhc3VyZW1lbnRzIHRha2VuCmF0IG1vbnRoIHRocmVlIGRvIG5vdCBleGlzdCBpbiBib3RoIGRhdGFzZXRzLiBIb3dldmVyLCBpdCB3b24ndCBhbHdheXMgYmUgdGhlCmNhc2UgdGhhdCBmdWxsIGFuZCBsZWZ0IGpvaW5zIHJldHVybiB0aGUgc2FtZSByZXN1bHRzLCBhbmQgdGhlIHNhbWUgaXMgdHJ1ZSBmb3IKcmlnaHQgYW5kIGlubmVyIGpvaW5zLiBUaGlzIGJlaGF2aW9yIGRlcGVuZHMgb24gdGhlIHNwZWNpZmljIHF1YWxpdGllcyBvZiBib3RoCmRhdGFzZXRzLgoKUmVtZW1iZXIgdG8gc2F2ZSB0aGUgd29yayB5b3UndmUgZG9uZS4gVHJ5IHNhdmluZyB0aGUgc2NyaXB0IHlvdSd2ZSBiZWVuIHdvcmtpbmcKaW4gYXMgYGpvaW5pbmcuUmAgZm9yIGxhdGVyIHJlZmVyZW5jZS4KCiMjIEhlbHAgUGFnZXMKCkFzIGRpc2N1c3NlZCBpbiB0aGUgbGVjdHVyZSwgZXZlcnkgUiBmdW5jdGlvbiBvdWdodCB0byBoYXZlIGEgaGVscCBwYWdlLCB3aGljaAppcyBhbiBpbmNyZWRpYmx5IHVzZWZ1bCB0b29sIGZvciBmYW1pbGlhcml6aW5nIHlvdXJzZWxmIHdpdGggYSBmdW5jdGlvbi4KClRvIHZpZXcgdGhlIGhlbHAgcGFnZSBvZiBhIGZ1bmN0aW9uLCB5b3UgY2FuIHR5cGUgYSBxdWVzdGlvbiBtYXJrIGFuZCB0aGUgbmFtZQpvZiB0aGUgZnVuY3Rpb24gKGUuZy4sIGA/cGl2b3Rfd2lkZXJgKSBpbiB0aGUgY29uc29sZS4gVGhlIGhlbHAgcGFnZSB3aWxsIGFwcGVhcgppbiB0aGUgSGVscCB0YWIsIHdoaWNoIGlzIHR5cGljYWxseSBpbiB0aGUgbG93ZXIgcmlnaHQgcGFuZSBpbiBSU3R1ZGlvLgoKVHJ5IHB1bGxpbmcgdXAgdGhlIGhlbHAgcGFnZSBmb3IgdGhlIGBwaXZvdF93aWRlcmAgZnVuY3Rpb24uIFlvdSdsbCBub3RpY2UgdGhhdAp0aGlzIGhlbHAgcGFnZSBpcyBjb21wcmlzZWQgb2YgYSBmZXcgZGlmZmVyZW50IHNlY3Rpb25zLiBUaGUgRGVzY3JpcHRpb24gc2VjdGlvbgpkZXNjcmliZXMgaW4gcGxhaW4gbGFuZ3VhZ2UgdGhlIGludGVuZGVkIGJlaGF2aW9yIG9mIHRoZSBmdW5jdGlvbi4gVGhlIFVzYWdlCnNlY3Rpb24gcHJvdmlkZXMgYm90aCB0aGUgbmFtZSBvZiB0aGUgZnVuY3Rpb24gYW5kIGFsbCB0aGUgcG9zc2libGUgZnVuY3Rpb24KYXJndW1lbnRzIHRoYXQgeW91IGNhbiBzcGVjaWZ5LiBUaGUgQXJndW1lbnRzIHNlY3Rpb24gZGVzY3JpYmVzIGVhY2ggYXJndW1lbnQgaW4KbW9yZSBkZXRhaWwgYW5kIHRoZSB2YWx1ZXMgdGhhdCBhbiBhcmd1bWVudCBhY2NlcHRzLgoKVGhlIEV4YW1wbGVzIHNlY3Rpb24gcHJvdmlkZXMgZXhhbXBsZSBjb2RlIG9mIGhvdyB0aGUgZnVuY3Rpb24gaXMgdXNlZC4gWW91IGNhbgp0cnkgcmVwbGljYXRpbmcgdGhlIGZpcnN0IGV4YW1wbGUgZnJvbSB0aGUgYHBpdm90X3dpZGVyYCBoZWxwIHBhZ2UuCgpgYGB7cn0KZmlzaF9lbmNvdW50ZXJzCmBgYAoKYGBge3J9CmZpc2hfZW5jb3VudGVycyAlPiUKICBwaXZvdF93aWRlcihuYW1lc19mcm9tID0gc3RhdGlvbiwgdmFsdWVzX2Zyb20gPSBzZWVuKQpgYGAKCk5vdyB0cnkgcHVsbGluZyB1cCB0aGUgaGVscCBwYWdlIGZvciB0aGUgYHNlbGVjdGAgZnVuY3Rpb24gKGkuZS4sIGA/c2VsZWN0YCkuCllvdSdsbCBub3RpY2UgdGhhdCB0aGlzIGhlbHAgcGFnZSBhbHNvIGdpdmVzIGFuIG92ZXJ2aWV3IG9mIHRoZSBzZWxlY3Rpb24gaGVscGVyCmZ1bmN0aW9ucyAoZS5nLiwgdGhlIGBldmVyeXRoaW5nYCBmdW5jdGlvbiksIHdoaWNoIHdlIGRpc2N1c3NlZCBpbiB0aGUgcHJldmlvdXMKbGVzc29uLiBFYWNoIG9mIHRoZXNlIGhlbHBlciBmdW5jdGlvbnMgYWxzbyBoYXMgdGhlaXIgb3duIGhlbHAgcGFnZS4gSW4gdGhpcwpjYXNlLCB0aGUgQXJ1Z21lbnRzIHNlY3Rpb24gaXNuJ3QgZXNwZWNpYWxseSBoZWxwZnVsIHNpbmNlIHRoZSBhcmd1bWVudHMgdG8KdGhlIGBzZWxlY3RgIGZ1bmN0aW9uIGFyZSBzcGVjaWZpYyB0byBhIHBhcnRpY3VsYXIgZGF0YXNldCBpbiB0aGUgZm9ybSBvZgp2YXJpYWJsZSBuYW1lcy4KCk9uY2UgYWdhaW4sIHlvdSBjYW4gdHJ5IHJlcGxpY2F0aW5nIHRoZSBmaXJzdCBleGFtcGxlIGZyb20gdGhlIEV4YW1wbGVzIHNlY3Rpb24Kb2YgdGhlIGhlbHAgcGFnZS4KCmBgYHtyfQpzdGFyd2FycyAlPiUgc2VsZWN0KGhlaWdodCkKYGBgCg==</div>
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+## `full_join()`
+
+Let&#39;s consider the `growth_data_aux` dataset from the healthds package. This
+dataset contains measurements on the same infants from the `growth_data`.
+However, there are four timepoints per infant in the `growth_data` while there
+are only three timepoints per infant in the `growth_data_aux` dataset. The
+`growth_data_aux` dataset also includes measurements of head circumfrance taken
+at those timepoints.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGFfYXV4XG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+growth_data_aux</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Notice that both datasets include the ID and month variables. These variables
+serve as identifiers that help us identify the observations as well as match
+and link data from different datasets via joining.
+
+The `full_join` functions requires that you provide the names of the two datasets 
+to join. By performing a full join of the datasets, we obtain a data frame of 
+eight observations across five variables.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZnVsbF9qb2luKGdyb3d0aF9kYXRhLCBncm93dGhfZGF0YV9hdXgpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+full_join(growth_data, growth_data_aux)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Since head circumfrance measurements weren&#39;t taken at three months, R represents
+these missing values as NA for &quot;not available.&quot; In this case, the missing values
+occur because a full join returns a row for every unique combination of the
+identifier variables (e.g., ID and month variables).
+
+## `left_join()` and `right_join()`
+
+The `left_join` function ensures that every unique combination of the identifier
+variables from the first dataset are returned in the joined data.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGVmdF9qb2luKGdyb3d0aF9kYXRhLCBncm93dGhfZGF0YV9hdXgpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+left_join(growth_data, growth_data_aux)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+This left join appears the same as the full join since every unique combination
+of the identifier variables is captured in the first dataset.
+
+On the other hand, the `right_join` function returns only the unique
+combinations of the identifier variables that exist in the second dataset.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucmlnaHRfam9pbihncm93dGhfZGF0YSwgZ3Jvd3RoX2RhdGFfYXV4KVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+right_join(growth_data, growth_data_aux)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Since the `growth_data_aux` dataset only contains measurements taken at three
+timepoints, the joined data does not include the rows from the `growth_data` for
+measurements taken at month three.
+
+To check your understanding on the difference between these types of joins, try
+to convince yourself why `left_join(x, y)` will yield the same result as `right_join(y, x)` (except
+that the order of the columns will be different). 
+
+## `inner_join()`
+
+The `inner_join` function returns the unique combinations of the identifier
+variables that exist in both datasets.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuaW5uZXJfam9pbihncm93dGhfZGF0YSwgZ3Jvd3RoX2RhdGFfYXV4KVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+inner_join(growth_data, growth_data_aux)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+This inner join appears the same as the right join since the measurements taken
+at month three do not exist in both datasets. However, it won&#39;t always be the
+case that full and left joins return the same results, and the same is true for
+right and inner joins. This behavior depends on the specific qualities of both
+datasets.
+
+Remember to save the work you&#39;ve done. Try saving the script you&#39;ve been working
+in as `joining.R` for later reference.
+
+## Help Pages
+
+As discussed in the lecture, every R function ought to have a help page, which
+is an incredibly useful tool for familiarizing yourself with a function.
+
+To view the help page of a function, you can type a question mark and the name
+of the function (e.g., `?pivot_wider`) in the console. The help page will appear
+in the Help tab, which is typically in the lower right pane in RStudio.
+
+Try pulling up the help page for the `pivot_wider` function. You&#39;ll notice that
+this help page is comprised of a few different sections. The Description section
+describes in plain language the intended behavior of the function. The Usage
+section provides both the name of the function and all the possible function
+arguments that you can specify. The Arguments section describes each argument in
+more detail and the values that an argument accepts.
+
+The Examples section provides example code of how the function is used. You can
+try replicating the first example from the `pivot_wider` help page.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZmlzaF9lbmNvdW50ZXJzXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+fish_encounters</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZmlzaF9lbmNvdW50ZXJzICU+JVxuICBwaXZvdF93aWRlcihuYW1lc19mcm9tID0gc3RhdGlvbiwgdmFsdWVzX2Zyb20gPSBzZWVuKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+fish_encounters %&gt;%
+  pivot_wider(names_from = station, values_from = seen)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Now try pulling up the help page for the `select` function (i.e., `?select`).
+You&#39;ll notice that this help page also gives an overview of the selection helper
+functions (e.g., the `everything` function), which we discussed in the previous
+lesson. Each of these helper functions also has their own help page. In this
+case, the Arugments section isn&#39;t especially helpful since the arguments to
+the `select` function are specific to a particular dataset in the form of
+variable names.
+
+Once again, you can try replicating the first example from the Examples section
+of the help page.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3RhcndhcnMgJT4lIHNlbGVjdChoZWlnaHQpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+starwars %&gt;% select(height)</code></pre>
+<p>```</p>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5kZXBlbmRlbnQgR3VpZGU6IDIuNCAtIEpvaW5pbmcgRGF0YSIKb3V0cHV0OiAKICBodG1sX2RvY3VtZW50OgogIGh0bWxfbm90ZWJvb2s6CmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lCi0tLQoKYGBge3Iga2xpcHB5LCBlY2hvID0gRkFMU0UsIGluY2x1ZGUgPSBUUlVFfQprbGlwcHk6OmtsaXBweShwb3NpdGlvbiA9IGMoInRvcCIsICJyaWdodCIpLCB0b29sdGlwX21lc3NhZ2UgPSAiQ29weSIpCmBgYAoKSW4gdGhlIGZvdXJ0aCBsZXNzb24gb2YgTW9kdWxlIDIsIHlvdSB3ZXJlIGludHJvZHVjZWQgdG8gdGhlIGNvbmNlcHQgb2Ygam9pbmluZwpkYXRhLiBUbyBwcmFjdGljZSB1c2luZyB0aGUgam9pbmluZyBmdW5jdGlvbnMsIG9wZW4gdGhlIFIgcHJvamVjdCBjYWxsZWQKYExlc3NvbnMuUnByb2pgIGFuZCBhIGJsYW5rIFIgc2NyaXB0LiBCZWZvcmUgd2UgY2FuIGJlZ2luLCB5b3UnbGwgYWxzbyBuZWVkIHRvCmxvYWQgdGhlIG5lY2Vzc2FyeSBwYWNrYWdlcyBpbnRvIHRoZSBjdXJyZW50IFIgc2Vzc2lvbi4KCmBgYHtyfQpsaWJyYXJ5KGhlYWx0aGRzKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIyBgZnVsbF9qb2luKClgCgpMZXQncyBjb25zaWRlciB0aGUgYGdyb3d0aF9kYXRhX2F1eGAgZGF0YXNldCBmcm9tIHRoZSBoZWFsdGhkcyBwYWNrYWdlLiBUaGlzCmRhdGFzZXQgY29udGFpbnMgbWVhc3VyZW1lbnRzIG9uIHRoZSBzYW1lIGluZmFudHMgZnJvbSB0aGUgYGdyb3d0aF9kYXRhYC4KSG93ZXZlciwgdGhlcmUgYXJlIGZvdXIgdGltZXBvaW50cyBwZXIgaW5mYW50IGluIHRoZSBgZ3Jvd3RoX2RhdGFgIHdoaWxlIHRoZXJlCmFyZSBvbmx5IHRocmVlIHRpbWVwb2ludHMgcGVyIGluZmFudCBpbiB0aGUgYGdyb3d0aF9kYXRhX2F1eGAgZGF0YXNldC4gVGhlCmBncm93dGhfZGF0YV9hdXhgIGRhdGFzZXQgYWxzbyBpbmNsdWRlcyBtZWFzdXJlbWVudHMgb2YgaGVhZCBjaXJjdW1mcmFuY2UgdGFrZW4KYXQgdGhvc2UgdGltZXBvaW50cy4KCmBgYHtyfQpncm93dGhfZGF0YV9hdXgKYGBgCgpOb3RpY2UgdGhhdCBib3RoIGRhdGFzZXRzIGluY2x1ZGUgdGhlIElEIGFuZCBtb250aCB2YXJpYWJsZXMuIFRoZXNlIHZhcmlhYmxlcwpzZXJ2ZSBhcyBpZGVudGlmaWVycyB0aGF0IGhlbHAgdXMgaWRlbnRpZnkgdGhlIG9ic2VydmF0aW9ucyBhcyB3ZWxsIGFzIG1hdGNoCmFuZCBsaW5rIGRhdGEgZnJvbSBkaWZmZXJlbnQgZGF0YXNldHMgdmlhIGpvaW5pbmcuCgpUaGUgYGZ1bGxfam9pbmAgZnVuY3Rpb25zIHJlcXVpcmVzIHRoYXQgeW91IHByb3ZpZGUgdGhlIG5hbWVzIG9mIHRoZSB0d28gZGF0YXNldHMgCnRvIGpvaW4uIEJ5IHBlcmZvcm1pbmcgYSBmdWxsIGpvaW4gb2YgdGhlIGRhdGFzZXRzLCB3ZSBvYnRhaW4gYSBkYXRhIGZyYW1lIG9mIAplaWdodCBvYnNlcnZhdGlvbnMgYWNyb3NzIGZpdmUgdmFyaWFibGVzLgoKYGBge3J9CmZ1bGxfam9pbihncm93dGhfZGF0YSwgZ3Jvd3RoX2RhdGFfYXV4KQpgYGAKClNpbmNlIGhlYWQgY2lyY3VtZnJhbmNlIG1lYXN1cmVtZW50cyB3ZXJlbid0IHRha2VuIGF0IHRocmVlIG1vbnRocywgUiByZXByZXNlbnRzCnRoZXNlIG1pc3NpbmcgdmFsdWVzIGFzIE5BIGZvciAibm90IGF2YWlsYWJsZS4iIEluIHRoaXMgY2FzZSwgdGhlIG1pc3NpbmcgdmFsdWVzCm9jY3VyIGJlY2F1c2UgYSBmdWxsIGpvaW4gcmV0dXJucyBhIHJvdyBmb3IgZXZlcnkgdW5pcXVlIGNvbWJpbmF0aW9uIG9mIHRoZQppZGVudGlmaWVyIHZhcmlhYmxlcyAoZS5nLiwgSUQgYW5kIG1vbnRoIHZhcmlhYmxlcykuCgojIyBgbGVmdF9qb2luKClgIGFuZCBgcmlnaHRfam9pbigpYAoKVGhlIGBsZWZ0X2pvaW5gIGZ1bmN0aW9uIGVuc3VyZXMgdGhhdCBldmVyeSB1bmlxdWUgY29tYmluYXRpb24gb2YgdGhlIGlkZW50aWZpZXIKdmFyaWFibGVzIGZyb20gdGhlIGZpcnN0IGRhdGFzZXQgYXJlIHJldHVybmVkIGluIHRoZSBqb2luZWQgZGF0YS4KCmBgYHtyfQpsZWZ0X2pvaW4oZ3Jvd3RoX2RhdGEsIGdyb3d0aF9kYXRhX2F1eCkKYGBgCgpUaGlzIGxlZnQgam9pbiBhcHBlYXJzIHRoZSBzYW1lIGFzIHRoZSBmdWxsIGpvaW4gc2luY2UgZXZlcnkgdW5pcXVlIGNvbWJpbmF0aW9uCm9mIHRoZSBpZGVudGlmaWVyIHZhcmlhYmxlcyBpcyBjYXB0dXJlZCBpbiB0aGUgZmlyc3QgZGF0YXNldC4KCk9uIHRoZSBvdGhlciBoYW5kLCB0aGUgYHJpZ2h0X2pvaW5gIGZ1bmN0aW9uIHJldHVybnMgb25seSB0aGUgdW5pcXVlCmNvbWJpbmF0aW9ucyBvZiB0aGUgaWRlbnRpZmllciB2YXJpYWJsZXMgdGhhdCBleGlzdCBpbiB0aGUgc2Vjb25kIGRhdGFzZXQuCgpgYGB7cn0KcmlnaHRfam9pbihncm93dGhfZGF0YSwgZ3Jvd3RoX2RhdGFfYXV4KQpgYGAKClNpbmNlIHRoZSBgZ3Jvd3RoX2RhdGFfYXV4YCBkYXRhc2V0IG9ubHkgY29udGFpbnMgbWVhc3VyZW1lbnRzIHRha2VuIGF0IHRocmVlCnRpbWVwb2ludHMsIHRoZSBqb2luZWQgZGF0YSBkb2VzIG5vdCBpbmNsdWRlIHRoZSByb3dzIGZyb20gdGhlIGBncm93dGhfZGF0YWAgZm9yCm1lYXN1cmVtZW50cyB0YWtlbiBhdCBtb250aCB0aHJlZS4KClRvIGNoZWNrIHlvdXIgdW5kZXJzdGFuZGluZyBvbiB0aGUgZGlmZmVyZW5jZSBiZXR3ZWVuIHRoZXNlIHR5cGVzIG9mIGpvaW5zLCB0cnkKdG8gY29udmluY2UgeW91cnNlbGYgd2h5IGBsZWZ0X2pvaW4oeCwgeSlgIHdpbGwgeWllbGQgdGhlIHNhbWUgcmVzdWx0IGFzIGByaWdodF9qb2luKHksIHgpYCAoZXhjZXB0CnRoYXQgdGhlIG9yZGVyIG9mIHRoZSBjb2x1bW5zIHdpbGwgYmUgZGlmZmVyZW50KS4gCgojIyBgaW5uZXJfam9pbigpYAoKVGhlIGBpbm5lcl9qb2luYCBmdW5jdGlvbiByZXR1cm5zIHRoZSB1bmlxdWUgY29tYmluYXRpb25zIG9mIHRoZSBpZGVudGlmaWVyCnZhcmlhYmxlcyB0aGF0IGV4aXN0IGluIGJvdGggZGF0YXNldHMuCgpgYGB7cn0KaW5uZXJfam9pbihncm93dGhfZGF0YSwgZ3Jvd3RoX2RhdGFfYXV4KQpgYGAKClRoaXMgaW5uZXIgam9pbiBhcHBlYXJzIHRoZSBzYW1lIGFzIHRoZSByaWdodCBqb2luIHNpbmNlIHRoZSBtZWFzdXJlbWVudHMgdGFrZW4KYXQgbW9udGggdGhyZWUgZG8gbm90IGV4aXN0IGluIGJvdGggZGF0YXNldHMuIEhvd2V2ZXIsIGl0IHdvbid0IGFsd2F5cyBiZSB0aGUKY2FzZSB0aGF0IGZ1bGwgYW5kIGxlZnQgam9pbnMgcmV0dXJuIHRoZSBzYW1lIHJlc3VsdHMsIGFuZCB0aGUgc2FtZSBpcyB0cnVlIGZvcgpyaWdodCBhbmQgaW5uZXIgam9pbnMuIFRoaXMgYmVoYXZpb3IgZGVwZW5kcyBvbiB0aGUgc3BlY2lmaWMgcXVhbGl0aWVzIG9mIGJvdGgKZGF0YXNldHMuCgpSZW1lbWJlciB0byBzYXZlIHRoZSB3b3JrIHlvdSd2ZSBkb25lLiBUcnkgc2F2aW5nIHRoZSBzY3JpcHQgeW91J3ZlIGJlZW4gd29ya2luZwppbiBhcyBgam9pbmluZy5SYCBmb3IgbGF0ZXIgcmVmZXJlbmNlLgoKIyMgSGVscCBQYWdlcwoKQXMgZGlzY3Vzc2VkIGluIHRoZSBsZWN0dXJlLCBldmVyeSBSIGZ1bmN0aW9uIG91Z2h0IHRvIGhhdmUgYSBoZWxwIHBhZ2UsIHdoaWNoCmlzIGFuIGluY3JlZGlibHkgdXNlZnVsIHRvb2wgZm9yIGZhbWlsaWFyaXppbmcgeW91cnNlbGYgd2l0aCBhIGZ1bmN0aW9uLgoKVG8gdmlldyB0aGUgaGVscCBwYWdlIG9mIGEgZnVuY3Rpb24sIHlvdSBjYW4gdHlwZSBhIHF1ZXN0aW9uIG1hcmsgYW5kIHRoZSBuYW1lCm9mIHRoZSBmdW5jdGlvbiAoZS5nLiwgYD9waXZvdF93aWRlcmApIGluIHRoZSBjb25zb2xlLiBUaGUgaGVscCBwYWdlIHdpbGwgYXBwZWFyCmluIHRoZSBIZWxwIHRhYiwgd2hpY2ggaXMgdHlwaWNhbGx5IGluIHRoZSBsb3dlciByaWdodCBwYW5lIGluIFJTdHVkaW8uCgpUcnkgcHVsbGluZyB1cCB0aGUgaGVscCBwYWdlIGZvciB0aGUgYHBpdm90X3dpZGVyYCBmdW5jdGlvbi4gWW91J2xsIG5vdGljZSB0aGF0CnRoaXMgaGVscCBwYWdlIGlzIGNvbXByaXNlZCBvZiBhIGZldyBkaWZmZXJlbnQgc2VjdGlvbnMuIFRoZSBEZXNjcmlwdGlvbiBzZWN0aW9uCmRlc2NyaWJlcyBpbiBwbGFpbiBsYW5ndWFnZSB0aGUgaW50ZW5kZWQgYmVoYXZpb3Igb2YgdGhlIGZ1bmN0aW9uLiBUaGUgVXNhZ2UKc2VjdGlvbiBwcm92aWRlcyBib3RoIHRoZSBuYW1lIG9mIHRoZSBmdW5jdGlvbiBhbmQgYWxsIHRoZSBwb3NzaWJsZSBmdW5jdGlvbgphcmd1bWVudHMgdGhhdCB5b3UgY2FuIHNwZWNpZnkuIFRoZSBBcmd1bWVudHMgc2VjdGlvbiBkZXNjcmliZXMgZWFjaCBhcmd1bWVudCBpbgptb3JlIGRldGFpbCBhbmQgdGhlIHZhbHVlcyB0aGF0IGFuIGFyZ3VtZW50IGFjY2VwdHMuCgpUaGUgRXhhbXBsZXMgc2VjdGlvbiBwcm92aWRlcyBleGFtcGxlIGNvZGUgb2YgaG93IHRoZSBmdW5jdGlvbiBpcyB1c2VkLiBZb3UgY2FuCnRyeSByZXBsaWNhdGluZyB0aGUgZmlyc3QgZXhhbXBsZSBmcm9tIHRoZSBgcGl2b3Rfd2lkZXJgIGhlbHAgcGFnZS4KCmBgYHtyfQpmaXNoX2VuY291bnRlcnMKYGBgCgpgYGB7cn0KZmlzaF9lbmNvdW50ZXJzICU+JQogIHBpdm90X3dpZGVyKG5hbWVzX2Zyb20gPSBzdGF0aW9uLCB2YWx1ZXNfZnJvbSA9IHNlZW4pCmBgYAoKTm93IHRyeSBwdWxsaW5nIHVwIHRoZSBoZWxwIHBhZ2UgZm9yIHRoZSBgc2VsZWN0YCBmdW5jdGlvbiAoaS5lLiwgYD9zZWxlY3RgKS4KWW91J2xsIG5vdGljZSB0aGF0IHRoaXMgaGVscCBwYWdlIGFsc28gZ2l2ZXMgYW4gb3ZlcnZpZXcgb2YgdGhlIHNlbGVjdGlvbiBoZWxwZXIKZnVuY3Rpb25zIChlLmcuLCB0aGUgYGV2ZXJ5dGhpbmdgIGZ1bmN0aW9uKSwgd2hpY2ggd2UgZGlzY3Vzc2VkIGluIHRoZSBwcmV2aW91cwpsZXNzb24uIEVhY2ggb2YgdGhlc2UgaGVscGVyIGZ1bmN0aW9ucyBhbHNvIGhhcyB0aGVpciBvd24gaGVscCBwYWdlLiBJbiB0aGlzCmNhc2UsIHRoZSBBcnVnbWVudHMgc2VjdGlvbiBpc24ndCBlc3BlY2lhbGx5IGhlbHBmdWwgc2luY2UgdGhlIGFyZ3VtZW50cyB0bwp0aGUgYHNlbGVjdGAgZnVuY3Rpb24gYXJlIHNwZWNpZmljIHRvIGEgcGFydGljdWxhciBkYXRhc2V0IGluIHRoZSBmb3JtIG9mCnZhcmlhYmxlIG5hbWVzLgoKT25jZSBhZ2FpbiwgeW91IGNhbiB0cnkgcmVwbGljYXRpbmcgdGhlIGZpcnN0IGV4YW1wbGUgZnJvbSB0aGUgRXhhbXBsZXMgc2VjdGlvbgpvZiB0aGUgaGVscCBwYWdlLgoKYGBge3J9CnN0YXJ3YXJzICU+JSBzZWxlY3QoaGVpZ2h0KQpgYGAK</div>
 
 
 

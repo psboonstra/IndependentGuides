@@ -1772,7 +1772,7 @@ pre code {
 <!-- rnb-chunk-begin -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>In the second lesson of Week 2, you were introduced to dplyr, which
+<p>In the second lesson of Module 2, you were introduced to dplyr, which
 is a package included in the tidyverse that provides a set of verbs for
 data wrangling.</p>
 <p>To practice using the functions from the dplyr package, open the R
@@ -1781,136 +1781,254 @@ we can begin, you’ll also need to load the necessary packages into the
 current R session.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZWFsdGhkcylcbmxpYnJhcnkodGlkeXZlcnNlKVxuYGBgIn0= -->
-<pre class="r"><code>library(healthds)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeShoZWFsdGhkcylcbmxpYnJhcnkodGlkeXZlcnNlKVxuYGBgXG5gYGAifQ== -->
+<pre class="r"><code>```r
+library(healthds)
 library(tidyverse)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<div id="filter" class="section level2">
-<h2>filter()</h2>
-<p>The <code>filter</code> function allows us to include or exclude
-observations (i.e., rows) from a dataset based on one or more
-conditions. The general structure for using this function follows:
-<code>filter(data, condition)</code>.</p>
-<p>Let’s consider the <code>growth_data</code> from the healthds
-package. First, we can take a look at the dataset before any filtering
-is performed. There are eight observations across four variables.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGFcbmBgYCJ9 -->
-<pre class="r"><code>growth_data</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>If you were interested in the observations for when the infants were
-three months old, you would write the following line of code:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyKGdyb3d0aF9kYXRhLCBtb250aHMgPT0gMylcbmBgYCJ9 -->
-<pre class="r"><code>filter(growth_data, months == 3)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Notice the use of two equal signs in the above line of code. In R,
-two equal signs is used to denote “is equal to”, which is different than
-using a single equal sign to set an argument value.</p>
-<p>Similarly, you would write the following line of code if you were
-instead interested in the observations for when the infants were two
-months old:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyKGdyb3d0aF9kYXRhLCBtb250aHMgPT0gMilcbmBgYCJ9 -->
-<pre class="r"><code>filter(growth_data, months == 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>The <code>filter</code> function can also be used to specify
-conditions other than an equality. For example, we can filter by a
-two-sided inequality by using != to denote “is not equal to.” Of course,
-it’s possible to filter by one-sided inequalities as well, which are
-represented in R as &lt;, &lt;=, &gt;, and &gt;=.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyKGdyb3d0aF9kYXRhLCBtb250aHMgIT0gMilcbmZpbHRlcihncm93dGhfZGF0YSwgbW9udGhzID4gMilcbmBgYCJ9 -->
-<pre class="r"><code>filter(growth_data, months != 2)
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+## `filter()`
+
+The `filter` function allows us to include or exclude observations
+(i.e., rows) from a dataset based on one or more conditions. The general
+structure for using this function follows: `filter(data, condition)`.
+
+Let&#39;s consider the `growth_data` from the healthds package. First, we can take a
+look at the dataset before any filtering is performed. There are eight
+observations across four variables.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGFcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+growth_data</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+If you want to filter out the infants&#39; three-month observations, you would write 
+the following line of code:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZmlsdGVyKGdyb3d0aF9kYXRhLCBtb250aHMgPT0gMylcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+filter(growth_data, months == 3)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Notice the use of two equal signs in the above line of code. In R, two equal
+signs is used to denote &quot;is equal to&quot;, which is different than using a single
+equal sign to set an argument value. Think of two equal signs as asking a question 
+and one equal sign as making a declaration. 
+
+Similarly, you would write the following line of code if you wanted to filter
+out the infants&#39; two-month observations:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZmlsdGVyKGdyb3d0aF9kYXRhLCBtb250aHMgPT0gMilcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+filter(growth_data, months == 2)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+The `filter` function can also be used to specify conditions other than
+equality. For example, we can filter by a two-sided inequality by using `!=` to
+denote &quot;is not equal to&quot;. It is possible to filter by one-sided
+inequalities as well, which are represented in R as `&lt;`, `&lt;=`, `&gt;`, and `&gt;=`.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZmlsdGVyKGdyb3d0aF9kYXRhLCBtb250aHMgIT0gMilcbmZpbHRlcihncm93dGhfZGF0YSwgbW9udGhzID4gMilcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+filter(growth_data, months != 2)
 filter(growth_data, months &gt; 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>We can also filter by multiple conditions using the AND (&amp;) and
-OR (|) operators. The AND operator returns the observations where both
-conditions are true, and the OR operator returns the observations where
-at least one condition is true.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyKGdyb3d0aF9kYXRhLCB3ZWlnaHRfa2cgID4gNS4wICYgaGVpZ2h0X2NtID4gNTApXG5maWx0ZXIoZ3Jvd3RoX2RhdGEsIHdlaWdodF9rZyAgPiA1LjAgfCBoZWlnaHRfY20gPiA1MClcbmBgYCJ9 -->
-<pre class="r"><code>filter(growth_data, weight_kg  &gt; 5.0 &amp; height_cm &gt; 50)
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+We can also filter by multiple conditions using the AND (`&amp;`) and OR (`|`)
+operators. The AND operator returns the observations where both conditions are
+true, and the OR operator returns the observations where at least one condition
+is true.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZmlsdGVyKGdyb3d0aF9kYXRhLCB3ZWlnaHRfa2cgID4gNS4wICYgaGVpZ2h0X2NtID4gNTApXG5maWx0ZXIoZ3Jvd3RoX2RhdGEsIHdlaWdodF9rZyAgPiA1LjAgfCBoZWlnaHRfY20gPiA1MClcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+filter(growth_data, weight_kg  &gt; 5.0 &amp; height_cm &gt; 50)
 filter(growth_data, weight_kg  &gt; 5.0 | height_cm &gt; 50)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Remember to save the work you’ve done. Try saving the script you’ve
-been working in as <code>filter.R</code> for later reference.</p>
-</div>
-<div id="group_by-and-summarize" class="section level2">
-<h2>group_by() and summarize()</h2>
-<p>To practice additional functions from the dplyr package, open another
-blank script within the same R project.</p>
-<p>The <code>group_by</code> function allows us to group data into
-sub-datasets defined by a common value. In turn, the
-<code>summarize</code> function provides a summary of the data based on
-the grouped data, where a summary statistic is returned for each
-sub-dataset. Therefore, the <code>group_by</code> function effectively
-splits the data, and future actions, such as the <code>summarize</code>
-function, are applied separately to each sub-dataset. The general
-structure for using both functions follow:
-<code>group_by(data, variable)</code> and
-<code>summarize(grouped_data, summary_function(variable))</code>.</p>
-<p>For example, if we were interested in assessing the typical weight of
-infants using the <code>growth_data</code>, it would make sense to group
-the observations by month and obtain the average weight for each month
-rather than combine all observations across time into a single
-average.</p>
-<p>First, we would start by grouping the data by month.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3JvdXBfYnkoZ3Jvd3RoX2RhdGEsIG1vbnRocylcbmBgYCJ9 -->
-<pre class="r"><code>group_by(growth_data, months)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Notice that this returns a grouped data frame that isn’t different in
-appearance from the original <code>growth_data</code>.</p>
-<p>Next, we can wrap this command in a summarize command by specifying
-the grouped data frame as the first argument of the
-<code>summarize</code> function. The second argument will be the desired
-summary function, which in this case is the mean of the weight
-variable.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyaXplKGdyb3VwX2J5KGdyb3d0aF9kYXRhLCBtb250aHMpLCBtZWFuKHdlaWdodF9rZykpXG5gYGAifQ== -->
-<pre class="r"><code>summarize(group_by(growth_data, months), mean(weight_kg))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>This returns a data frame where the number of rows is equal to the
-number of sub-datasets. The first column is defined by the grouping
-variable and the second column contains the calculated summary
-statistics.</p>
-<p>However, wrapping commands in this nested manner can make it
-confusing to follow the chronology of commands. For this reason, the
-dplyr package provides the use of the pipe operator (%&gt;%), which
-improves the readability of your code. The pipe operator takes the
-contents to the left of the operator and passes it into to the function
-on the right of the operator, making it easier to understand the
-chronology of commands when manipulating data. Returning back to our
-example, using the pipe operator returns the same results as the above
-line of code.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3JvdXBfYnkoZ3Jvd3RoX2RhdGEsIG1vbnRocykgJT4lIHN1bW1hcml6ZShtZWFuKHdlaWdodF9rZykpXG5gYGAifQ== -->
-<pre class="r"><code>group_by(growth_data, months) %&gt;% summarize(mean(weight_kg))</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Remember to save the work you&#39;ve done. Save the script you&#39;ve been working
+in as `filter.R` for later reference.
+
+## `group_by()` and `summarize()`
+
+To practice additional functions from the dplyr package, open another blank
+script within the same R project.
+
+The `group_by` function allows us to group data into sub-datasets defined by a
+common value. In turn, the `summarize` function provides a summary of the data
+based on the grouped data, where a summary statistic is returned for each
+sub-dataset. Therefore, the `group_by` function effectively splits the data, and
+future actions, such as the `summarize` function, are applied separately to each
+sub-dataset. The general structure for using both functions follow:
+`group_by(data, variable)` and `summarize(grouped_data, summary_function(variable))`.
+
+For example, if we want to assess the typical weight of infants
+using the `growth_data`, it would make sense to group the observations by month
+and obtain the average weight for each month rather than combine all
+observations across time into a single average.
+
+First, we would start by grouping the data by month.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3JvdXBfYnkoZ3Jvd3RoX2RhdGEsIG1vbnRocylcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+group_by(growth_data, months)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Notice that this returns a grouped data frame that isn&#39;t different in appearance
+from the original `growth_data`.
+
+Next, we can wrap this command in a summarize command by specifying the grouped
+data frame as the first argument of the `summarize` function. The second
+argument will be the desired summary function, which in this case is the mean
+of the weight variable.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3VtbWFyaXplKGdyb3VwX2J5KGdyb3d0aF9kYXRhLCBtb250aHMpLCBtZWFuKHdlaWdodF9rZykpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+summarize(group_by(growth_data, months), mean(weight_kg))</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+This command returns a dataset where the number of rows is equal to the number of
+sub-datasets. The first column is defined by the grouping variable and the
+second column contains the calculated summary statistics.
+
+However, wrapping commands in this nested manner can make it confusing to
+follow the chronology of commands. For this reason, the dplyr package provides
+the use of the pipe operator (`%&gt;%`), which improves the readability of your code.
+The pipe operator takes the contents to the left of the operator and passes it
+into to the function on the right of the operator, making it easier to
+understand the chronology of commands when manipulating data. Returning back to
+our example, using the pipe operator returns the same results as the above line
+of code.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiZ3JvdXBfYnkoZ3Jvd3RoX2RhdGEsIG1vbnRocykgJT4lIHN1bW1hcml6ZShtZWFuKHdlaWdodF9rZykpIn0= --&gt;
+
+```r
+group_by(growth_data, months) %&gt;% summarize(mean(weight_kg))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1920,7 +2038,7 @@ the <code>group_by</code> function rather than provide it as the first
 argument of the function.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lIGdyb3VwX2J5KG1vbnRocykgJT4lIHN1bW1hcml6ZShtZWFuKHdlaWdodF9rZykpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiZ3Jvd3RoX2RhdGEgJT4lIGdyb3VwX2J5KG1vbnRocykgJT4lIHN1bW1hcml6ZShtZWFuKHdlaWdodF9rZykpIn0= -->
 <pre class="r"><code>growth_data %&gt;% group_by(months) %&gt;% summarize(mean(weight_kg))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1930,22 +2048,27 @@ automatically be indented after the first line to represent the code as
 a single expression.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGEgJT4lXG4gIGdyb3VwX2J5KG1vbnRocykgJT4lXG4gIHN1bW1hcml6ZShtZWFuKHdlaWdodF9rZykpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbImdyb3d0aF9kYXRhICU+JSIsIiAgZ3JvdXBfYnkobW9udGhzKSAlPiUiLCIgIHN1bW1hcml6ZShtZWFuKHdlaWdodF9rZykpIl19 -->
 <pre class="r"><code>growth_data %&gt;%
   group_by(months) %&gt;%
   summarize(mean(weight_kg))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>To be clear, all four of the previous chunks of code give the same
+result. For space-saving purposes, we’ve suppressed the printed
+output.</p>
 <p>Try saving these results as an object in your global environment
 using the assignment operator.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3Jvd3RoX2RhdGFfd2VpZ2h0cyA8LVxuICBncm93dGhfZGF0YSAlPiVcbiAgZ3JvdXBfYnkobW9udGhzKSAlPiVcbiAgc3VtbWFyaXplKG1lYW4od2VpZ2h0X2tnKSlcbmBgYCJ9 -->
-<pre class="r"><code>growth_data_weights &lt;-
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ3Jvd3RoX2RhdGFfd2VpZ2h0cyA8LVxuICBncm93dGhfZGF0YSAlPiVcbiAgZ3JvdXBfYnkobW9udGhzKSAlPiVcbiAgc3VtbWFyaXplKG1lYW4od2VpZ2h0X2tnKSlcbmBgYFxuYGBgIn0= -->
+<pre class="r"><code>```r
+growth_data_weights &lt;-
   growth_data %&gt;%
   group_by(months) %&gt;%
   summarize(mean(weight_kg))</code></pre>
+<p>```</p>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1953,9 +2076,8 @@ using the assignment operator.</p>
 script you’ve been working in as <code>groupby_summarize.R</code> for
 later reference.</p>
 <!-- rnb-text-end -->
-</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5kZXBlbmRlbnQgR3VpZGU6IDIuMiAtIGRwbHlyIgpvdXRwdXQ6IAogIGh0bWxfZG9jdW1lbnQ6CiAgaHRtbF9ub3RlYm9vazoKZWRpdG9yX29wdGlvbnM6IAogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUKLS0tCgpgYGB7ciBrbGlwcHksIGVjaG8gPSBGQUxTRSwgaW5jbHVkZSA9IFRSVUV9CmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygidG9wIiwgInJpZ2h0IiksIHRvb2x0aXBfbWVzc2FnZSA9ICJDb3B5IikKYGBgCgpJbiB0aGUgc2Vjb25kIGxlc3NvbiBvZiBXZWVrIDIsIHlvdSB3ZXJlIGludHJvZHVjZWQgdG8gZHBseXIsIHdoaWNoIGlzIGEgcGFja2FnZQppbmNsdWRlZCBpbiB0aGUgdGlkeXZlcnNlIHRoYXQgcHJvdmlkZXMgYSBzZXQgb2YgdmVyYnMgZm9yIGRhdGEgd3JhbmdsaW5nLgoKVG8gcHJhY3RpY2UgdXNpbmcgdGhlIGZ1bmN0aW9ucyBmcm9tIHRoZSBkcGx5ciBwYWNrYWdlLCBvcGVuIHRoZSBSIHByb2plY3QgY2FsbGVkCmBMZXNzb25zLlJwcm9qYCBhbmQgYSBibGFuayBSIHNjcmlwdC4gQmVmb3JlIHdlIGNhbiBiZWdpbiwgeW91J2xsIGFsc28gbmVlZCB0bwpsb2FkIHRoZSBuZWNlc3NhcnkgcGFja2FnZXMgaW50byB0aGUgY3VycmVudCBSIHNlc3Npb24uCgpgYGB7cn0KbGlicmFyeShoZWFsdGhkcykKbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKIyMgZmlsdGVyKCkKClRoZSBgZmlsdGVyYCBmdW5jdGlvbiBhbGxvd3MgdXMgdG8gaW5jbHVkZSBvciBleGNsdWRlIG9ic2VydmF0aW9ucwooaS5lLiwgcm93cykgZnJvbSBhIGRhdGFzZXQgYmFzZWQgb24gb25lIG9yIG1vcmUgY29uZGl0aW9ucy4gVGhlIGdlbmVyYWwKc3RydWN0dXJlIGZvciB1c2luZyB0aGlzIGZ1bmN0aW9uIGZvbGxvd3M6IGBmaWx0ZXIoZGF0YSwgY29uZGl0aW9uKWAuCgpMZXQncyBjb25zaWRlciB0aGUgYGdyb3d0aF9kYXRhYCBmcm9tIHRoZSBoZWFsdGhkcyBwYWNrYWdlLiBGaXJzdCwgd2UgY2FuIHRha2UgYQpsb29rIGF0IHRoZSBkYXRhc2V0IGJlZm9yZSBhbnkgZmlsdGVyaW5nIGlzIHBlcmZvcm1lZC4gVGhlcmUgYXJlIGVpZ2h0Cm9ic2VydmF0aW9ucyBhY3Jvc3MgZm91ciB2YXJpYWJsZXMuCgpgYGB7cn0KZ3Jvd3RoX2RhdGEKYGBgCgpJZiB5b3Ugd2VyZSBpbnRlcmVzdGVkIGluIHRoZSBvYnNlcnZhdGlvbnMgZm9yIHdoZW4gdGhlIGluZmFudHMgd2VyZSB0aHJlZQptb250aHMgb2xkLCB5b3Ugd291bGQgd3JpdGUgdGhlIGZvbGxvd2luZyBsaW5lIG9mIGNvZGU6CgpgYGB7cn0KZmlsdGVyKGdyb3d0aF9kYXRhLCBtb250aHMgPT0gMykKYGBgCgpOb3RpY2UgdGhlIHVzZSBvZiB0d28gZXF1YWwgc2lnbnMgaW4gdGhlIGFib3ZlIGxpbmUgb2YgY29kZS4gSW4gUiwgdHdvIGVxdWFsCnNpZ25zIGlzIHVzZWQgdG8gZGVub3RlICJpcyBlcXVhbCB0byIsIHdoaWNoIGlzIGRpZmZlcmVudCB0aGFuIHVzaW5nIGEgc2luZ2xlCmVxdWFsIHNpZ24gdG8gc2V0IGFuIGFyZ3VtZW50IHZhbHVlLgoKU2ltaWxhcmx5LCB5b3Ugd291bGQgd3JpdGUgdGhlIGZvbGxvd2luZyBsaW5lIG9mIGNvZGUgaWYgeW91IHdlcmUgaW5zdGVhZAppbnRlcmVzdGVkIGluIHRoZSBvYnNlcnZhdGlvbnMgZm9yIHdoZW4gdGhlIGluZmFudHMgd2VyZSB0d28gbW9udGhzIG9sZDoKCmBgYHtyfQpmaWx0ZXIoZ3Jvd3RoX2RhdGEsIG1vbnRocyA9PSAyKQpgYGAKClRoZSBgZmlsdGVyYCBmdW5jdGlvbiBjYW4gYWxzbyBiZSB1c2VkIHRvIHNwZWNpZnkgY29uZGl0aW9ucyBvdGhlciB0aGFuIGFuCmVxdWFsaXR5LiBGb3IgZXhhbXBsZSwgd2UgY2FuIGZpbHRlciBieSBhIHR3by1zaWRlZCBpbmVxdWFsaXR5IGJ5IHVzaW5nICE9IHRvCmRlbm90ZSAiaXMgbm90IGVxdWFsIHRvLiIgT2YgY291cnNlLCBpdCdzIHBvc3NpYmxlIHRvIGZpbHRlciBieSBvbmUtc2lkZWQKaW5lcXVhbGl0aWVzIGFzIHdlbGwsIHdoaWNoIGFyZSByZXByZXNlbnRlZCBpbiBSIGFzIDwsIDw9LCA+LCBhbmQgPj0uCgpgYGB7cn0KZmlsdGVyKGdyb3d0aF9kYXRhLCBtb250aHMgIT0gMikKZmlsdGVyKGdyb3d0aF9kYXRhLCBtb250aHMgPiAyKQpgYGAKCldlIGNhbiBhbHNvIGZpbHRlciBieSBtdWx0aXBsZSBjb25kaXRpb25zIHVzaW5nIHRoZSBBTkQgKCYpIGFuZCBPUiAofCkKb3BlcmF0b3JzLiBUaGUgQU5EIG9wZXJhdG9yIHJldHVybnMgdGhlIG9ic2VydmF0aW9ucyB3aGVyZSBib3RoIGNvbmRpdGlvbnMgYXJlCnRydWUsIGFuZCB0aGUgT1Igb3BlcmF0b3IgcmV0dXJucyB0aGUgb2JzZXJ2YXRpb25zIHdoZXJlIGF0IGxlYXN0IG9uZSBjb25kaXRpb24KaXMgdHJ1ZS4KCmBgYHtyfQpmaWx0ZXIoZ3Jvd3RoX2RhdGEsIHdlaWdodF9rZyAgPiA1LjAgJiBoZWlnaHRfY20gPiA1MCkKZmlsdGVyKGdyb3d0aF9kYXRhLCB3ZWlnaHRfa2cgID4gNS4wIHwgaGVpZ2h0X2NtID4gNTApCmBgYAoKUmVtZW1iZXIgdG8gc2F2ZSB0aGUgd29yayB5b3UndmUgZG9uZS4gVHJ5IHNhdmluZyB0aGUgc2NyaXB0IHlvdSd2ZSBiZWVuIHdvcmtpbmcKaW4gYXMgYGZpbHRlci5SYCBmb3IgbGF0ZXIgcmVmZXJlbmNlLgoKIyMgZ3JvdXBfYnkoKSBhbmQgc3VtbWFyaXplKCkKClRvIHByYWN0aWNlIGFkZGl0aW9uYWwgZnVuY3Rpb25zIGZyb20gdGhlIGRwbHlyIHBhY2thZ2UsIG9wZW4gYW5vdGhlciBibGFuawpzY3JpcHQgd2l0aGluIHRoZSBzYW1lIFIgcHJvamVjdC4KClRoZSBgZ3JvdXBfYnlgIGZ1bmN0aW9uIGFsbG93cyB1cyB0byBncm91cCBkYXRhIGludG8gc3ViLWRhdGFzZXRzIGRlZmluZWQgYnkgYQpjb21tb24gdmFsdWUuIEluIHR1cm4sIHRoZSBgc3VtbWFyaXplYCBmdW5jdGlvbiBwcm92aWRlcyBhIHN1bW1hcnkgb2YgdGhlIGRhdGEKYmFzZWQgb24gdGhlIGdyb3VwZWQgZGF0YSwgd2hlcmUgYSBzdW1tYXJ5IHN0YXRpc3RpYyBpcyByZXR1cm5lZCBmb3IgZWFjaApzdWItZGF0YXNldC4gVGhlcmVmb3JlLCB0aGUgYGdyb3VwX2J5YCBmdW5jdGlvbiBlZmZlY3RpdmVseSBzcGxpdHMgdGhlIGRhdGEsIGFuZApmdXR1cmUgYWN0aW9ucywgc3VjaCBhcyB0aGUgYHN1bW1hcml6ZWAgZnVuY3Rpb24sIGFyZSBhcHBsaWVkIHNlcGFyYXRlbHkgdG8gZWFjaApzdWItZGF0YXNldC4gVGhlIGdlbmVyYWwgc3RydWN0dXJlIGZvciB1c2luZyBib3RoIGZ1bmN0aW9ucyBmb2xsb3c6CmBncm91cF9ieShkYXRhLCB2YXJpYWJsZSlgIGFuZCBgc3VtbWFyaXplKGdyb3VwZWRfZGF0YSwgc3VtbWFyeV9mdW5jdGlvbih2YXJpYWJsZSkpYC4KCkZvciBleGFtcGxlLCBpZiB3ZSB3ZXJlIGludGVyZXN0ZWQgaW4gYXNzZXNzaW5nIHRoZSB0eXBpY2FsIHdlaWdodCBvZiBpbmZhbnRzCnVzaW5nIHRoZSBgZ3Jvd3RoX2RhdGFgLCBpdCB3b3VsZCBtYWtlIHNlbnNlIHRvIGdyb3VwIHRoZSBvYnNlcnZhdGlvbnMgYnkgbW9udGgKYW5kIG9idGFpbiB0aGUgYXZlcmFnZSB3ZWlnaHQgZm9yIGVhY2ggbW9udGggcmF0aGVyIHRoYW4gY29tYmluZSBhbGwKb2JzZXJ2YXRpb25zIGFjcm9zcyB0aW1lIGludG8gYSBzaW5nbGUgYXZlcmFnZS4KCkZpcnN0LCB3ZSB3b3VsZCBzdGFydCBieSBncm91cGluZyB0aGUgZGF0YSBieSBtb250aC4KCmBgYHtyfQpncm91cF9ieShncm93dGhfZGF0YSwgbW9udGhzKQpgYGAKCk5vdGljZSB0aGF0IHRoaXMgcmV0dXJucyBhIGdyb3VwZWQgZGF0YSBmcmFtZSB0aGF0IGlzbid0IGRpZmZlcmVudCBpbiBhcHBlYXJhbmNlCmZyb20gdGhlIG9yaWdpbmFsIGBncm93dGhfZGF0YWAuCgpOZXh0LCB3ZSBjYW4gd3JhcCB0aGlzIGNvbW1hbmQgaW4gYSBzdW1tYXJpemUgY29tbWFuZCBieSBzcGVjaWZ5aW5nIHRoZSBncm91cGVkCmRhdGEgZnJhbWUgYXMgdGhlIGZpcnN0IGFyZ3VtZW50IG9mIHRoZSBgc3VtbWFyaXplYCBmdW5jdGlvbi4gVGhlIHNlY29uZAphcmd1bWVudCB3aWxsIGJlIHRoZSBkZXNpcmVkIHN1bW1hcnkgZnVuY3Rpb24sIHdoaWNoIGluIHRoaXMgY2FzZSBpcyB0aGUgbWVhbgpvZiB0aGUgd2VpZ2h0IHZhcmlhYmxlLgoKYGBge3J9CnN1bW1hcml6ZShncm91cF9ieShncm93dGhfZGF0YSwgbW9udGhzKSwgbWVhbih3ZWlnaHRfa2cpKQpgYGAKClRoaXMgcmV0dXJucyBhIGRhdGEgZnJhbWUgd2hlcmUgdGhlIG51bWJlciBvZiByb3dzIGlzIGVxdWFsIHRvIHRoZSBudW1iZXIgb2YKc3ViLWRhdGFzZXRzLiBUaGUgZmlyc3QgY29sdW1uIGlzIGRlZmluZWQgYnkgdGhlIGdyb3VwaW5nIHZhcmlhYmxlIGFuZCB0aGUKc2Vjb25kIGNvbHVtbiBjb250YWlucyB0aGUgY2FsY3VsYXRlZCBzdW1tYXJ5IHN0YXRpc3RpY3MuCgpIb3dldmVyLCB3cmFwcGluZyBjb21tYW5kcyBpbiB0aGlzIG5lc3RlZCBtYW5uZXIgY2FuIG1ha2UgaXQgY29uZnVzaW5nIHRvCmZvbGxvdyB0aGUgY2hyb25vbG9neSBvZiBjb21tYW5kcy4gRm9yIHRoaXMgcmVhc29uLCB0aGUgZHBseXIgcGFja2FnZSBwcm92aWRlcwp0aGUgdXNlIG9mIHRoZSBwaXBlIG9wZXJhdG9yICglPiUpLCB3aGljaCBpbXByb3ZlcyB0aGUgcmVhZGFiaWxpdHkgb2YgeW91ciBjb2RlLgpUaGUgcGlwZSBvcGVyYXRvciB0YWtlcyB0aGUgY29udGVudHMgdG8gdGhlIGxlZnQgb2YgdGhlIG9wZXJhdG9yIGFuZCBwYXNzZXMgaXQKaW50byB0byB0aGUgZnVuY3Rpb24gb24gdGhlIHJpZ2h0IG9mIHRoZSBvcGVyYXRvciwgbWFraW5nIGl0IGVhc2llciB0bwp1bmRlcnN0YW5kIHRoZSBjaHJvbm9sb2d5IG9mIGNvbW1hbmRzIHdoZW4gbWFuaXB1bGF0aW5nIGRhdGEuIFJldHVybmluZyBiYWNrIHRvCm91ciBleGFtcGxlLCB1c2luZyB0aGUgcGlwZSBvcGVyYXRvciByZXR1cm5zIHRoZSBzYW1lIHJlc3VsdHMgYXMgdGhlIGFib3ZlIGxpbmUKb2YgY29kZS4KCmBgYHtyfQpncm91cF9ieShncm93dGhfZGF0YSwgbW9udGhzKSAlPiUgc3VtbWFyaXplKG1lYW4od2VpZ2h0X2tnKSkKYGBgCgpJdCdzIGV2ZW4gcG9zc2libGUgdG8gdXNlIG1vcmUgdGhhbiBvbmUgcGlwZSBvcGVyYXRvciBpbiBzdWNjZXNzaW9uLiBJbiB0aGlzCmNhc2UsIHdlIGNhbiBpbnN0ZWFkIHVzZSB0aGUgcGlwZSBvcGVyYXRvciB0byBwYXNzIHRoZSBkYXRhIGludG8gdGhlIGBncm91cF9ieWAKZnVuY3Rpb24gcmF0aGVyIHRoYW4gcHJvdmlkZSBpdCBhcyB0aGUgZmlyc3QgYXJndW1lbnQgb2YgdGhlIGZ1bmN0aW9uLgoKYGBge3J9Cmdyb3d0aF9kYXRhICU+JSBncm91cF9ieShtb250aHMpICU+JSBzdW1tYXJpemUobWVhbih3ZWlnaHRfa2cpKQpgYGAKCldlIGNhbiBhbHNvIHVzZSBsaW5lIGJyZWFrcyBhZnRlciBlYWNoIHBpcGUgb3BlcmF0b3IsIHdoaWNoIHdpbGwgYXV0b21hdGljYWxseQpiZSBpbmRlbnRlZCBhZnRlciB0aGUgZmlyc3QgbGluZSB0byByZXByZXNlbnQgdGhlIGNvZGUgYXMgYSBzaW5nbGUgZXhwcmVzc2lvbi4KCmBgYHtyfQpncm93dGhfZGF0YSAlPiUKICBncm91cF9ieShtb250aHMpICU+JQogIHN1bW1hcml6ZShtZWFuKHdlaWdodF9rZykpCmBgYAoKVHJ5IHNhdmluZyB0aGVzZSByZXN1bHRzIGFzIGFuIG9iamVjdCBpbiB5b3VyIGdsb2JhbCBlbnZpcm9ubWVudCB1c2luZyB0aGUKYXNzaWdubWVudCBvcGVyYXRvci4KCmBgYHtyfQpncm93dGhfZGF0YV93ZWlnaHRzIDwtCiAgZ3Jvd3RoX2RhdGEgJT4lCiAgZ3JvdXBfYnkobW9udGhzKSAlPiUKICBzdW1tYXJpemUobWVhbih3ZWlnaHRfa2cpKQpgYGAKCkp1c3QgYXMgYmVmb3JlLCByZW1lbWJlciB0byBzYXZlIHRoZSB3b3JrIHlvdSd2ZSBkb25lLiBUcnkgc2F2aW5nIHRoZSBzY3JpcHQKeW91J3ZlIGJlZW4gd29ya2luZyBpbiBhcyBgZ3JvdXBieV9zdW1tYXJpemUuUmAgZm9yIGxhdGVyIHJlZmVyZW5jZS4K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5kZXBlbmRlbnQgR3VpZGU6IDIuMiAtIGRwbHlyIgpvdXRwdXQ6IAogIGh0bWxfZG9jdW1lbnQ6CiAgaHRtbF9ub3RlYm9vazoKZWRpdG9yX29wdGlvbnM6IAogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUKLS0tCgpgYGB7ciBrbGlwcHksIGVjaG8gPSBGQUxTRSwgaW5jbHVkZSA9IFRSVUV9CmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygidG9wIiwgInJpZ2h0IiksIHRvb2x0aXBfbWVzc2FnZSA9ICJDb3B5IikKYGBgCgpJbiB0aGUgc2Vjb25kIGxlc3NvbiBvZiBNb2R1bGUgMiwgeW91IHdlcmUgaW50cm9kdWNlZCB0byBkcGx5ciwgd2hpY2ggaXMgYSBwYWNrYWdlCmluY2x1ZGVkIGluIHRoZSB0aWR5dmVyc2UgdGhhdCBwcm92aWRlcyBhIHNldCBvZiB2ZXJicyBmb3IgZGF0YSB3cmFuZ2xpbmcuCgpUbyBwcmFjdGljZSB1c2luZyB0aGUgZnVuY3Rpb25zIGZyb20gdGhlIGRwbHlyIHBhY2thZ2UsIG9wZW4gdGhlIFIgcHJvamVjdCBjYWxsZWQKYExlc3NvbnMuUnByb2pgIGFuZCBhIGJsYW5rIFIgc2NyaXB0LiBCZWZvcmUgd2UgY2FuIGJlZ2luLCB5b3UnbGwgYWxzbyBuZWVkIHRvCmxvYWQgdGhlIG5lY2Vzc2FyeSBwYWNrYWdlcyBpbnRvIHRoZSBjdXJyZW50IFIgc2Vzc2lvbi4KCmBgYHtyfQpsaWJyYXJ5KGhlYWx0aGRzKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIyBgZmlsdGVyKClgCgpUaGUgYGZpbHRlcmAgZnVuY3Rpb24gYWxsb3dzIHVzIHRvIGluY2x1ZGUgb3IgZXhjbHVkZSBvYnNlcnZhdGlvbnMKKGkuZS4sIHJvd3MpIGZyb20gYSBkYXRhc2V0IGJhc2VkIG9uIG9uZSBvciBtb3JlIGNvbmRpdGlvbnMuIFRoZSBnZW5lcmFsCnN0cnVjdHVyZSBmb3IgdXNpbmcgdGhpcyBmdW5jdGlvbiBmb2xsb3dzOiBgZmlsdGVyKGRhdGEsIGNvbmRpdGlvbilgLgoKTGV0J3MgY29uc2lkZXIgdGhlIGBncm93dGhfZGF0YWAgZnJvbSB0aGUgaGVhbHRoZHMgcGFja2FnZS4gRmlyc3QsIHdlIGNhbiB0YWtlIGEKbG9vayBhdCB0aGUgZGF0YXNldCBiZWZvcmUgYW55IGZpbHRlcmluZyBpcyBwZXJmb3JtZWQuIFRoZXJlIGFyZSBlaWdodApvYnNlcnZhdGlvbnMgYWNyb3NzIGZvdXIgdmFyaWFibGVzLgoKYGBge3J9Cmdyb3d0aF9kYXRhCmBgYAoKSWYgeW91IHdhbnQgdG8gZmlsdGVyIG91dCB0aGUgaW5mYW50cycgdGhyZWUtbW9udGggb2JzZXJ2YXRpb25zLCB5b3Ugd291bGQgd3JpdGUgCnRoZSBmb2xsb3dpbmcgbGluZSBvZiBjb2RlOgoKYGBge3J9CmZpbHRlcihncm93dGhfZGF0YSwgbW9udGhzID09IDMpCmBgYAoKTm90aWNlIHRoZSB1c2Ugb2YgdHdvIGVxdWFsIHNpZ25zIGluIHRoZSBhYm92ZSBsaW5lIG9mIGNvZGUuIEluIFIsIHR3byBlcXVhbApzaWducyBpcyB1c2VkIHRvIGRlbm90ZSAiaXMgZXF1YWwgdG8iLCB3aGljaCBpcyBkaWZmZXJlbnQgdGhhbiB1c2luZyBhIHNpbmdsZQplcXVhbCBzaWduIHRvIHNldCBhbiBhcmd1bWVudCB2YWx1ZS4gVGhpbmsgb2YgdHdvIGVxdWFsIHNpZ25zIGFzIGFza2luZyBhIHF1ZXN0aW9uIAphbmQgb25lIGVxdWFsIHNpZ24gYXMgbWFraW5nIGEgZGVjbGFyYXRpb24uIAoKU2ltaWxhcmx5LCB5b3Ugd291bGQgd3JpdGUgdGhlIGZvbGxvd2luZyBsaW5lIG9mIGNvZGUgaWYgeW91IHdhbnRlZCB0byBmaWx0ZXIKb3V0IHRoZSBpbmZhbnRzJyB0d28tbW9udGggb2JzZXJ2YXRpb25zOgoKYGBge3J9CmZpbHRlcihncm93dGhfZGF0YSwgbW9udGhzID09IDIpCmBgYAoKVGhlIGBmaWx0ZXJgIGZ1bmN0aW9uIGNhbiBhbHNvIGJlIHVzZWQgdG8gc3BlY2lmeSBjb25kaXRpb25zIG90aGVyIHRoYW4KZXF1YWxpdHkuIEZvciBleGFtcGxlLCB3ZSBjYW4gZmlsdGVyIGJ5IGEgdHdvLXNpZGVkIGluZXF1YWxpdHkgYnkgdXNpbmcgYCE9YCB0bwpkZW5vdGUgImlzIG5vdCBlcXVhbCB0byIuIEl0IGlzIHBvc3NpYmxlIHRvIGZpbHRlciBieSBvbmUtc2lkZWQKaW5lcXVhbGl0aWVzIGFzIHdlbGwsIHdoaWNoIGFyZSByZXByZXNlbnRlZCBpbiBSIGFzIGA8YCwgYDw9YCwgYD5gLCBhbmQgYD49YC4KCmBgYHtyfQpmaWx0ZXIoZ3Jvd3RoX2RhdGEsIG1vbnRocyAhPSAyKQpmaWx0ZXIoZ3Jvd3RoX2RhdGEsIG1vbnRocyA+IDIpCmBgYAoKV2UgY2FuIGFsc28gZmlsdGVyIGJ5IG11bHRpcGxlIGNvbmRpdGlvbnMgdXNpbmcgdGhlIEFORCAoYCZgKSBhbmQgT1IgKGB8YCkKb3BlcmF0b3JzLiBUaGUgQU5EIG9wZXJhdG9yIHJldHVybnMgdGhlIG9ic2VydmF0aW9ucyB3aGVyZSBib3RoIGNvbmRpdGlvbnMgYXJlCnRydWUsIGFuZCB0aGUgT1Igb3BlcmF0b3IgcmV0dXJucyB0aGUgb2JzZXJ2YXRpb25zIHdoZXJlIGF0IGxlYXN0IG9uZSBjb25kaXRpb24KaXMgdHJ1ZS4KCmBgYHtyfQpmaWx0ZXIoZ3Jvd3RoX2RhdGEsIHdlaWdodF9rZyAgPiA1LjAgJiBoZWlnaHRfY20gPiA1MCkKZmlsdGVyKGdyb3d0aF9kYXRhLCB3ZWlnaHRfa2cgID4gNS4wIHwgaGVpZ2h0X2NtID4gNTApCmBgYAoKUmVtZW1iZXIgdG8gc2F2ZSB0aGUgd29yayB5b3UndmUgZG9uZS4gU2F2ZSB0aGUgc2NyaXB0IHlvdSd2ZSBiZWVuIHdvcmtpbmcKaW4gYXMgYGZpbHRlci5SYCBmb3IgbGF0ZXIgcmVmZXJlbmNlLgoKIyMgYGdyb3VwX2J5KClgIGFuZCBgc3VtbWFyaXplKClgCgpUbyBwcmFjdGljZSBhZGRpdGlvbmFsIGZ1bmN0aW9ucyBmcm9tIHRoZSBkcGx5ciBwYWNrYWdlLCBvcGVuIGFub3RoZXIgYmxhbmsKc2NyaXB0IHdpdGhpbiB0aGUgc2FtZSBSIHByb2plY3QuCgpUaGUgYGdyb3VwX2J5YCBmdW5jdGlvbiBhbGxvd3MgdXMgdG8gZ3JvdXAgZGF0YSBpbnRvIHN1Yi1kYXRhc2V0cyBkZWZpbmVkIGJ5IGEKY29tbW9uIHZhbHVlLiBJbiB0dXJuLCB0aGUgYHN1bW1hcml6ZWAgZnVuY3Rpb24gcHJvdmlkZXMgYSBzdW1tYXJ5IG9mIHRoZSBkYXRhCmJhc2VkIG9uIHRoZSBncm91cGVkIGRhdGEsIHdoZXJlIGEgc3VtbWFyeSBzdGF0aXN0aWMgaXMgcmV0dXJuZWQgZm9yIGVhY2gKc3ViLWRhdGFzZXQuIFRoZXJlZm9yZSwgdGhlIGBncm91cF9ieWAgZnVuY3Rpb24gZWZmZWN0aXZlbHkgc3BsaXRzIHRoZSBkYXRhLCBhbmQKZnV0dXJlIGFjdGlvbnMsIHN1Y2ggYXMgdGhlIGBzdW1tYXJpemVgIGZ1bmN0aW9uLCBhcmUgYXBwbGllZCBzZXBhcmF0ZWx5IHRvIGVhY2gKc3ViLWRhdGFzZXQuIFRoZSBnZW5lcmFsIHN0cnVjdHVyZSBmb3IgdXNpbmcgYm90aCBmdW5jdGlvbnMgZm9sbG93OgpgZ3JvdXBfYnkoZGF0YSwgdmFyaWFibGUpYCBhbmQgYHN1bW1hcml6ZShncm91cGVkX2RhdGEsIHN1bW1hcnlfZnVuY3Rpb24odmFyaWFibGUpKWAuCgpGb3IgZXhhbXBsZSwgaWYgd2Ugd2FudCB0byBhc3Nlc3MgdGhlIHR5cGljYWwgd2VpZ2h0IG9mIGluZmFudHMKdXNpbmcgdGhlIGBncm93dGhfZGF0YWAsIGl0IHdvdWxkIG1ha2Ugc2Vuc2UgdG8gZ3JvdXAgdGhlIG9ic2VydmF0aW9ucyBieSBtb250aAphbmQgb2J0YWluIHRoZSBhdmVyYWdlIHdlaWdodCBmb3IgZWFjaCBtb250aCByYXRoZXIgdGhhbiBjb21iaW5lIGFsbApvYnNlcnZhdGlvbnMgYWNyb3NzIHRpbWUgaW50byBhIHNpbmdsZSBhdmVyYWdlLgoKRmlyc3QsIHdlIHdvdWxkIHN0YXJ0IGJ5IGdyb3VwaW5nIHRoZSBkYXRhIGJ5IG1vbnRoLgoKYGBge3J9Cmdyb3VwX2J5KGdyb3d0aF9kYXRhLCBtb250aHMpCmBgYAoKTm90aWNlIHRoYXQgdGhpcyByZXR1cm5zIGEgZ3JvdXBlZCBkYXRhIGZyYW1lIHRoYXQgaXNuJ3QgZGlmZmVyZW50IGluIGFwcGVhcmFuY2UKZnJvbSB0aGUgb3JpZ2luYWwgYGdyb3d0aF9kYXRhYC4KCk5leHQsIHdlIGNhbiB3cmFwIHRoaXMgY29tbWFuZCBpbiBhIHN1bW1hcml6ZSBjb21tYW5kIGJ5IHNwZWNpZnlpbmcgdGhlIGdyb3VwZWQKZGF0YSBmcmFtZSBhcyB0aGUgZmlyc3QgYXJndW1lbnQgb2YgdGhlIGBzdW1tYXJpemVgIGZ1bmN0aW9uLiBUaGUgc2Vjb25kCmFyZ3VtZW50IHdpbGwgYmUgdGhlIGRlc2lyZWQgc3VtbWFyeSBmdW5jdGlvbiwgd2hpY2ggaW4gdGhpcyBjYXNlIGlzIHRoZSBtZWFuCm9mIHRoZSB3ZWlnaHQgdmFyaWFibGUuCgpgYGB7cn0Kc3VtbWFyaXplKGdyb3VwX2J5KGdyb3d0aF9kYXRhLCBtb250aHMpLCBtZWFuKHdlaWdodF9rZykpCmBgYAoKVGhpcyBjb21tYW5kIHJldHVybnMgYSBkYXRhc2V0IHdoZXJlIHRoZSBudW1iZXIgb2Ygcm93cyBpcyBlcXVhbCB0byB0aGUgbnVtYmVyIG9mCnN1Yi1kYXRhc2V0cy4gVGhlIGZpcnN0IGNvbHVtbiBpcyBkZWZpbmVkIGJ5IHRoZSBncm91cGluZyB2YXJpYWJsZSBhbmQgdGhlCnNlY29uZCBjb2x1bW4gY29udGFpbnMgdGhlIGNhbGN1bGF0ZWQgc3VtbWFyeSBzdGF0aXN0aWNzLgoKSG93ZXZlciwgd3JhcHBpbmcgY29tbWFuZHMgaW4gdGhpcyBuZXN0ZWQgbWFubmVyIGNhbiBtYWtlIGl0IGNvbmZ1c2luZyB0bwpmb2xsb3cgdGhlIGNocm9ub2xvZ3kgb2YgY29tbWFuZHMuIEZvciB0aGlzIHJlYXNvbiwgdGhlIGRwbHlyIHBhY2thZ2UgcHJvdmlkZXMKdGhlIHVzZSBvZiB0aGUgcGlwZSBvcGVyYXRvciAoYCU+JWApLCB3aGljaCBpbXByb3ZlcyB0aGUgcmVhZGFiaWxpdHkgb2YgeW91ciBjb2RlLgpUaGUgcGlwZSBvcGVyYXRvciB0YWtlcyB0aGUgY29udGVudHMgdG8gdGhlIGxlZnQgb2YgdGhlIG9wZXJhdG9yIGFuZCBwYXNzZXMgaXQKaW50byB0byB0aGUgZnVuY3Rpb24gb24gdGhlIHJpZ2h0IG9mIHRoZSBvcGVyYXRvciwgbWFraW5nIGl0IGVhc2llciB0bwp1bmRlcnN0YW5kIHRoZSBjaHJvbm9sb2d5IG9mIGNvbW1hbmRzIHdoZW4gbWFuaXB1bGF0aW5nIGRhdGEuIFJldHVybmluZyBiYWNrIHRvCm91ciBleGFtcGxlLCB1c2luZyB0aGUgcGlwZSBvcGVyYXRvciByZXR1cm5zIHRoZSBzYW1lIHJlc3VsdHMgYXMgdGhlIGFib3ZlIGxpbmUKb2YgY29kZS4KCmBgYHtyLCBldmFsID0gRkFMU0V9Cmdyb3VwX2J5KGdyb3d0aF9kYXRhLCBtb250aHMpICU+JSBzdW1tYXJpemUobWVhbih3ZWlnaHRfa2cpKQpgYGAKCkl0J3MgZXZlbiBwb3NzaWJsZSB0byB1c2UgbW9yZSB0aGFuIG9uZSBwaXBlIG9wZXJhdG9yIGluIHN1Y2Nlc3Npb24uIEluIHRoaXMKY2FzZSwgd2UgY2FuIGluc3RlYWQgdXNlIHRoZSBwaXBlIG9wZXJhdG9yIHRvIHBhc3MgdGhlIGRhdGEgaW50byB0aGUgYGdyb3VwX2J5YApmdW5jdGlvbiByYXRoZXIgdGhhbiBwcm92aWRlIGl0IGFzIHRoZSBmaXJzdCBhcmd1bWVudCBvZiB0aGUgZnVuY3Rpb24uCgpgYGB7ciwgZXZhbCA9IEZBTFNFfQpncm93dGhfZGF0YSAlPiUgZ3JvdXBfYnkobW9udGhzKSAlPiUgc3VtbWFyaXplKG1lYW4od2VpZ2h0X2tnKSkKYGBgCgpXZSBjYW4gYWxzbyB1c2UgbGluZSBicmVha3MgYWZ0ZXIgZWFjaCBwaXBlIG9wZXJhdG9yLCB3aGljaCB3aWxsIGF1dG9tYXRpY2FsbHkKYmUgaW5kZW50ZWQgYWZ0ZXIgdGhlIGZpcnN0IGxpbmUgdG8gcmVwcmVzZW50IHRoZSBjb2RlIGFzIGEgc2luZ2xlIGV4cHJlc3Npb24uCgpgYGB7ciwgZXZhbCA9IEZBTFNFfQpncm93dGhfZGF0YSAlPiUKICBncm91cF9ieShtb250aHMpICU+JQogIHN1bW1hcml6ZShtZWFuKHdlaWdodF9rZykpCmBgYAoKVG8gYmUgY2xlYXIsIGFsbCBmb3VyIG9mIHRoZSBwcmV2aW91cyBjaHVua3Mgb2YgY29kZSBnaXZlIHRoZSBzYW1lIHJlc3VsdC4gRm9yIApzcGFjZS1zYXZpbmcgcHVycG9zZXMsIHdlJ3ZlIHN1cHByZXNzZWQgdGhlIHByaW50ZWQgb3V0cHV0LiAKClRyeSBzYXZpbmcgdGhlc2UgcmVzdWx0cyBhcyBhbiBvYmplY3QgaW4geW91ciBnbG9iYWwgZW52aXJvbm1lbnQgdXNpbmcgdGhlCmFzc2lnbm1lbnQgb3BlcmF0b3IuCgpgYGB7cn0KZ3Jvd3RoX2RhdGFfd2VpZ2h0cyA8LQogIGdyb3d0aF9kYXRhICU+JQogIGdyb3VwX2J5KG1vbnRocykgJT4lCiAgc3VtbWFyaXplKG1lYW4od2VpZ2h0X2tnKSkKYGBgCgpKdXN0IGFzIGJlZm9yZSwgcmVtZW1iZXIgdG8gc2F2ZSB0aGUgd29yayB5b3UndmUgZG9uZS4gVHJ5IHNhdmluZyB0aGUgc2NyaXB0CnlvdSd2ZSBiZWVuIHdvcmtpbmcgaW4gYXMgYGdyb3VwYnlfc3VtbWFyaXplLlJgIGZvciBsYXRlciByZWZlcmVuY2UuCg==</div>
 
 
 
