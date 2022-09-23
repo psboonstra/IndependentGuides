@@ -530,7 +530,7 @@ pre code {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy', 'Copied!');
 </script>
-<p>In the second lesson of Week 2, you were introduced to dplyr, which
+<p>In the second lesson of Module 2, you were introduced to dplyr, which
 is a package included in the tidyverse that provides a set of verbs for
 data wrangling.</p>
 <p>To practice using the functions from the dplyr package, open the R
@@ -553,9 +553,9 @@ library(tidyverse)</code></pre>
 observations (i.e., rows) from a dataset based on one or more
 conditions. The general structure for using this function follows:
 <code>filter(data, condition)</code>.</p>
-<p>Let’s consider the <code>growth_data</code> from the healthds
-package. First, we can take a look at the dataset before any filtering
-is performed. There are eight observations across four variables.</p>
+<p>Let’s consider <code>growth_data</code> from the healthds package.
+First, we can take a look at the dataset before any filtering is
+performed. There are eight observations across four variables:</p>
 <pre class="r"><code>growth_data</code></pre>
 <pre><code>## # A tibble: 8 × 4
 ##   id    months weight_kg height_cm
@@ -576,10 +576,10 @@ would write the following line of code:</p>
 ##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 001        3       5.5      58.1
 ## 2 002        3       6.6      57</code></pre>
-<p>Notice the use of two equal signs in the above line of code. In R,
-two equal signs is used to denote “is equal to”, which is different than
-using a single equal sign to set an argument value. Think of two equal
-signs as asking a question and one equal sign as making a
+<p>Notice the use of <em>two</em> equal signs in the above line of code.
+In R, two equal signs is used to denote “is equal to”, which is distinct
+from using a single equal sign to set an argument value. Think of two
+equal signs as asking a question and one equal sign as making a
 declaration.</p>
 <p>Similarly, you would write the following line of code if you wanted
 to filter out the infants’ two-month observations:</p>
@@ -594,7 +594,7 @@ conditions other than equality. For example, we can filter by a
 two-sided inequality by using <code>!=</code> to denote “is not equal
 to”. It is possible to filter by one-sided inequalities as well, which
 are represented in R as <code>&lt;</code>, <code>&lt;=</code>,
-<code>&gt;</code>, and <code>&gt;=</code>.</p>
+<code>&gt;</code>, and <code>&gt;=</code>:</p>
 <pre class="r"><code>filter(growth_data, months != 2)</code></pre>
 <pre><code>## # A tibble: 6 × 4
 ##   id    months weight_kg height_cm
@@ -612,10 +612,10 @@ are represented in R as <code>&lt;</code>, <code>&lt;=</code>,
 ## 1 001        3       5.5      58.1
 ## 2 002        3       6.6      57</code></pre>
 <p>We can also filter by multiple conditions using the AND
-(<code>&amp;</code>) and OR (<code>|</code>) operators. The AND operator
-returns the observations where both conditions are true, and the OR
-operator returns the observations where at least one condition is
-true.</p>
+(<code>&amp;</code>, an ampersand) and OR (<code>|</code>, a vertical
+bar) operators. The AND operator returns the observations where both
+conditions are true, and the OR operator returns the observations where
+at least one condition is true:</p>
 <pre class="r"><code>filter(growth_data, weight_kg  &gt; 5.0 &amp; height_cm &gt; 50)</code></pre>
 <pre><code>## # A tibble: 3 × 4
 ##   id    months weight_kg height_cm
@@ -633,6 +633,17 @@ true.</p>
 ## 4 002        1       4.2      52.6
 ## 5 002        2       5.5      54.9
 ## 6 002        3       6.6      57</code></pre>
+<p>One note: you can filter by multiple conditions separated by
+commas:</p>
+<pre class="r"><code>filter(growth_data, weight_kg  &gt; 5.0, height_cm &gt; 50)</code></pre>
+<pre><code>## # A tibble: 3 × 4
+##   id    months weight_kg height_cm
+##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 001        3       5.5      58.1
+## 2 002        2       5.5      54.9
+## 3 002        3       6.6      57</code></pre>
+<p>Comma-separated conditions are interpreted as AND operators, so you
+are free to use either commas or ampersands.</p>
 <p>Remember to save the work you’ve done. Save the script you’ve been
 working in as <code>filter.R</code> for later reference.</p>
 </div>
@@ -649,13 +660,15 @@ splits the data, and future actions, such as the <code>summarize</code>
 function, are applied separately to each sub-dataset. The general
 structure for using both functions follow:
 <code>group_by(data, variable)</code> and
-<code>summarize(grouped_data, summary_function(variable))</code>.</p>
+<code>summarize(grouped_data, &lt;SUMMARY_FUNCTION&gt;(variable))</code>,
+where you replace <code>&lt;SUMMARY_FUNCTION&gt;</code> with an actual
+function name.</p>
 <p>For example, if we want to assess the typical weight of infants using
 the <code>growth_data</code>, it would make sense to group the
-observations by month and obtain the average weight for each month
-rather than combine all observations across time into a single
+observations by month and obtain the average, i.e. mean, weight for each
+month rather than combine all observations across time into a single
 average.</p>
-<p>First, we would start by grouping the data by month.</p>
+<p>First, we would start by grouping the data by month:</p>
 <pre class="r"><code>group_by(growth_data, months)</code></pre>
 <pre><code>## # A tibble: 8 × 4
 ## # Groups:   months [4]
@@ -669,13 +682,12 @@ average.</p>
 ## 6 002        1       4.2      52.6
 ## 7 002        2       5.5      54.9
 ## 8 002        3       6.6      57</code></pre>
-<p>Notice that this returns a grouped data frame that isn’t different in
-appearance from the original <code>growth_data</code>.</p>
+<p>This returns a grouped dataset that isn’t does look too different
+from the original <code>growth_data</code>.</p>
 <p>Next, we can wrap this command in a summarize command by specifying
-the grouped data frame as the first argument of the
-<code>summarize</code> function. The second argument will be the desired
-summary function, which in this case is the mean of the weight
-variable.</p>
+the grouped dataset as the first argument of the <code>summarize</code>
+function. The second argument will be the desired summary function,
+which in this case is the mean of the weight variable:</p>
 <pre class="r"><code>summarize(group_by(growth_data, months), mean(weight_kg))</code></pre>
 <pre><code>## # A tibble: 4 × 2
 ##   months `mean(weight_kg)`
@@ -684,40 +696,56 @@ variable.</p>
 ## 2      1              4.15
 ## 3      2              5.2 
 ## 4      3              6.05</code></pre>
-<p>This command returns a dataset where the number of rows is equal to
-the number of sub-datasets. The first column is defined by the grouping
+<p>This command returns a dataset with number of rows equal to the
+number of sub-datasets. The first column is defined by the grouping
 variable and the second column contains the calculated summary
 statistics.</p>
-<p>However, wrapping commands in this nested manner can make it
-confusing to follow the chronology of commands. For this reason, the
-dplyr package provides the use of the pipe operator
+<p>However, wrapping commands in this nested manner can make be
+confusing when trying to follow the chronology of commands. For this
+reason, the dplyr package provides the use of the pipe operator
 (<code>%&gt;%</code>), which improves the readability of your code. The
-pipe operator takes the contents to the left of the operator and passes
-it into to the function on the right of the operator, making it easier
-to understand the chronology of commands when manipulating data.
-Returning back to our example, using the pipe operator returns the same
-results as the above line of code.</p>
+pipe operator takes the contents to the left of the it and passes those
+contents into to the function on the right of it as if it was the first
+argument in that function, making it easier to understand the chronology
+of commands when manipulating data.</p>
+<p>Returning back to our example, using the pipe operator as below
+returns the same results as the above line of code:</p>
 <pre class="r"><code>group_by(growth_data, months) %&gt;% summarize(mean(weight_kg))</code></pre>
 <p>It’s even possible to use more than one pipe operator in succession.
 In this case, we can instead use the pipe operator to pass the data into
 the <code>group_by</code> function rather than provide it as the first
-argument of the function.</p>
+argument of the function:</p>
 <pre class="r"><code>growth_data %&gt;% group_by(months) %&gt;% summarize(mean(weight_kg))</code></pre>
 <p>We can also use line breaks after each pipe operator, which will
 automatically be indented after the first line to represent the code as
-a single expression.</p>
+a single expression:</p>
 <pre class="r"><code>growth_data %&gt;%
   group_by(months) %&gt;%
   summarize(mean(weight_kg))</code></pre>
 <p>To be clear, all four of the previous chunks of code give the same
 result. For space-saving purposes, we’ve suppressed the printed
 output.</p>
+<p>Here’s one last thing, which we didn’t cover in the guided practice.
+You can provide a custom name to your newly created summary variable as
+follows:</p>
+<pre class="r"><code>growth_data %&gt;%
+  group_by(months) %&gt;%
+  summarize(mean_weight_kg = mean(weight_kg))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   months mean_weight_kg
+##    &lt;dbl&gt;          &lt;dbl&gt;
+## 1      0           2.95
+## 2      1           4.15
+## 3      2           5.2 
+## 4      3           6.05</code></pre>
+<p>Here I called my new variable <code>mean_weight_kg</code> for obvious
+reasons, but you are free to provide whatever name you want.</p>
 <p>Try saving these results as an object in your global environment
-using the assignment operator.</p>
+using the assignment operator:</p>
 <pre class="r"><code>growth_data_weights &lt;-
   growth_data %&gt;%
   group_by(months) %&gt;%
-  summarize(mean(weight_kg))</code></pre>
+  summarize(mean_weight_kg = mean(weight_kg))</code></pre>
 <p>Just as before, remember to save the work you’ve done. Try saving the
 script you’ve been working in as <code>groupby_summarize.R</code> for
 later reference.</p>

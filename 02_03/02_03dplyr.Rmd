@@ -12,7 +12,8 @@ klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 ```
 
 In the third lesson of Module 2, you were introduced to additional functions from
-the dplyr package. To practice using these functions, open the R project called
+the tidyr (`pivot_wider` and `pivot_longer`) and dplyr (`mutate`, `select` and `arrage`)
+packages. To practice using these functions, open the R project called
 `Lessons.Rproj` and a blank R script. Before we can begin, you'll also need to
 load the necessary packages into the current R session.
 
@@ -49,7 +50,7 @@ R doesn't allow numeric variable names and thus, in the printed result, it
 has put so-called 'backticks' around the number in each column to create valid 
 variable names. However, these variable names are not particularly informative 
 of the data contained in each
-column. In this case, the `names_prefix` argument is useful for adding a string
+column. In this case, the `names_prefix` argument will add a string
 before every variable name. Returning to our example, this argument allows you
 provide a prefix that conveys both the timing of the measurements (i.e. month)
 and the type of measurement (i.e. weight):
@@ -62,7 +63,7 @@ growth_data %>%
               values_from = weight_kg)
 ```
 
-Let's assign this data frame to an object:
+Let's assign this dataset to an object:
 
 ```{r}
 growth_wide_weight <-
@@ -74,10 +75,11 @@ growth_wide_weight <-
 ```
 
 Recall that the `pivot_wider` and `pivot_longer` functions are inverses of each
-other. The `pivot_longer` requires the `cols` argument to identify the columns
-to pivot into long format, and we can also use the NOT operator (`!`) to denote
-"all columns except..." within this argument. Below we pivot all columns except the
-infant ID variable:
+other: the former changes data from long to wide format, and the latter changes
+data from wide to long format. The `pivot_longer` requires the `cols` argument to 
+identify the columns to pivot into long format, and we can also use the NOT 
+operator (`!`) to denote "all columns except..." within this argument. Below 
+we pivot all columns except the infant ID variable:
 
 ```{r}
 growth_wide_weight %>%
@@ -95,7 +97,7 @@ growth_wide_weight %>%
 ```
 
 Notice that the results resemble the original `growth_data`, demonstrating that
-the `pivot_wider` anf `pivot_longer` functions are natural complements of each
+the `pivot_wider` and `pivot_longer` functions are natural inverses of each
 other.
 
 Remember to save the work you've done. Try saving the script you've been working
@@ -108,8 +110,8 @@ script within the same R project.
 
 Let's consider the task of creating a BMI variable using the height and weight
 measurements from the `growth_data`. Within the `mutate` function, we name the
-new variable to create and specify how this variable is defined (i.e. BMI
-formula).
+new variable to create on the left-hand side of the equal sign and specify how 
+this variable is defined (i.e. BMI formula) on the right-hand side:
 
 ```{r}
 growth_data %>%
@@ -123,7 +125,7 @@ The nice thing about the `mutate` function is that we can create multiple new
 variables within one function call and even reference variables that were just
 previously created in that same function call. For example, we can create
 a height variable that performs a unit conversion from centimeters to meters
-prior to creating the BMI variable.
+prior to creating the BMI variable:
 
 ```{r}
 growth_data %>%
@@ -131,12 +133,12 @@ growth_data %>%
          bmi = weight_kg / height_m^2)
 ```
 
-This code returns the original `growth_data` along with two new columns, where
+This code returns the original `growth_data` along with two new columns, and
 the calculated values for BMI are the same as before.
 
-We could assign this data frame to an object, particularly if we plan on
+We could assign this dataset to an object, particularly if we plan on
 performing subsequent calculations on the BMI measurements. Without assignment,
-R does not save the new variables that were created.
+R does not save the new variables that were created:
 
 ```{r}
 growth_data_expanded <-
@@ -180,7 +182,7 @@ growth_data %>%
 
 To be clear, what the above code does is sort first by `months` in *decreasing* order and then, among observations having common values of the motnh, sorting by increasing (the default direction) values of `weight_kg`. 
 
-The `select` function chooses columns in the data frame:
+The `select` function chooses columns in the dataset:
 
 ```{r}
 growth_data %>%
@@ -203,17 +205,21 @@ growth_data %>%
 ```
 
 However, it's not always easy to name every column, especially if there are
-many columns in your data frame. In this case, there are helper functions that
+many columns in your dataset. In this case, there are helper functions that
 help us more easily select columns. For example, we can use the `everything`
-function to name columns prior to selecting the rest of the columns.
+function to name columns prior to selecting the rest of the columns:
 
 ```{r}
 growth_data %>%
   select(months, everything())
 ```
 
+The `everything` function is pretty clever: it will take note of any column
+you explicitly named prior to calling `everything` and only include the *remaining*
+columns. 
+
 The `starts_with` function allows us to provide the beginning of the column name
-that we would like to select.
+that we would like to select:
 
 ```{r}
 growth_data %>%
@@ -221,7 +227,7 @@ growth_data %>%
 ```
 
 Similarly, the `ends_with` function allows us to provide the end of the column
-name that we would like to select.
+name that we would like to select:
 
 ```{r}
 growth_data %>%
@@ -230,7 +236,7 @@ growth_data %>%
 
 The `contains` function matches the string argument anywhere in the column name.
 For example, the "ght" string returns both the height and weight variables to
-select.
+select:
 
 ```{r}
 growth_data %>%

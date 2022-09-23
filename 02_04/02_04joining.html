@@ -549,11 +549,11 @@ library(tidyverse)</code></pre>
 <h2><code>full_join()</code></h2>
 <p>Let’s consider the <code>growth_data_aux</code> dataset from the
 healthds package. This dataset contains measurements on the same infants
-from the <code>growth_data</code>. However, there are four timepoints
-per infant in the <code>growth_data</code> while there are only three
+as the <code>growth_data</code>. However, there are four timepoints per
+infant in the <code>growth_data</code> while there are only three
 timepoints per infant in the <code>growth_data_aux</code> dataset. The
 <code>growth_data_aux</code> dataset also includes measurements of head
-circumfrance taken at those timepoints.</p>
+circumference taken at those timepoints.</p>
 <pre class="r"><code>growth_data_aux</code></pre>
 <pre><code>## # A tibble: 6 × 3
 ##   id    months headcir_cm
@@ -569,7 +569,7 @@ variables serve as identifiers that help us identify the observations as
 well as match and link data from different datasets via joining.</p>
 <p>The <code>full_join</code> functions requires that you provide the
 names of the two datasets to join. By performing a full join of the
-datasets, we obtain a data frame of eight observations across five
+datasets, we obtain a dataset of eight observations across five
 variables.</p>
 <pre class="r"><code>full_join(growth_data, growth_data_aux)</code></pre>
 <pre><code>## Joining, by = c(&quot;id&quot;, &quot;months&quot;)</code></pre>
@@ -594,7 +594,7 @@ variables).</p>
 <h2><code>left_join()</code> and <code>right_join()</code></h2>
 <p>The <code>left_join</code> function ensures that every unique
 combination of the identifier variables from the first dataset are
-returned in the joined data.</p>
+returned in the joined data:</p>
 <pre class="r"><code>left_join(growth_data, growth_data_aux)</code></pre>
 <pre><code>## Joining, by = c(&quot;id&quot;, &quot;months&quot;)</code></pre>
 <pre><code>## # A tibble: 8 × 5
@@ -608,12 +608,12 @@ returned in the joined data.</p>
 ## 6 002        1       4.2      52.6       39.2
 ## 7 002        2       5.5      54.9       41.4
 ## 8 002        3       6.6      57         NA</code></pre>
-<p>This left join appears the same as the full join since every unique
-combination of the identifier variables is captured in the first
-dataset.</p>
+<p>This left join appears to give the same result as the full join we
+practiced earlier since every unique combination of the identifier
+variables is captured in the first dataset.</p>
 <p>On the other hand, the <code>right_join</code> function returns only
 the unique combinations of the identifier variables that exist in the
-second dataset.</p>
+second dataset:</p>
 <pre class="r"><code>right_join(growth_data, growth_data_aux)</code></pre>
 <pre><code>## Joining, by = c(&quot;id&quot;, &quot;months&quot;)</code></pre>
 <pre><code>## # A tibble: 6 × 5
@@ -630,14 +630,15 @@ measurements taken at three timepoints, the joined data does not include
 the rows from the <code>growth_data</code> for measurements taken at
 month three.</p>
 <p>To check your understanding on the difference between these types of
-joins, try to convince yourself why <code>left_join(x, y)</code> will
-yield the same result as <code>right_join(y, x)</code> (except that the
-order of the columns will be different).</p>
+joins, try to convince yourself why, for two datasets <code>x</code> and
+<code>y</code>, <code>left_join(x, y)</code> will yield the same result
+as <code>right_join(y, x)</code> (except that the order of the columns
+will be different).</p>
 </div>
 <div id="inner_join" class="section level2">
 <h2><code>inner_join()</code></h2>
 <p>The <code>inner_join</code> function returns the unique combinations
-of the identifier variables that exist in both datasets.</p>
+of the identifier variables that exist in both datasets:</p>
 <pre class="r"><code>inner_join(growth_data, growth_data_aux)</code></pre>
 <pre><code>## Joining, by = c(&quot;id&quot;, &quot;months&quot;)</code></pre>
 <pre><code>## # A tibble: 6 × 5
@@ -649,11 +650,11 @@ of the identifier variables that exist in both datasets.</p>
 ## 4 002        0       2.9      48.6       35.7
 ## 5 002        1       4.2      52.6       39.2
 ## 6 002        2       5.5      54.9       41.4</code></pre>
-<p>This inner join appears the same as the right join since the
-measurements taken at month three do not exist in both datasets.
-However, it won’t always be the case that full and left joins return the
-same results, and the same is true for right and inner joins. This
-behavior depends on the specific qualities of both datasets.</p>
+<p>For this example, this inner join gives an identical result as the
+right join we did previously. However, it won’t always be the case that
+full and left joins return the same results, and the same is true for
+right and inner joins. This behavior depends on the specific qualities
+of both datasets.</p>
 <p>Remember to save the work you’ve done. Try saving the script you’ve
 been working in as <code>joining.R</code> for later reference.</p>
 </div>
@@ -668,14 +669,15 @@ console. The help page will appear in the Help tab, which is typically
 in the lower right pane in RStudio.</p>
 <p>Try pulling up the help page for the <code>pivot_wider</code>
 function. You’ll notice that this help page is comprised of a few
-different sections. The Description section describes in plain language
-the intended behavior of the function. The Usage section provides both
-the name of the function and all the possible function arguments that
-you can specify. The Arguments section describes each argument in more
-detail and the values that an argument accepts.</p>
-<p>The Examples section provides example code of how the function is
-used. You can try replicating the first example from the
-<code>pivot_wider</code> help page.</p>
+different sections. The <em>Description</em> section describes in plain
+language the intended behavior of the function. The <em>Usage</em>
+section provides both the name of the function and all the possible
+function arguments that you can specify. The <em>Arguments</em> section
+describes each argument in more detail and the values that an argument
+accepts.</p>
+<p>The <em>Examples</em> section provides example code of how the
+function is used. You can try replicating the first example from the
+<code>pivot_wider</code> help page:</p>
 <pre class="r"><code>fish_encounters</code></pre>
 <pre><code>## # A tibble: 114 × 3
 ##    fish  station  seen
@@ -715,16 +717,18 @@ used. You can try replicating the first example from the
 ## 17 4863        1     1     NA    NA      NA    NA    NA    NA    NA    NA    NA
 ## 18 4864        1     1     NA    NA      NA    NA    NA    NA    NA    NA    NA
 ## 19 4865        1     1      1    NA      NA    NA    NA    NA    NA    NA    NA</code></pre>
+<p>(<code>fish_encounters</code> is a built-in dataset that is
+automatically available to you when you install the tidyverse)</p>
 <p>Now try pulling up the help page for the <code>select</code> function
 (i.e., <code>?select</code>). You’ll notice that this help page also
 gives an overview of the selection helper functions (e.g., the
 <code>everything</code> function), which we discussed in the previous
 lesson. Each of these helper functions also has their own help page. In
-this case, the Arugments section isn’t especially helpful since the
-arguments to the <code>select</code> function are specific to a
+this case, the <em>Arguments</em> section isn’t especially helpful since
+the arguments to the <code>select</code> function are specific to a
 particular dataset in the form of variable names.</p>
 <p>Once again, you can try replicating the first example from the
-Examples section of the help page.</p>
+<em>Examples</em> section of the help page:</p>
 <pre class="r"><code>starwars %&gt;% select(height)</code></pre>
 <pre><code>## # A tibble: 87 × 1
 ##    height

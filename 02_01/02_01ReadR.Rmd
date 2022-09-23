@@ -15,8 +15,8 @@ In this first lesson of Module 2, you were introduced to the tidyverse, a packag
 of packages that provides you with all of the tools for translating your data
 into useful information and knowledge. 
 
-In Module 1, you created an R project called `GlobalFindex.Rproj` and in that same
-folder you created a script called `IndicatorTable.R`. Open the `GlobalFindex.Rproj`
+In Module 1, you created an R project called `GlobalFindex.Rproj` and, in that same
+folder, you created a script called `IndicatorTable.R`. Open the `GlobalFindex.Rproj`
 now. Doing so will open an Rstudio session. 
 
 To access the functions in the tidyverse, you will first need to install it
@@ -29,9 +29,10 @@ if you previously installed it you won't need to do so again.
 install.packages("tidyverse")
 ```
 
-Observe that I wrote an R comment above. In R, any line that starts with a pound
-or hashtag symbol (`#`) is ignored. It is meant as a way for the code writer
-to communicate to the code reader.
+Observe that we wrote an R comment above. In R, any line that starts with a pound 
+symbol (`#`, also called a hashtag) is ignored. It is meant as a way for the code writer
+to communicate to the code reader. Sometimes they are the same person, meaning that
+the person most likely to benefit from your comments is you. 
 
 Having installed the tidyverse, you now need to load it into your current R session,
 which you can do with the following code:
@@ -41,10 +42,16 @@ library(tidyverse)
 ```
 
 You see a couple of messages here. First, remembering that the tidyverse is in
-fact a package of packages, we are told which packages are loaded, and their version numbers. Second, we are told that two functions in the tidyverse, `filter` and `lag`, already
-existed in our R sessions and are now 'masked' by their tidyverse variants.  
+fact a package of packages, we are told which packages are loaded and their version numbers. 
+Second, we are told that there are two functions, `filter` and `lag`, that already
+existed in our R sessions. You cannot have two identically named functions at once, and
+so the tidyverse versions are taking precedence, or 'masking', the ones that
+were previously there. 
 
-If you haven't yet done so, type this code (that is, `library(tidyverse)`) on the first line of your `IndicatorTable.R` script and then run it by simultaneously pressing Cmd+Enter (on your Mac) or Ctrl+Enter (on your Windows computer). Your 'enter' key may be labeled as 'return' -- on American keyboards its the button at the far right. 
+If you haven't yet done so, put this code (that is, `library(tidyverse)`) on the 
+first line of your `IndicatorTable.R` script and then run it by simultaneously 
+pressing Cmd+Enter (on your Mac) or Ctrl+Enter (on your Windows computer). Your 
+'enter' key may be labeled as 'return' -- on American keyboards its the button at the far right. 
 
 ## `read_csv()`
 
@@ -56,12 +63,10 @@ computers will use their spreadsheet software program, e.g. Excel, to view it,
 and you won't even see the commas that separate the values!).
 
 We've saved the Global Findex data into a file called `micro_world.csv`, and it 
-exists in the same folder as our project, which I can see from looking at the 
-bottom-right panel of my RStudio session:
+exists in the same folder as our project, which we can see from looking at the 
+bottom-right panel of the RStudio session:
 
-
-![Files in your GlobalFindex folder](project_files.png)
-
+![**Image description: Files in your GlobalFindex folder**](project_files.png)
 
 Go back to `IndicatorTable.R` and type the following line of code, which will
 read in the Global Findex data and assign it as an object in your R session entitled
@@ -80,10 +85,10 @@ about the numbers of rows and columns in your data and the variable (column) nam
 The last thing to do is save your work. Right now, you should see that your 
 file is in red font and has an asterisk after the R:
 
-![What your script looks like before saving](unsaved_script.png)
+![**Image description: What your script looks like before saving**](unsaved_script.png)
 
 
 Press Cmd+S (Mac) or Ctrl+S (Windows) to save your work, and it should change to
 black font with no asterisk:
 
-![What your script looks like after saving](saved_script.png)
+![**Image description: What your script looks like after saving**](saved_script.png)

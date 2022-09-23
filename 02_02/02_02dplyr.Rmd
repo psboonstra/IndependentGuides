@@ -29,9 +29,9 @@ The `filter` function allows us to include or exclude observations
 (i.e., rows) from a dataset based on one or more conditions. The general
 structure for using this function follows: `filter(data, condition)`.
 
-Let's consider the `growth_data` from the healthds package. First, we can take a
+Let's consider `growth_data` from the healthds package. First, we can take a
 look at the dataset before any filtering is performed. There are eight
-observations across four variables.
+observations across four variables:
 
 ```{r}
 growth_data
@@ -44,8 +44,8 @@ the following line of code:
 filter(growth_data, months == 3)
 ```
 
-Notice the use of two equal signs in the above line of code. In R, two equal
-signs is used to denote "is equal to", which is different than using a single
+Notice the use of *two* equal signs in the above line of code. In R, two equal
+signs is used to denote "is equal to", which is distinct from using a single
 equal sign to set an argument value. Think of two equal signs as asking a question 
 and one equal sign as making a declaration. 
 
@@ -59,22 +59,31 @@ filter(growth_data, months == 2)
 The `filter` function can also be used to specify conditions other than
 equality. For example, we can filter by a two-sided inequality by using `!=` to
 denote "is not equal to". It is possible to filter by one-sided
-inequalities as well, which are represented in R as `<`, `<=`, `>`, and `>=`.
+inequalities as well, which are represented in R as `<`, `<=`, `>`, and `>=`:
 
 ```{r}
 filter(growth_data, months != 2)
 filter(growth_data, months > 2)
 ```
 
-We can also filter by multiple conditions using the AND (`&`) and OR (`|`)
-operators. The AND operator returns the observations where both conditions are
+We can also filter by multiple conditions using the AND (`&`, an ampersand) and OR (`|`, 
+a vertical bar) operators. The AND operator returns the observations where both conditions are
 true, and the OR operator returns the observations where at least one condition
-is true.
+is true:
 
 ```{r}
 filter(growth_data, weight_kg  > 5.0 & height_cm > 50)
 filter(growth_data, weight_kg  > 5.0 | height_cm > 50)
 ```
+
+One note: you can filter by multiple conditions separated by commas:
+
+```{r}
+filter(growth_data, weight_kg  > 5.0, height_cm > 50)
+```
+
+Comma-separated conditions are interpreted as AND operators, so you are free to
+use either commas or ampersands. 
 
 Remember to save the work you've done. Save the script you've been working
 in as `filter.R` for later reference.
@@ -90,43 +99,45 @@ based on the grouped data, where a summary statistic is returned for each
 sub-dataset. Therefore, the `group_by` function effectively splits the data, and
 future actions, such as the `summarize` function, are applied separately to each
 sub-dataset. The general structure for using both functions follow:
-`group_by(data, variable)` and `summarize(grouped_data, summary_function(variable))`.
+`group_by(data, variable)` and `summarize(grouped_data, <SUMMARY_FUNCTION>(variable))`, 
+where you replace `<SUMMARY_FUNCTION>` with an actual function name. 
 
 For example, if we want to assess the typical weight of infants
 using the `growth_data`, it would make sense to group the observations by month
-and obtain the average weight for each month rather than combine all
+and obtain the average, i.e. mean, weight for each month rather than combine all
 observations across time into a single average.
 
-First, we would start by grouping the data by month.
+First, we would start by grouping the data by month:
 
 ```{r}
 group_by(growth_data, months)
 ```
 
-Notice that this returns a grouped data frame that isn't different in appearance
+This returns a grouped dataset that isn't does look too different
 from the original `growth_data`.
 
 Next, we can wrap this command in a summarize command by specifying the grouped
-data frame as the first argument of the `summarize` function. The second
+dataset as the first argument of the `summarize` function. The second
 argument will be the desired summary function, which in this case is the mean
-of the weight variable.
+of the weight variable:
 
 ```{r}
 summarize(group_by(growth_data, months), mean(weight_kg))
 ```
 
-This command returns a dataset where the number of rows is equal to the number of
+This command returns a dataset with number of rows equal to the number of
 sub-datasets. The first column is defined by the grouping variable and the
 second column contains the calculated summary statistics.
 
-However, wrapping commands in this nested manner can make it confusing to
-follow the chronology of commands. For this reason, the dplyr package provides
+However, wrapping commands in this nested manner can make be confusing when 
+trying to follow the chronology of commands. For this reason, the dplyr package provides
 the use of the pipe operator (`%>%`), which improves the readability of your code.
-The pipe operator takes the contents to the left of the operator and passes it
-into to the function on the right of the operator, making it easier to
-understand the chronology of commands when manipulating data. Returning back to
-our example, using the pipe operator returns the same results as the above line
-of code.
+The pipe operator takes the contents to the left of the it and passes those contents
+into to the function on the right of it as if it was the first argument in that
+function, making it easier to understand the chronology of commands when manipulating data. 
+
+Returning back to our example, using the pipe operator as below returns the same results 
+as the above line of code:
 
 ```{r, eval = FALSE}
 group_by(growth_data, months) %>% summarize(mean(weight_kg))
@@ -134,14 +145,14 @@ group_by(growth_data, months) %>% summarize(mean(weight_kg))
 
 It's even possible to use more than one pipe operator in succession. In this
 case, we can instead use the pipe operator to pass the data into the `group_by`
-function rather than provide it as the first argument of the function.
+function rather than provide it as the first argument of the function:
 
 ```{r, eval = FALSE}
 growth_data %>% group_by(months) %>% summarize(mean(weight_kg))
 ```
 
 We can also use line breaks after each pipe operator, which will automatically
-be indented after the first line to represent the code as a single expression.
+be indented after the first line to represent the code as a single expression:
 
 ```{r, eval = FALSE}
 growth_data %>%
@@ -152,14 +163,26 @@ growth_data %>%
 To be clear, all four of the previous chunks of code give the same result. For 
 space-saving purposes, we've suppressed the printed output. 
 
+Here's one last thing, which we didn't cover in the guided practice. You can
+provide a custom name to your newly created summary variable as follows:
+
+```{r}
+growth_data %>%
+  group_by(months) %>%
+  summarize(mean_weight_kg = mean(weight_kg))
+```
+
+Here I called my new variable `mean_weight_kg` for obvious reasons, but you are
+free to provide whatever name you want. 
+
 Try saving these results as an object in your global environment using the
-assignment operator.
+assignment operator:
 
 ```{r}
 growth_data_weights <-
   growth_data %>%
   group_by(months) %>%
-  summarize(mean(weight_kg))
+  summarize(mean_weight_kg = mean(weight_kg))
 ```
 
 Just as before, remember to save the work you've done. Try saving the script

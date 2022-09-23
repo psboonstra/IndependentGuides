@@ -531,10 +531,12 @@ pre code {
   addKlippy('right', 'top', 'auto', '1', 'Copy', 'Copied!');
 </script>
 <p>In the third lesson of Module 2, you were introduced to additional
-functions from the dplyr package. To practice using these functions,
-open the R project called <code>Lessons.Rproj</code> and a blank R
-script. Before we can begin, you’ll also need to load the necessary
-packages into the current R session.</p>
+functions from the tidyr (<code>pivot_wider</code> and
+<code>pivot_longer</code>) and dplyr (<code>mutate</code>,
+<code>select</code> and <code>arrage</code>) packages. To practice using
+these functions, open the R project called <code>Lessons.Rproj</code>
+and a blank R script. Before we can begin, you’ll also need to load the
+necessary packages into the current R session.</p>
 <pre class="r"><code>library(healthds)
 library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
@@ -570,15 +572,14 @@ filling in the cell values of the table (e.g., the weight variable).</p>
 ##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1 001     3     4.1   4.9   5.5
 ## 2 002     2.9   4.2   5.5   6.6</code></pre>
-<p>Notice that R doesn’t allow numeric variable names, so, in the
-printed result, R has put so-called ‘backticks’ around the number in
-each column to create valid variable names. However, these variable
-names are not particularly informative of the data contained in each
-column. In this case, the <code>names_prefix</code> argument is useful
-for adding a string before every variable name. Returning to our
-example, this argument allows you provide a prefix that conveys both the
-timing of the measurements (i.e. month) and the type of measurement
-(i.e. weight):</p>
+<p>R doesn’t allow numeric variable names and thus, in the printed
+result, it has put so-called ‘backticks’ around the number in each
+column to create valid variable names. However, these variable names are
+not particularly informative of the data contained in each column. In
+this case, the <code>names_prefix</code> argument will add a string
+before every variable name. Returning to our example, this argument
+allows you provide a prefix that conveys both the timing of the
+measurements (i.e. month) and the type of measurement (i.e. weight):</p>
 <pre class="r"><code>growth_data %&gt;%
   pivot_wider(id_cols = id,
               names_from = months,
@@ -589,7 +590,7 @@ timing of the measurements (i.e. month) and the type of measurement
 ##   &lt;chr&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
 ## 1 001             3             4.1           4.9           5.5
 ## 2 002             2.9           4.2           5.5           6.6</code></pre>
-<p>Let’s assign this data frame to an object:</p>
+<p>Let’s assign this dataset to an object:</p>
 <pre class="r"><code>growth_wide_weight &lt;-
   growth_data %&gt;%
   pivot_wider(id_cols = id,
@@ -597,12 +598,13 @@ timing of the measurements (i.e. month) and the type of measurement
               names_prefix = &quot;weight_month&quot;,
               values_from = weight_kg)</code></pre>
 <p>Recall that the <code>pivot_wider</code> and
-<code>pivot_longer</code> functions are inverses of each other. The
-<code>pivot_longer</code> requires the <code>cols</code> argument to
-identify the columns to pivot into long format, and we can also use the
-NOT operator (<code>!</code>) to denote “all columns except…” within
-this argument. Below we pivot all columns except the infant ID
-variable:</p>
+<code>pivot_longer</code> functions are inverses of each other: the
+former changes data from long to wide format, and the latter changes
+data from wide to long format. The <code>pivot_longer</code> requires
+the <code>cols</code> argument to identify the columns to pivot into
+long format, and we can also use the NOT operator (<code>!</code>) to
+denote “all columns except…” within this argument. Below we pivot all
+columns except the infant ID variable:</p>
 <pre class="r"><code>growth_wide_weight %&gt;%
   pivot_longer(cols = !id)</code></pre>
 <pre><code>## # A tibble: 8 × 3
@@ -636,8 +638,8 @@ informative, we can use the <code>names_to</code> and
 ## 8 002   weight_month3       6.6</code></pre>
 <p>Notice that the results resemble the original
 <code>growth_data</code>, demonstrating that the
-<code>pivot_wider</code> anf <code>pivot_longer</code> functions are
-natural complements of each other.</p>
+<code>pivot_wider</code> and <code>pivot_longer</code> functions are
+natural inverses of each other.</p>
 <p>Remember to save the work you’ve done. Try saving the script you’ve
 been working in as <code>pivot_wider.R</code> for later reference.</p>
 </div>
@@ -647,8 +649,9 @@ been working in as <code>pivot_wider.R</code> for later reference.</p>
 open another blank script within the same R project.</p>
 <p>Let’s consider the task of creating a BMI variable using the height
 and weight measurements from the <code>growth_data</code>. Within the
-<code>mutate</code> function, we name the new variable to create and
-specify how this variable is defined (i.e. BMI formula).</p>
+<code>mutate</code> function, we name the new variable to create on the
+left-hand side of the equal sign and specify how this variable is
+defined (i.e. BMI formula) on the right-hand side:</p>
 <pre class="r"><code>growth_data %&gt;%
   mutate(bmi = weight_kg / (height_cm / 100)^2)</code></pre>
 <pre><code>## # A tibble: 8 × 5
@@ -669,7 +672,7 @@ create multiple new variables within one function call and even
 reference variables that were just previously created in that same
 function call. For example, we can create a height variable that
 performs a unit conversion from centimeters to meters prior to creating
-the BMI variable.</p>
+the BMI variable:</p>
 <pre class="r"><code>growth_data %&gt;%
   mutate(height_m = height_cm / 100,
          bmi = weight_kg / height_m^2)</code></pre>
@@ -685,11 +688,11 @@ the BMI variable.</p>
 ## 7 002        2       5.5      54.9    0.549  18.2
 ## 8 002        3       6.6      57      0.57   20.3</code></pre>
 <p>This code returns the original <code>growth_data</code> along with
-two new columns, where the calculated values for BMI are the same as
+two new columns, and the calculated values for BMI are the same as
 before.</p>
-<p>We could assign this data frame to an object, particularly if we plan
-on performing subsequent calculations on the BMI measurements. Without
-assignment, R does not save the new variables that were created.</p>
+<p>We could assign this dataset to an object, particularly if we plan on
+performing subsequent calculations on the BMI measurements. Without
+assignment, R does not save the new variables that were created:</p>
 <pre class="r"><code>growth_data_expanded &lt;-
   growth_data %&gt;%
   mutate(height_m = height_cm / 100,
@@ -758,8 +761,7 @@ but variables can also be sorted in descending order using the
 <code>months</code> in <em>decreasing</em> order and then, among
 observations having common values of the motnh, sorting by increasing
 (the default direction) values of <code>weight_kg</code>.</p>
-<p>The <code>select</code> function chooses columns in the data
-frame:</p>
+<p>The <code>select</code> function chooses columns in the dataset:</p>
 <pre class="r"><code>growth_data %&gt;%
   select(id, months)</code></pre>
 <pre><code>## # A tibble: 8 × 2
@@ -804,10 +806,10 @@ re-ordering columns:</p>
 ## 7 002         5.5      54.9      2
 ## 8 002         6.6      57        3</code></pre>
 <p>However, it’s not always easy to name every column, especially if
-there are many columns in your data frame. In this case, there are
-helper functions that help us more easily select columns. For example,
-we can use the <code>everything</code> function to name columns prior to
-selecting the rest of the columns.</p>
+there are many columns in your dataset. In this case, there are helper
+functions that help us more easily select columns. For example, we can
+use the <code>everything</code> function to name columns prior to
+selecting the rest of the columns:</p>
 <pre class="r"><code>growth_data %&gt;%
   select(months, everything())</code></pre>
 <pre><code>## # A tibble: 8 × 4
@@ -821,8 +823,12 @@ selecting the rest of the columns.</p>
 ## 6      1 002         4.2      52.6
 ## 7      2 002         5.5      54.9
 ## 8      3 002         6.6      57</code></pre>
+<p>The <code>everything</code> function is pretty clever: it will take
+note of any column you explicitly named prior to calling
+<code>everything</code> and only include the <em>remaining</em>
+columns.</p>
 <p>The <code>starts_with</code> function allows us to provide the
-beginning of the column name that we would like to select.</p>
+beginning of the column name that we would like to select:</p>
 <pre class="r"><code>growth_data %&gt;%
   select(months, starts_with(&quot;w&quot;))</code></pre>
 <pre><code>## # A tibble: 8 × 2
@@ -837,7 +843,7 @@ beginning of the column name that we would like to select.</p>
 ## 7      2       5.5
 ## 8      3       6.6</code></pre>
 <p>Similarly, the <code>ends_with</code> function allows us to provide
-the end of the column name that we would like to select.</p>
+the end of the column name that we would like to select:</p>
 <pre class="r"><code>growth_data %&gt;%
   select(months, ends_with(&quot;cm&quot;))</code></pre>
 <pre><code>## # A tibble: 8 × 2
@@ -853,7 +859,7 @@ the end of the column name that we would like to select.</p>
 ## 8      3      57</code></pre>
 <p>The <code>contains</code> function matches the string argument
 anywhere in the column name. For example, the “ght” string returns both
-the height and weight variables to select.</p>
+the height and weight variables to select:</p>
 <pre class="r"><code>growth_data %&gt;%
   select(months, contains(&quot;ght&quot;))</code></pre>
 <pre><code>## # A tibble: 8 × 3
