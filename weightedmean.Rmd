@@ -1,0 +1,83 @@
+---
+title: "The `weighted.mean` function"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In order to complete the next step of creating the indicator table, you 
+will need to make use of a slightly more complicated R function: `weighted.mean`. This
+document gives you an introduction to that function. 
+
+## What is a weighted mean?
+
+To see what a weighted mean is, think first about what a 'mean' or 'average' is. To calculate
+the mean of a set of numbers, you add up the numbers and then divide that sum by the
+size of your set. So, if our set of numbers if $\{0, 1, 3, 10\}$, then adding them
+up gives us 0+1+3+10=14. Next, dividing 14 by the size of the set gives $14/4$, or
+3.5. We would say the mean of this set of numbers if 3.5. This is sometimes called
+the *simple* mean. As you've already seen, 
+you can calculate the mean of a set of numbers in R using the `mean` function. 
+
+The simple mean treats all numbers equally; the *weighted* mean puts more weight on some 
+of the numbers. To calculate a weighted mean, you need to have a second set of numbers
+as long as the first set; these are the weights. Suppose in our same example above 
+we have weights $\{3, 2, 2, 1\}$. With these two sets, we calculate the weighted
+mean as follows. First, multiply each weight by its number, so $3\times0$, $2\times1$, $2\times3$, and $1\times10$. Then, we add up those products: $3\times0+2\times1+2\times3+1\times10 = 18$. 
+Then, we add up the weights themselves: $3+2+2+1=8$. Finally, divide the weighted sum
+by the sum of the weights to get the weighted mean: $18/8=2.25$. Relative to the
+simple mean, the number zero was given greater weight, and the number ten
+was given less. For this reason, the weighted mean turns out to be smaller than 
+the simple mean. 
+
+For some people, it's helpful to think of the simple mean as being a special case of the weighted
+mean when you have weights that are all equal to each other, e.g. $\{1,1,1,1\}$ or $\{2,2,2,2\}$. 
+
+## How to calculate the weighted mean in R
+
+As already mentioned, you'll need to use the `weighted.mean` function. We'll 
+demonstrate its use in the infant growth data, but note that we will have two contexts for
+the word 'weight': there is the 'weight_kg' measurement, which gives the literal
+weight for each infant at each time, and there is a conceptual weight that will 
+be used for the calculation of the weighted mean. 
+
+Below I will calculate two types of means for each of the infants. The first will
+be the simple mean of each infant's height over the four measurements. The second
+will be a weighted mean, using the integer month (0, 1, 2, 3) as the weight. 
+
+```{r}
+library(healthds)
+library(tidyverse)
+growth_data %>%
+  group_by(id) %>%
+  summarize(mean_height_cm = mean(height_cm),
+            weighted_mean_height_cm = weighted.mean(height_cm, months))
+```
+
+The important thing to see in the R code above is that we are providing *two* arguments
+in the call to the `weighted.mean` function, and they are both variables taken from the `growth_data`: 
+`height_cm` is the variable that we are interested in averaging over, and `months` is the variable that will provide our weights for the weighted mean.
+
+The result is a dataframe with two rows (one for each infant) and two measurements (plus
+the infant id). The first measurement is the simple mean, and they are 52.3cm and 53.3cm, 
+respectively. The second measurement is the weighted mean, which are 55.4cm and 55.6cm. 
+It is not too surprising that the weighted means are larger, because the infants grow
+longer over time, and the weighted mean is giving more weight to height measurements
+that were taken at 3 months than at 0 months. 
+
+## Means of 1s and 0s or TRUEs and FALSEs
+
+Sometimes you want to take the mean or weighted mean of a binary variable, say a variable that is
+comprised of TRUEs and FALSEs. If the data are stored as TRUEs and FALSEs, 
+R will silently coerce a TRUE to 1 and a FALSE to 0 and then calculate the mean 
+of those 1s and 0s as if they were numbers. So, for example, the mean of 
+$\{$TRUE, TRUE, FALSE, TRUE$\}$ will be equal to 0.75, and this is interpreted as 
+the proportion of TRUEs (or 1s) in your set of numbers. This fact will be helpful
+for you as you tackle the next step in constructing the indicator table. 
+
