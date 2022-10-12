@@ -11,7 +11,7 @@
 
 
 
-<title>Independent Guide: 2.4 - Joining Data</title>
+<title>Module 2, Lesson 4: (even more from) dplyr</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -521,7 +521,8 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">Independent Guide: 2.4 - Joining Data</h1>
+<h1 class="title toc-ignore">Module 2, Lesson 4: (even more from)
+<code>dplyr</code></h1>
 
 </div>
 
@@ -532,28 +533,28 @@ pre code {
 </script>
 <p>In the fourth lesson of Module 2, you were introduced to the concept
 of joining data. To practice using the joining functions, open the R
-project called <code>Lessons.Rproj</code> and a blank R script. Before
-we can begin, you’ll also need to load the necessary packages into the
-current R session.</p>
+project called <code>Lessons.Rproj</code> and a blank R script. As
+before, you’ll also need to load the necessary packages into the current
+R session.</p>
 <pre class="r"><code>library(healthds)
 library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
 ## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
 ## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✔ readr   2.1.2     ✔ forcats 0.5.1
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="full_join" class="section level2">
 <h2><code>full_join()</code></h2>
-<p>Let’s consider the <code>growth_data_aux</code> dataset from the
-healthds package. This dataset contains measurements on the same infants
-as the <code>growth_data</code>. However, there are four timepoints per
-infant in the <code>growth_data</code> while there are only three
-timepoints per infant in the <code>growth_data_aux</code> dataset. The
-<code>growth_data_aux</code> dataset also includes measurements of head
-circumference taken at those timepoints.</p>
+<p>Let’s consider the <code>growth_data_aux</code> dataset contained in
+<code>healthds</code>. This dataset contains measurements on the same
+infants as the <code>growth_data</code>. However, there are four
+timepoints per infant in the <code>growth_data</code> while there are
+only three timepoints per infant in the <code>growth_data_aux</code>
+dataset. The <code>growth_data_aux</code> dataset also includes
+measurements of head circumference taken at those timepoints.</p>
 <pre class="r"><code>growth_data_aux</code></pre>
 <pre><code>## # A tibble: 6 × 3
 ##   id    months headcir_cm
@@ -718,7 +719,8 @@ function is used. You can try replicating the first example from the
 ## 18 4864        1     1     NA    NA      NA    NA    NA    NA    NA    NA    NA
 ## 19 4865        1     1      1    NA      NA    NA    NA    NA    NA    NA    NA</code></pre>
 <p>(<code>fish_encounters</code> is a built-in dataset that is
-automatically available to you when you install the tidyverse)</p>
+automatically available to you when you install the
+<code>tidyverse</code>)</p>
 <p>Now try pulling up the help page for the <code>select</code> function
 (i.e., <code>?select</code>). You’ll notice that this help page also
 gives an overview of the selection helper functions (e.g., the

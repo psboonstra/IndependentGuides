@@ -1,5 +1,5 @@
 ---
-title: "Independent Guide: 2.4 - Joining Data"
+title: "Module 2, Lesson 4: (even more from) `dplyr`"
 output: 
   html_document:
   html_notebook:
@@ -13,7 +13,7 @@ klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 
 In the fourth lesson of Module 2, you were introduced to the concept of joining
 data. To practice using the joining functions, open the R project called
-`Lessons.Rproj` and a blank R script. Before we can begin, you'll also need to
+`Lessons.Rproj` and a blank R script. As before, you'll also need to
 load the necessary packages into the current R session.
 
 ```{r}
@@ -23,7 +23,7 @@ library(tidyverse)
 
 ## `full_join()`
 
-Let's consider the `growth_data_aux` dataset from the healthds package. This
+Let's consider the `growth_data_aux` dataset contained in `healthds`. This
 dataset contains measurements on the same infants as the `growth_data`.
 However, there are four timepoints per infant in the `growth_data` while there
 are only three timepoints per infant in the `growth_data_aux` dataset. The
@@ -126,7 +126,7 @@ fish_encounters %>%
 ```
 
 (`fish_encounters` is a built-in dataset that is automatically available to you
-when you install the tidyverse)
+when you install the `tidyverse`)
 
 Now try pulling up the help page for the `select` function (i.e., `?select`).
 You'll notice that this help page also gives an overview of the selection helper

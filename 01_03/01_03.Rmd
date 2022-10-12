@@ -1,0 +1,296 @@
+---
+title: "Module 1, Lesson 3: Navigating R and RStudio"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In this Independent Guide, we will work through content covered in Lesson 3 but
+in a slightly modified order. After talking about assignments and objects, we will
+create two new R projects. We will create a new R script to put in one of these 
+projects. Finally, we will install two R packages for use in the remainder of this
+course. 
+
+## Assignments and objects
+
+When you open a new R session, there are many so-called 'objects' already in 
+your environment. Numbers are objects (`1`, `2`, etc.). Slightly more interesting,
+type `pi` in the console, press 'Enter', and you will see the first digits of the 
+number $\pi$ (the ratio of a circle's circumference to its diameter). Your 
+'Enter' key may be labeled as 'Return' -- on American keyboards it's 
+at the far right. 
+
+```{r}
+pi
+```
+
+
+This works because `pi` is also an object that exists in any R session. 
+
+However, if you type the name of an object that doesn't exist in the R console,
+you will get an error:
+
+```{r, error=TRUE}
+x
+```
+
+This occurs because there is no object called `x` in a new R session. However, 
+you can create any object you want. To do so, you use the assignment operator: `<-`. 
+On the left of the assignment operator goes the name of the object you want to 
+create, and on the right goes the object that you want to assign. As an example,
+we can create `x` and assign to it the value 10:
+
+```{r}
+x <- 10
+```
+
+Now `x` exists, and if we type it in the console we get its value:
+
+```{r}
+x
+```
+
+We can now use `x` (and any other extant objects) to create *new* objects:
+
+```{r}
+y <- x + 2
+```
+
+Now we've created a second new object, called `y`, which is equal to 12. 
+These assignments are static, meaning that if we change the value of `x`, we won't
+also change the value of `y`, even though when we created it, it depended on `x`. 
+For example, here we re-assign `x` and then ask R what the value of `y` is:
+
+```{r}
+x <- 2
+y
+```
+
+The object `y` has retained its original value despite `x` being changed. 
+
+Although `<-` is the intended way to create assignments, you can alternatively
+use the more simple `=`, as in 
+
+```{r}
+x = 2
+```
+
+## R projects
+
+R projects are files ending in `.Rproj`. You create such a file from within
+RStudio, and when you do so, then RStudio will treat the folder (or directory)
+that contains the `.Rproj` file as its "home directory". Here we will create
+two R projects, entitled `GlobalFindex.Rproj` and `Lessons.Rproj`. The former
+is intended to contain code to create the Indicator Table and Figure 1.1. The 
+latter is intended to be used for any other work you do in future Independent Guides. 
+
+If you are working from your own computer, first create two regular folders called GlobalFindex
+and Lessons (if you are working on rstudio.cloud, you may skip to the end of this 
+section). Next, create a new R project by going to 'File > New Project...':
+
+
+```{r echo = FALSE, out.width='30%', fig.cap = "**Image description: creating a new R project**"}
+knitr::include_graphics(normalizePath("01_03/01_03a.png"), rel_path = FALSE)
+```
+
+A new window will pop up. Choose the option to create the project in an 
+'Existing Directory':
+
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: choose 'Existing Directory' to put your project file inside an existing folder**"}
+knitr::include_graphics(normalizePath("01_03/01_03b.png"), rel_path = FALSE)
+```
+
+Then navigate to the folder named 'GlobalFindex' that you just created. 
+
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: navigate to the folder that you want to associate with your R project**"}
+knitr::include_graphics(normalizePath("01_03/01_03c.png"), rel_path = FALSE)
+```
+
+Upon clicking Create Project, RStudio will restart, this time within the 
+GlobalFindex project that you just created. You can confirm that this is true
+by inspecting the top-right corner of your screen, where you should now see
+an image of a cube containing the R symbol followed by the name of the current
+project:
+
+
+```{r echo = FALSE, out.width='30%', fig.cap = "**Image description: the top right of your screen indicates that you are in the GlobalFindex project**"}
+knitr::include_graphics(normalizePath("01_03/01_03d.png"), rel_path = FALSE)
+```
+
+In addition, the bottom right of your screen, which shows the default or "home" directory
+that R is working from, indicates that it is indeed the GlobalFindex folder:
+
+```{r echo = FALSE, out.width='70%', fig.cap = "**Image description: the default or home directory is now the GlobalFindex folder**"}
+knitr::include_graphics(normalizePath("01_03/01_03e.png"), rel_path = FALSE)
+```
+
+Repeat this step for the folder named 'Lessons', i.e. create a new R project
+in the existing Lessons folder. 
+
+### Projects in rstudio.cloud
+
+R projects are the **only** way to use RStudio on rstudio.cloud. In fact, 
+you've already created a project on rstudio.cloud: recall that 
+the first thing you did after logging in was create a new project named 'GlobalFindex'.
+
+To create a different project, look for the link in the top left that says
+'Your Workspace'. Click that link, which will take you to a list of all the 
+projects you've made (there should be only one right now). Create a second
+new project called 'Lessons'. 
+
+## Scripts
+
+Whether you are working from your own computer or rstudio.cloud, for this next
+step, switch back to the 'GlobalFindex' project, which you can do by clicking the 
+drop-down menu in the top right and choosing 'GlobalFindex' from the list:
+
+```{r echo = FALSE, out.width='30%', fig.cap = "**Image description: switching between R projects**"}
+knitr::include_graphics(normalizePath("01_03/01_03f.png"), rel_path = FALSE)
+```
+
+R scripts are files that you create in RStudio. From the 'GlobalFindex' project,
+open a new script by pressing 'Cmd+Shift+N' on your Mac or 'Ctrl+Shift+N' 
+on your Windows computer. Or, from the dropdown menu, go to 'File > New File > R Script':
+
+```{r echo = FALSE, out.width='45%', fig.cap = "**Image description: creating a new script using dropdown menus**"}
+knitr::include_graphics(normalizePath("01_03/01_03g.png"), rel_path = FALSE)
+```
+
+A new window should have appeared in your RStudio console. It will be blank. 
+R scripts are like recipes: they contain a list of step-by-step instructions
+for conducting your analysis. Also like recipes, scripts are not useful unless 
+you actually implement the instructions, meaning that you can type code in an R 
+script, but unless you run that code in the console, it won't do anything.
+
+Type something simple in your script, like `3+3`. Then, making sure your cursor
+is on that line of code, press 'Cmd+Enter' or 'Ctrl+Enter'. That line of code should
+have been sent and run in the console. You have now made changes to your script
+that are not saved. To see this, the upper-left tab of your script should
+say <span style="color: red;">`Untitled1*`</span> in red font. The `Untited1` 
+is a default name that R chooses, and the red font means that it contains
+unsaved changes. To save your script, press 'Cmd+S' or 'Ctrl+S' 
+or go to 'File > Save' from the dropdown menu. 
+
+```{r echo = FALSE, out.width='25%',fig.cap = "**Image description: saving a script**"}
+knitr::include_graphics(normalizePath("01_03/01_03h.png"), rel_path = FALSE)
+```
+
+We will put all of our code for creating the Indicator Table in this script, 
+so save this script as `IndicatorTable.R`. For now, save it on your desktop or
+somewhere else that you'll remember. In the upper-left tab of your script, 
+where it previously said <span style="color: red;">`Untitled1*`</span> in red font, 
+it should now say `IndicatorTable.R` in black font. Anything that you had put in 
+this script up until the moment that you saved it is now permanently saved
+on your harddrive, even after you close RStudio (or navigate out of rstudio.cloud). 
+If you make additional changes to the script, the font color will change back to red 
+and an asterisk will appear after its name, both, indicating that this file now 
+includes some code that is not saved. To see this, *delete* the `3+3` that
+you just put in the script. Now the file name looks like <span style="color: red;">`IndicatorTable.R*`</span>. 
+Save your script again by pressing 'Cmd+S' or 'Ctrl+S', and the file name
+once again becomes `IndicatorTable.R`. In Module 2, you will begin to put code 
+in this script. 
+
+## Packages
+
+Packages are pre-constructed sets of objects, which may include functions or datasets. 
+Some packages come pre-installed with R, perhaps the most important being the `base` package. 
+However, the `base` package is unique in that you will never need to install or 
+even load it. Using the terminology from the video, it is always and permanently a 'State 1' package. 
+
+Two packages that we will be using in this course that *do not* come pre-installed 
+are `tidyverse` and `healthds`. At the moment you are first reading this, 
+they are 'State 3' packages: they are not yet installed on your computer. The 
+following sections describe how to install packages and will apply whether you are
+working on your own computer or on rstudio.cloud.
+
+### How to install `tidyverse`
+
+To install `tidyverse`, run the following line of code in your console:
+
+```{r, eval = FALSE, cache = TRUE}
+install.packages("tidyverse")
+```
+
+Installation of the `tidyverse` 
+may take a few minutes, since your computer will need to find the package on 
+the internet, download it, and install it (along with other packages that the 
+`tidyverse` requires, called dependencies). A successful installation should
+print a message like this to the console:
+
+```{r, eval = TRUE, echo = FALSE}
+install.packages("tidyverse", repos = "https://cloud.r-project.org")
+```
+
+Upon successful installation, the `tidyverse` package is now in State 2: 
+installed on your computer but not yet loaded into your R session. Run the 
+following code to move the tidyverse from State 2 to State 1. 
+
+```{r}
+library(tidyverse)
+```
+
+Having run this, you see a couple of messages. First, because `tidyverse` is in
+fact a package of packages, we are told which packages are loaded and their version numbers. 
+Second, we are told that there are two functions, `filter` and `lag`, that already
+existed in our R sessions. You cannot have two identically named functions at once, and
+so the `tidyverse` versions are taking precedence, or 'masking', the ones that
+were previously there. 
+
+You will not need to re-install the `tidyverse` if you close RStudio, but you will
+need to re-load it, i.e. using the `library` command. Therefore, you should
+put `library(tidyverse)` at the top of any script inside which you intend
+to use functions from the tidyverse. Put `library(tidyverse)` on the very first
+line of `IndicatorTable.R` now and save the script. 
+
+### How to install `healthds`
+
+Installing the `healthds` package is slightly more complicated because it has been
+developed specifically for learners in this course, and it is not located in
+the usual repositories that the `install.packages` function would look in. 
+To install `healthds`, we first need to install and load a package called `remotes`:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+library(remotes)
+```
+
+```{r, echo = FALSE}
+library(remotes)
+```
+
+Next, we will use a function from the `remotes` package called `install_github`. 
+This function acts similarly to `install.packages` but allows us to install
+packages that are hosted on GitHub, a repository where any user can develop and
+publicly share software. To install `healthds`, run the following line 
+of code (it is easiest to copy-paste this directly into your R console):
+
+```{r, cache = TRUE}
+install_github("umich-biostatistics/healthds", upgrade = "never")
+```
+
+If you run the above line of code without first having installed and loaded
+`remotes`, you will get an error message that the function `install_gitub` is not 
+found. Upon successfully running this line of code, the `healthds` package will 
+be in State 2, and we can move it to State 1 by using `library`:
+
+```{r}
+library(healthds)
+```
+
+You will not need the `healthds` package for creating the Indicator Table or Figure 1.1, 
+so you do not need to put `library(healthds)` at the top of `IndicatorTable.R`. 
+We will wait until the next Module's Independent Guide to create a script that
+uses `healthds`. For now it is sufficient to have installed it on our computer.  
+
+
+

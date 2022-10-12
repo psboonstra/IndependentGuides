@@ -1,5 +1,5 @@
 ---
-title: "Independent Guide: 2.1 - readr"
+title: "Module 2, Lesson 1: `readr`"
 output: 
   html_document:
   html_notebook:
@@ -7,69 +7,89 @@ editor_options:
   chunk_output_type: inline
 ---
 
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
 ```{r klippy, echo = FALSE, include = TRUE}
 klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 ```
 
-In this first lesson of Module 2, you were introduced to the tidyverse, a package
+In this first lesson of Module 2, you were introduced to the `tidyverse`, a package
 of packages that provides you with all of the tools for translating your data
-into useful information and knowledge. 
+into useful information and knowledge. One of the packages that comprises the `tidyverse` is `readr`, 
+which contains tools for reading data into R. 
 
-In Module 1, you created an R project called `GlobalFindex.Rproj` and, in that same
-folder, you created a script called `IndicatorTable.R`. Open the `GlobalFindex.Rproj`
-now. Doing so will open an Rstudio session. 
+In Module 1, Lesson 2, you created an R project called `GlobalFindex.Rproj` and, 
+in that same folder, you created a script called `IndicatorTable.R`. We will be
+working inside that script now. Double click the `GlobalFindex.Rproj` file to open a new RStudio session. 
+Then, open the `IndicatorTable.R` script. The easiest way to do so is to inspect 
+the file tree in the bottom-right panel of your RStudio session and look for the file 
+name (it will be there if you were able to successfully follow the instructions 
+to create this script in Module 1). Click the file name:
 
-To access the functions in the tidyverse, you will first need to install it
-if you haven't already done so. You can do so with line of code below, but 
-remember, you only need to install the tidyverse on your computer once. So 
-if you previously installed it you won't need to do so again. 
-
-```{r, eval = FALSE}
-# I'm not actually running this code:
-install.packages("tidyverse")
+```{r echo = FALSE,  out.width='60%', fig.cap = "**Image description: opening an existing script from the bottom-right file panel**"}
+knitr::include_graphics(normalizePath("02_01/02_01a.png"), rel_path = FALSE)
 ```
-
-Observe that we wrote an R comment above. In R, any line that starts with a pound 
-symbol (`#`, also called a hashtag) is ignored. It is meant as a way for the code writer
-to communicate to the code reader. Sometimes they are the same person, meaning that
-the person most likely to benefit from your comments is you. 
-
-Having installed the tidyverse, you now need to load it into your current R session,
-which you can do with the following code:
-
-```{r, eval = TRUE}
-library(tidyverse)
-```
-
-You see a couple of messages here. First, remembering that the tidyverse is in
-fact a package of packages, we are told which packages are loaded and their version numbers. 
-Second, we are told that there are two functions, `filter` and `lag`, that already
-existed in our R sessions. You cannot have two identically named functions at once, and
-so the tidyverse versions are taking precedence, or 'masking', the ones that
-were previously there. 
 
 If you haven't yet done so, put this code (that is, `library(tidyverse)`) on the 
 first line of your `IndicatorTable.R` script and then run it by simultaneously 
-pressing Cmd+Enter (on your Mac) or Ctrl+Enter (on your Windows computer). Your 
-'enter' key may be labeled as 'return' -- on American keyboards its the button at the far right. 
+pressing 'Cmd+Enter' (on your Mac) or 'Ctrl+Enter' (on your Windows computer). 
+
+```{r, echo = FALSE}
+library(tidyverse)
+```
+
+If by chance you haven't created the `IndicatorTable.R` script, you can do so now:
+press 'Cmd+Shift+N' (on your Mac) or 'Ctrl+Shift+N' (on your Windows computer)
+to create a new script. Then, put the `library` command from above on the very
+first line, then save the script by pressing 'Cmd+S' or 'Ctrl+S', choosing 
+`IndicatorTable.R` as the file name. 
+
 
 ## `read_csv()`
 
-The function from the tidyverse that we'll practice using here is the `read_csv`
+The function from the `readr` that we'll practice using here is the `read_csv`
 function, which takes a computer file is saved as a **c**omma-**s**eparated **v**alue (csv)
-format on your computer and reads it into your R session. Look for the .csv suffix
-on a computer file (ironically, if you double click that file to open it, most 
+format on your computer and reads it into your R session. 
+
+Look for the .csv suffix on a computer file (ironically, if you double click that file to open it, most 
 computers will use their spreadsheet software program, e.g. Excel, to view it, 
 and you won't even see the commas that separate the values!).
 
-We've saved the Global Findex data into a file called `micro_world.csv`, and it 
-exists in the same folder as our project, which we can see from looking at the 
-bottom-right panel of the RStudio session:
+To get the Global Findex data onto your computer, go to this url:
 
-![**Image description: Files in your GlobalFindex folder**](project_files.png)
+https://microdata.worldbank.org/index.php/catalog/3324/get-microdata
 
-Go back to `IndicatorTable.R` and type the following line of code, which will
-read in the Global Findex data and assign it as an object in your R session entitled
+If you haven't already done so, you will need to register for a free account
+before you can access the data. After logging in, download the data in CSV format. 
+The ZIP file will be named `WLD_2017_FINDEX_v02_M_CSV.zip`, and when you unzip it
+the resulting folder will contain a single file named `micro_world.csv`, which is 
+the data we need. 
+
+*If you are working on RStudio installed on your own computer*,  move this 
+`micro_world.csv` file into the GlobalFindex project folder, e.g. by dragging 
+and dropping. If you go back to RStudio now, the bottom-right of your RStudio
+session should indicate that the `micro_world.csv` file is now in your directory:
+
+```{r echo = FALSE,  out.width='60%', fig.cap = "**Image description: the GlobalFindex project after moving the data to the folder**"}
+knitr::include_graphics(normalizePath("02_01/02_01b.png"), rel_path = FALSE)
+```
+
+
+*If you are working on RStudio from rstudio.cloud*, you will need to upload
+the `micro_world.csv` data into your project. To do so, in the files panel, 
+look for the 'Upload' button, which is unique to rstudio.cloud. 
+
+```{r echo = FALSE,  out.width='60%', fig.cap = "**Image description: uploading the `micro_world.csv` into rstudio.cloud**"}
+knitr::include_graphics(normalizePath("02_01/02_01c.png"), rel_path = FALSE)
+```
+
+
+Now we are ready to read in the data. In your `IndicatorTable.R` script, type the
+following line of code, which will read in the Global Findex data stored in the
+file named `micro_world.csv` and assign it  as an object in your R session entitled
 `micro_world`:
 
 ```{r}
@@ -77,18 +97,17 @@ micro_world <- read_csv("micro_world.csv")
 ```
 
 Remember, typing the line of code in your script doesn't run the code; at this 
-point it is a set of instructions to be run. Tell R to run the code by pressing
-Cmd+Enter (Mac) or Ctrl+Enter (Windows). If successfully run, you should see 
-output in your console similar to what you see here: some information
+point it is only a set of instructions to be run. Tell R to run the code by pressing
+'Cmd+Enter' (Mac) or 'Ctrl+Enter' (Windows). If successfully run, you should see 
+output in your console similar to what you see above: some information
 about the numbers of rows and columns in your data and the variable (column) names. 
+If you get an error that says `Error: object 'read_csv' not found`, it is likely
+because you did not first load the `tidyverse`, which contains the `read_csv` function.
 
-The last thing to do is save your work. Right now, you should see that your 
-file is in red font and has an asterisk after the R:
+The last thing to do is save your work. Because you've made changes, the file 
+name looks like <span style="color: red;">`IndicatorTable.R*`</span>. Save your 
+script by pressing 'Cmd+S' or 'Ctrl+S', and the file name once again becomes `IndicatorTable.R`.
 
-![**Image description: What your script looks like before saving**](unsaved_script.png)
+You will continue to develop your `IndicatorTable.R` script in your Assessments, 
+and in subsequent Independent Guides we will use the 'Lessons' project. 
 
-
-Press Cmd+S (Mac) or Ctrl+S (Windows) to save your work, and it should change to
-black font with no asterisk:
-
-![**Image description: What your script looks like after saving**](saved_script.png)

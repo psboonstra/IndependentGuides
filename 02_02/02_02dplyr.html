@@ -11,7 +11,7 @@
 
 
 
-<title>Independent Guide: 2.2 - dplyr</title>
+<title>Module 2, Lesson 2: dplyr</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -521,7 +521,7 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">Independent Guide: 2.2 - dplyr</h1>
+<h1 class="title toc-ignore">Module 2, Lesson 2: <code>dplyr</code></h1>
 
 </div>
 
@@ -530,32 +530,37 @@ pre code {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy', 'Copied!');
 </script>
-<p>In the second lesson of Module 2, you were introduced to dplyr, which
-is a package included in the tidyverse that provides a set of verbs for
-data wrangling.</p>
-<p>To practice using the functions from the dplyr package, open the R
-project called <code>Lessons.Rproj</code> and a blank R script. Before
-we can begin, you’ll also need to load the necessary packages into the
-current R session.</p>
+<p>In the second lesson of Module 2, you were introduced to
+<code>dplyr</code>, which is a package included in the
+<code>tidyverse</code> that provides a set of verbs for data
+wrangling.</p>
+<p>To practice using the functions from the <code>dplyr</code> package,
+open the R project called <code>Lessons.Rproj</code> and a blank R
+script. On the first two lines of this and every other script we create
+in these Independent Guides, put the following lines of code to load
+<code>healthds</code> and the <code>tidyverse</code>.</p>
 <pre class="r"><code>library(healthds)
 library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
 ## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
 ## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✔ readr   2.1.2     ✔ forcats 0.5.1
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<p>Run these lines of code the ‘usual’ way (‘Cmd+Enter’ or
+‘Ctrl+Enter’).</p>
 <div id="filter" class="section level2">
 <h2><code>filter()</code></h2>
 <p>The <code>filter</code> function allows us to include or exclude
 observations (i.e., rows) from a dataset based on one or more
 conditions. The general structure for using this function follows:
 <code>filter(data, condition)</code>.</p>
-<p>Let’s consider <code>growth_data</code> from the healthds package.
-First, we can take a look at the dataset before any filtering is
-performed. There are eight observations across four variables:</p>
+<p>Let’s consider the <code>growth_data</code>, which is now available
+to use via <code>healthds</code>. First, we can take a look at the
+dataset before any filtering is performed. There are eight observations
+across four variables:</p>
 <pre class="r"><code>growth_data</code></pre>
 <pre><code>## # A tibble: 8 × 4
 ##   id    months weight_kg height_cm
@@ -650,7 +655,7 @@ working in as <code>filter.R</code> for later reference.</p>
 <div id="group_by-and-summarize" class="section level2">
 <h2><code>group_by()</code> and <code>summarize()</code></h2>
 <p>To practice additional functions from the dplyr package, open another
-blank script within the same R project.</p>
+blank script.</p>
 <p>The <code>group_by</code> function allows us to group data into
 sub-datasets defined by a common value. In turn, the
 <code>summarize</code> function provides a summary of the data based on

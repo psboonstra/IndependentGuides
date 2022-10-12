@@ -1,5 +1,5 @@
 ---
-title: "Independent Guide: 2.2 - dplyr"
+title: "Module 2, Lesson 2: `dplyr`"
 output: 
   html_document:
   html_notebook:
@@ -7,21 +7,29 @@ editor_options:
   chunk_output_type: inline
 ---
 
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
 ```{r klippy, echo = FALSE, include = TRUE}
 klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 ```
 
-In the second lesson of Module 2, you were introduced to dplyr, which is a package
-included in the tidyverse that provides a set of verbs for data wrangling.
+In the second lesson of Module 2, you were introduced to `dplyr`, which is a package
+included in the `tidyverse` that provides a set of verbs for data wrangling.
 
-To practice using the functions from the dplyr package, open the R project called
-`Lessons.Rproj` and a blank R script. Before we can begin, you'll also need to
-load the necessary packages into the current R session.
+To practice using the functions from the `dplyr` package, open the R project called
+`Lessons.Rproj` and a blank R script. On the first two lines of this and every 
+other script we create in these Independent Guides, put the following lines of code to 
+load `healthds` and the `tidyverse`.
 
 ```{r}
 library(healthds)
 library(tidyverse)
 ```
+
+Run these lines of code the 'usual' way ('Cmd+Enter' or 'Ctrl+Enter'). 
 
 ## `filter()`
 
@@ -29,9 +37,9 @@ The `filter` function allows us to include or exclude observations
 (i.e., rows) from a dataset based on one or more conditions. The general
 structure for using this function follows: `filter(data, condition)`.
 
-Let's consider `growth_data` from the healthds package. First, we can take a
-look at the dataset before any filtering is performed. There are eight
-observations across four variables:
+Let's consider the `growth_data`, which is now available to use via `healthds`. 
+First, we can take a look at the dataset before any filtering is performed. 
+There are eight observations across four variables:
 
 ```{r}
 growth_data
@@ -91,7 +99,7 @@ in as `filter.R` for later reference.
 ## `group_by()` and `summarize()`
 
 To practice additional functions from the dplyr package, open another blank
-script within the same R project.
+script. 
 
 The `group_by` function allows us to group data into sub-datasets defined by a
 common value. In turn, the `summarize` function provides a summary of the data

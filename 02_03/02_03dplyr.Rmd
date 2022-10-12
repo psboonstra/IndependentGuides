@@ -1,5 +1,5 @@
 ---
-title: "Independent Guide: 2.3 - dplyr"
+title: "Module 2, Lesson 3: `tidyr` and (more from) `dplyr`"
 output: 
   html_document:
   html_notebook:
@@ -7,14 +7,18 @@ editor_options:
   chunk_output_type: inline
 ---
 
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
 ```{r klippy, echo = FALSE, include = TRUE}
 klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 ```
 
 In the third lesson of Module 2, you were introduced to additional functions from
-the tidyr (`pivot_wider` and `pivot_longer`) and dplyr (`mutate`, `select` and `arrage`)
+the `tidyr` (`pivot_wider` and `pivot_longer`) and `dplyr` (`mutate`, `select` and `arrage`)
 packages. To practice using these functions, open the R project called
-`Lessons.Rproj` and a blank R script. Before we can begin, you'll also need to
+`Lessons.Rproj` and a blank R script. As before, you'll also need to
 load the necessary packages into the current R session.
 
 ```{r}

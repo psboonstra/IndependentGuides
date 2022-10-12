@@ -1,0 +1,82 @@
+---
+title: "Module 1, Lesson 2: Installing R and RStudio"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+This document walks through two options for using R and RStudio. The first option is
+the same as that discussed in the guided practice: download and install R and RStudio on 
+your own computer. To use R, you find the RStudio icon on your computer and open 
+it. The second option was not discussed in the guided practice; it is a
+cloud-based option that does not require you to download any software but does requires 
+a browser with an active internet connection. 
+
+## Option 1 
+
+First go to https://cran.r-project.org/ and look for the links that are labeled 
+'Download R for ...' (see below for a screenshot of what you should be looking 
+for as of the time of this writing). Click the link corresponding to your 
+operating system and follow the instructions to download and install R. Unfortunately, 
+R is not currently available for mobile devices. 
+
+
+```{r echo = FALSE, out.width='80%', fig.cap = "**Image description: screen capture from https://cran.r-project.org/ as of 11-Oct-2022**"}
+knitr::include_graphics(normalizePath("01_02/01_02a.png"), rel_path = FALSE)
+```
+
+
+Second, having downloaded R, go to https://www.rstudio.com/products/rstudio/download/ 
+to get RStudio. Look for a link to the RStudio Open Source License (see below 
+for a screenshot of what you should be looking for as of the time of this writing)
+
+
+```{r echo = FALSE, out.width='25%', fig.cap = "**Image description: screen capture from https://www.rstudio.com/products/rstudio/download/ as of 11-Oct-2022**"}
+knitr::include_graphics(normalizePath("01_02/01_02b.png"), rel_path = FALSE)
+```
+
+
+## Option 2 
+
+Go to https://rstudio.cloud (see below for a screenshot of what you should be 
+looking for as of the time of this writing) and click 'GET STARTED FOR FREE'. 
+Follow the instructions to create a free account and then login. 
+
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: screen capture from https://rstudio.cloud/ as of 11-Oct-2022**"}
+knitr::include_graphics(normalizePath("01_02/01_02c.png"), rel_path = FALSE)
+```
+
+Once you've logged in, create a new project by clicking 'New Project' in the upper
+right of the screen, then 'New RStudio Project'. 
+
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: creating a new R project on rstudio.cloud**"}
+knitr::include_graphics(normalizePath("01_02/01_02d.png"), rel_path = FALSE)
+```
+
+Your new project is not-yet named, as can be seen in the upper left of your screen:
+
+```{r echo = FALSE, out.width='45%', fig.cap = "**Image description: an untitled R project on rstudio.cloud**"}
+knitr::include_graphics(normalizePath("01_02/01_02e.png"), rel_path = FALSE)
+```
+
+Name your new project 'GlobalFindex':
+
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: R project on rstudio.cloud after naming it 'GlobalFindex'**"}
+knitr::include_graphics(normalizePath("01_02/01_02f.png"), rel_path = FALSE)
+```
+
+At this point, it is basically as if you have RStudio open on your own personal 
+computer, the main differences being that everything may be slightly less 'speedy' 
+due to the fact that you are running an R session on a different computer. 
+After a period of inactivity, you may be automatically logged off. In this case, 
+you can re-login to your cloud session and pick up where you left off. 
