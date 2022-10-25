@@ -1,5 +1,5 @@
 ---
-title: "Module 2, Lesson 3: `tidyr` and (more from) `dplyr`"
+title: "Module 2, Lesson 3: tidyr and (more) `dplyr`"
 output: 
   html_document:
   html_notebook:

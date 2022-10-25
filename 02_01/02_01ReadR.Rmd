@@ -1,5 +1,5 @@
 ---
-title: "Module 2, Lesson 1: `readr`"
+title: "Module 2, Lesson 1: Introducing the tidyverse with `readr`"
 output: 
   html_document:
   html_notebook:

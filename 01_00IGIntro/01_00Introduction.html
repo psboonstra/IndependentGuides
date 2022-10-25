@@ -11,7 +11,7 @@
 
 
 
-<title>Module 2, Lesson 3: tidyr and (more) dplyr</title>
+<title>Introduction to Independent Guides</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -521,8 +521,7 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">Module 2, Lesson 3: tidyr and (more)
-<code>dplyr</code></h1>
+<h1 class="title toc-ignore">Introduction to Independent Guides</h1>
 
 </div>
 
@@ -531,352 +530,78 @@ pre code {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy', 'Copied!');
 </script>
-<p>In the third lesson of Module 2, you were introduced to additional
-functions from the <code>tidyr</code> (<code>pivot_wider</code> and
-<code>pivot_longer</code>) and <code>dplyr</code> (<code>mutate</code>,
-<code>select</code> and <code>arrage</code>) packages. To practice using
-these functions, open the R project called <code>Lessons.Rproj</code>
-and a blank R script. As before, you’ll also need to load the necessary
-packages into the current R session.</p>
-<pre class="r"><code>library(healthds)
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
-## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-## ✔ readr   2.1.2     ✔ forcats 0.5.1
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<div id="pivot_wider" class="section level2">
-<h2><code>pivot_wider()</code></h2>
-<p>Replicating the example from the lecture, we can pivot the
-<code>growth_data</code> from long format into wide format using the
-<code>pivot_wider</code> function so that all measurements from an
-infant are contained in a single row.</p>
-<p>To use the <code>pivot_wider</code> function, there are a few
-required arguments as well as several optional arguments. In general, as
-long as the arguments are explicitly named, the arguments do not have to
-be provided in any particular order. The <code>id_cols</code> argument
-specifies the variable that uniquely identifies each row, which is the
-infant ID variable in this example. The <code>names_from</code> argument
-specifies the variable that indicates the repeated measurements within
-the subject ID (e.g. the months variable). Lastly, the
-<code>values_from</code> argument specifies the variable to use for
-filling in the cell values of the table (e.g., the weight variable).</p>
-<pre class="r"><code>growth_data %&gt;%
-  pivot_wider(id_cols = id,
-              names_from = months,
-              values_from = weight_kg)</code></pre>
-<pre><code>## # A tibble: 2 × 5
-##   id      `0`   `1`   `2`   `3`
-##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 001     3     4.1   4.9   5.5
-## 2 002     2.9   4.2   5.5   6.6</code></pre>
-<p>R doesn’t allow numeric variable names and thus, in the printed
-result, it has put so-called ‘backticks’ around the number in each
-column to create valid variable names. However, these variable names are
-not particularly informative of the data contained in each column. In
-this case, the <code>names_prefix</code> argument will add a string
-before every variable name. Returning to our example, this argument
-allows you provide a prefix that conveys both the timing of the
-measurements (i.e. month) and the type of measurement (i.e. weight):</p>
-<pre class="r"><code>growth_data %&gt;%
-  pivot_wider(id_cols = id,
-              names_from = months,
-              names_prefix = &quot;weight_month&quot;,
-              values_from = weight_kg)</code></pre>
-<pre><code>## # A tibble: 2 × 5
-##   id    weight_month0 weight_month1 weight_month2 weight_month3
-##   &lt;chr&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
-## 1 001             3             4.1           4.9           5.5
-## 2 002             2.9           4.2           5.5           6.6</code></pre>
-<p>Let’s assign this dataset to an object:</p>
-<pre class="r"><code>growth_wide_weight &lt;-
-  growth_data %&gt;%
-  pivot_wider(id_cols = id,
-              names_from = months,
-              names_prefix = &quot;weight_month&quot;,
-              values_from = weight_kg)</code></pre>
-<p>Recall that the <code>pivot_wider</code> and
-<code>pivot_longer</code> functions are inverses of each other: the
-former changes data from long to wide format, and the latter changes
-data from wide to long format. The <code>pivot_longer</code> requires
-the <code>cols</code> argument to identify the columns to pivot into
-long format, and we can also use the NOT operator (<code>!</code>) to
-denote “all columns except…” within this argument. Below we pivot all
-columns except the infant ID variable:</p>
-<pre class="r"><code>growth_wide_weight %&gt;%
-  pivot_longer(cols = !id)</code></pre>
-<pre><code>## # A tibble: 8 × 3
-##   id    name          value
-##   &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt;
-## 1 001   weight_month0   3  
-## 2 001   weight_month1   4.1
-## 3 001   weight_month2   4.9
-## 4 001   weight_month3   5.5
-## 5 002   weight_month0   2.9
-## 6 002   weight_month1   4.2
-## 7 002   weight_month2   5.5
-## 8 002   weight_month3   6.6</code></pre>
-<p>If we want to change the variable names to something more
-informative, we can use the <code>names_to</code> and
-<code>values_to</code> arguments:</p>
-<pre class="r"><code>growth_wide_weight %&gt;%
-  pivot_longer(cols = !id,
-               names_to = &quot;months&quot;,
-               values_to = &quot;weight_kg&quot;)</code></pre>
-<pre><code>## # A tibble: 8 × 3
-##   id    months        weight_kg
-##   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;
-## 1 001   weight_month0       3  
-## 2 001   weight_month1       4.1
-## 3 001   weight_month2       4.9
-## 4 001   weight_month3       5.5
-## 5 002   weight_month0       2.9
-## 6 002   weight_month1       4.2
-## 7 002   weight_month2       5.5
-## 8 002   weight_month3       6.6</code></pre>
-<p>Notice that the results resemble the original
-<code>growth_data</code>, demonstrating that the
-<code>pivot_wider</code> and <code>pivot_longer</code> functions are
-natural inverses of each other.</p>
-<p>Remember to save the work you’ve done. Try saving the script you’ve
-been working in as <code>pivot_wider.R</code> for later reference.</p>
+<p>The pattern of learning for this course will generally proceed
+through the following steps:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Learning</strong> about ideas through lecture-style
+videos.</li>
+<li><strong>Implementing</strong> those ideas together in a guided
+practice video, where the instructor demonstrates the use of specific
+functions in R, and learners can repeat the steps that the instructors
+demonstrates.</li>
+<li>Repeating Steps 1 and 2 for the all topics in a lesson.</li>
+<li><strong>Reinforcing</strong> on your own by following along a series
+of written steps called ‘independent guides’, which cover all topics in
+a lesson.</li>
+<li><strong>Practicing</strong> your understanding of these ideas
+through non-graded quizzes.</li>
+</ol>
+<p>In this document, we provide some context for the independent guides
+in Step 4, namely: what they will cover, when to work them, and how to
+use them.</p>
+<div id="independent-guides-will-re-visit-all-content-covered-in-the-guided-practice" class="section level4">
+<h4>Independent guides will re-visit all content covered in the guided
+practice</h4>
+<p>For some, the most efficient way to learn to code is by watching and
+repeating, whereas for others it is by reading and copying. Step 2
+(implementing via guided practice) relies upon the former, whereas Step
+4 (reinforcing via independent guides) uses the latter. Thus, a defining
+feature of the independent guides is that everything covered in Step 2
+will be covered again in Step 4. If you don’t understand something the
+instructor <em>says</em> (or even if you do understand), you will have a
+second chance to engage with the same content by reading what the
+instructor <em>writes</em>.</p>
 </div>
-<div id="mutate" class="section level2">
-<h2><code>mutate()</code></h2>
-<p>To practice the <code>mutate</code> function from the dplyr package,
-open another blank script within the same R project.</p>
-<p>Let’s consider the task of creating a BMI variable using the height
-and weight measurements from the <code>growth_data</code>. Within the
-<code>mutate</code> function, we name the new variable to create on the
-left-hand side of the equal sign and specify how this variable is
-defined (i.e. BMI formula) on the right-hand side:</p>
-<pre class="r"><code>growth_data %&gt;%
-  mutate(bmi = weight_kg / (height_cm / 100)^2)</code></pre>
-<pre><code>## # A tibble: 8 × 5
-##   id    months weight_kg height_cm   bmi
-##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
-## 1 001        0       3        47    13.6
-## 2 001        1       4.1      50.2  16.3
-## 3 001        2       4.9      53.9  16.9
-## 4 001        3       5.5      58.1  16.3
-## 5 002        0       2.9      48.6  12.3
-## 6 002        1       4.2      52.6  15.2
-## 7 002        2       5.5      54.9  18.2
-## 8 002        3       6.6      57    20.3</code></pre>
-<p>Notice that this returns the original <code>growth_data</code> along
-with the new variable that has performed the requested calculations.</p>
-<p>The nice thing about the <code>mutate</code> function is that we can
-create multiple new variables within one function call and even
-reference variables that were just previously created in that same
-function call. For example, we can create a height variable that
-performs a unit conversion from centimeters to meters prior to creating
-the BMI variable:</p>
-<pre class="r"><code>growth_data %&gt;%
-  mutate(height_m = height_cm / 100,
-         bmi = weight_kg / height_m^2)</code></pre>
-<pre><code>## # A tibble: 8 × 6
-##   id    months weight_kg height_cm height_m   bmi
-##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
-## 1 001        0       3        47      0.47   13.6
-## 2 001        1       4.1      50.2    0.502  16.3
-## 3 001        2       4.9      53.9    0.539  16.9
-## 4 001        3       5.5      58.1    0.581  16.3
-## 5 002        0       2.9      48.6    0.486  12.3
-## 6 002        1       4.2      52.6    0.526  15.2
-## 7 002        2       5.5      54.9    0.549  18.2
-## 8 002        3       6.6      57      0.57   20.3</code></pre>
-<p>This code returns the original <code>growth_data</code> along with
-two new columns, and the calculated values for BMI are the same as
-before.</p>
-<p>We could assign this dataset to an object, particularly if we plan on
-performing subsequent calculations on the BMI measurements. Without
-assignment, R does not save the new variables that were created:</p>
-<pre class="r"><code>growth_data_expanded &lt;-
-  growth_data %&gt;%
-  mutate(height_m = height_cm / 100,
-         bmi = weight_kg / height_m^2)</code></pre>
-<p>Just as before, remember to save the work you’ve done. Try saving the
-script you’ve been working in as <code>mutate.R</code> for later
-reference.</p>
+<div id="independent-guides-sometimes-provide-additional-nuance-or-explanation" class="section level4">
+<h4>Independent guides sometimes provide additional nuance or
+explanation</h4>
+<p>Written communication provides opportunities for nuance and multiple
+simultaneous lines of thought that can be more challenging in oral
+communication. In addition, topics within one lesson often share
+important connections. Thus, the independent guides in Step 4, being
+written summations of many videos/topics in a lesson, are able to
+provide additional background on a key concept or on the relationship
+between multiple topics. <em>For this reason, we recommend you read the
+independent guides for all topics.</em></p>
 </div>
-<div id="arrange-and-select" class="section level2">
-<h2><code>arrange()</code> and <code>select()</code></h2>
-<p>Some of your data-wrangling steps will not be for purposes of
-changing the information in the data but rather focusing your attention
-on certain columns using <code>select</code> or sorting rows using
-<code>arrange</code>. To practice the <code>arrange</code> and
-<code>select</code> functions from the dplyr package, open another blank
-script within the same R project.</p>
-<p>The <code>arrange</code> function requires the variable by which to
-sort or arrange the data. The following code sorts the data by the month
-variable in ascending order:</p>
-<pre class="r"><code>growth_data %&gt;%
-  arrange(months)</code></pre>
-<pre><code>## # A tibble: 8 × 4
-##   id    months weight_kg height_cm
-##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 001        0       3        47  
-## 2 002        0       2.9      48.6
-## 3 001        1       4.1      50.2
-## 4 002        1       4.2      52.6
-## 5 001        2       4.9      53.9
-## 6 002        2       5.5      54.9
-## 7 001        3       5.5      58.1
-## 8 002        3       6.6      57</code></pre>
-<p>We can also sort the data by multiple variables. In this case, the
-data is first sorted by the month variable followed by the weight
-variable within tied values of the month variable:</p>
-<pre class="r"><code>growth_data %&gt;%
-  arrange(months, weight_kg)</code></pre>
-<pre><code>## # A tibble: 8 × 4
-##   id    months weight_kg height_cm
-##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 002        0       2.9      48.6
-## 2 001        0       3        47  
-## 3 001        1       4.1      50.2
-## 4 002        1       4.2      52.6
-## 5 001        2       4.9      53.9
-## 6 002        2       5.5      54.9
-## 7 001        3       5.5      58.1
-## 8 002        3       6.6      57</code></pre>
-<p>The default setting is for variables to be sorted in ascending order,
-but variables can also be sorted in descending order using the
-<code>desc</code> function:</p>
-<pre class="r"><code>growth_data %&gt;%
-  arrange(desc(months), weight_kg)</code></pre>
-<pre><code>## # A tibble: 8 × 4
-##   id    months weight_kg height_cm
-##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 001        3       5.5      58.1
-## 2 002        3       6.6      57  
-## 3 001        2       4.9      53.9
-## 4 002        2       5.5      54.9
-## 5 001        1       4.1      50.2
-## 6 002        1       4.2      52.6
-## 7 002        0       2.9      48.6
-## 8 001        0       3        47</code></pre>
-<p>To be clear, what the above code does is sort first by
-<code>months</code> in <em>decreasing</em> order and then, among
-observations having common values of the motnh, sorting by increasing
-(the default direction) values of <code>weight_kg</code>.</p>
-<p>The <code>select</code> function chooses columns in the dataset:</p>
-<pre class="r"><code>growth_data %&gt;%
-  select(id, months)</code></pre>
-<pre><code>## # A tibble: 8 × 2
-##   id    months
-##   &lt;chr&gt;  &lt;dbl&gt;
-## 1 001        0
-## 2 001        1
-## 3 001        2
-## 4 001        3
-## 5 002        0
-## 6 002        1
-## 7 002        2
-## 8 002        3</code></pre>
-<p>Using the NOT (!) operator, we can also select everything except a
-particular column:</p>
-<pre class="r"><code>growth_data %&gt;%
-  select(!weight_kg)</code></pre>
-<pre><code>## # A tibble: 8 × 3
-##   id    months height_cm
-##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;
-## 1 001        0      47  
-## 2 001        1      50.2
-## 3 001        2      53.9
-## 4 001        3      58.1
-## 5 002        0      48.6
-## 6 002        1      52.6
-## 7 002        2      54.9
-## 8 002        3      57</code></pre>
-<p>The <code>select</code> function is particularly useful for
-re-ordering columns:</p>
-<pre class="r"><code>growth_data %&gt;%
-  select(id, weight_kg, height_cm, months)</code></pre>
-<pre><code>## # A tibble: 8 × 4
-##   id    weight_kg height_cm months
-##   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
-## 1 001         3        47        0
-## 2 001         4.1      50.2      1
-## 3 001         4.9      53.9      2
-## 4 001         5.5      58.1      3
-## 5 002         2.9      48.6      0
-## 6 002         4.2      52.6      1
-## 7 002         5.5      54.9      2
-## 8 002         6.6      57        3</code></pre>
-<p>However, it’s not always easy to name every column, especially if
-there are many columns in your dataset. In this case, there are helper
-functions that help us more easily select columns. For example, we can
-use the <code>everything</code> function to name columns prior to
-selecting the rest of the columns:</p>
-<pre class="r"><code>growth_data %&gt;%
-  select(months, everything())</code></pre>
-<pre><code>## # A tibble: 8 × 4
-##   months id    weight_kg height_cm
-##    &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1      0 001         3        47  
-## 2      1 001         4.1      50.2
-## 3      2 001         4.9      53.9
-## 4      3 001         5.5      58.1
-## 5      0 002         2.9      48.6
-## 6      1 002         4.2      52.6
-## 7      2 002         5.5      54.9
-## 8      3 002         6.6      57</code></pre>
-<p>The <code>everything</code> function is pretty clever: it will take
-note of any column you explicitly named prior to calling
-<code>everything</code> and only include the <em>remaining</em>
-columns.</p>
-<p>The <code>starts_with</code> function allows us to provide the
-beginning of the column name that we would like to select:</p>
-<pre class="r"><code>growth_data %&gt;%
-  select(months, starts_with(&quot;w&quot;))</code></pre>
-<pre><code>## # A tibble: 8 × 2
-##   months weight_kg
-##    &lt;dbl&gt;     &lt;dbl&gt;
-## 1      0       3  
-## 2      1       4.1
-## 3      2       4.9
-## 4      3       5.5
-## 5      0       2.9
-## 6      1       4.2
-## 7      2       5.5
-## 8      3       6.6</code></pre>
-<p>Similarly, the <code>ends_with</code> function allows us to provide
-the end of the column name that we would like to select:</p>
-<pre class="r"><code>growth_data %&gt;%
-  select(months, ends_with(&quot;cm&quot;))</code></pre>
-<pre><code>## # A tibble: 8 × 2
-##   months height_cm
-##    &lt;dbl&gt;     &lt;dbl&gt;
-## 1      0      47  
-## 2      1      50.2
-## 3      2      53.9
-## 4      3      58.1
-## 5      0      48.6
-## 6      1      52.6
-## 7      2      54.9
-## 8      3      57</code></pre>
-<p>The <code>contains</code> function matches the string argument
-anywhere in the column name. For example, the “ght” string returns both
-the height and weight variables to select:</p>
-<pre class="r"><code>growth_data %&gt;%
-  select(months, contains(&quot;ght&quot;))</code></pre>
-<pre><code>## # A tibble: 8 × 3
-##   months weight_kg height_cm
-##    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1      0       3        47  
-## 2      1       4.1      50.2
-## 3      2       4.9      53.9
-## 4      3       5.5      58.1
-## 5      0       2.9      48.6
-## 6      1       4.2      52.6
-## 7      2       5.5      54.9
-## 8      3       6.6      57</code></pre>
-<p>Remember to save the work you’ve done. Try saving the script you’ve
-been working in as <code>arrange_select.R</code> for later
-reference.</p>
+<div id="work-through-the-independent-guides-after-watching-the-guided-practice" class="section level4">
+<h4>Work through the independent guides after watching the guided
+practice</h4>
+<p>As stated above, the independent guides are intended to complement
+and enhance the guided practice videos from a single lesson. After
+working through all videos in a single lesson (Steps 1 and 2), we
+recommend you also open the independent guide for that lesson and then
+test your own understanding by taking the practice quiz (Steps 4 and 5).
+In other words, working through an entire lesson (Steps 1–5) is the most
+natural ‘learning unit’ in this course. It is not absolutely necessary
+that you complete an entire lesson in one sitting, but bear in mind that
+these steps are intended to be reinforcing, and so taking breaks between
+lessons is preferred to taking breaks within a lesson.</p>
+</div>
+<div id="run-r-code-from-the-independent-guides-in-your-own-session" class="section level4">
+<h4>Run R code from the independent guides in your own session</h4>
+<p>The language in the independent guides is informal and instructional.
+Like the guided practice videos, these guides teach by doing, so it is
+assumed you will have an R session open and that you’ll be copying and
+pasting (or re-typing) code from the independent guide into your R
+session as you read through the guide. You will be instructed to copy
+and paste lines of code from the document into your own R session.</p>
+<p>However, because the independent guides will repeat everything done
+in the guided practice session, you will ultimately need to decide
+whether you will only actually copy and run code while watching the
+guided practice, only while reading the independent guides, or both.
+Whatever you decide, it is recommended that you still both watch the
+guided practice videos and read through indepedent guides.</p>
 </div>
 
 

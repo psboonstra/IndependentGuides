@@ -1,5 +1,5 @@
 ---
-title: "Module 2, Lesson 4: (even more from) `dplyr`"
+title: "Module 2, Lesson 4: (even more) `dplyr`"
 output: 
   html_document:
   html_notebook:

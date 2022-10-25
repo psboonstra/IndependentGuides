@@ -1,0 +1,244 @@
+---
+title: "Module 3, Lesson 1: The basics of the grammar of graphics"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In this first lesson of Module 3, you were introduced to the `ggplot2` package, 
+which allows you to create publication-quality graphics with relative ease. 
+The package is part of the `tidyverse` and so is already installed and available
+to you on your computer. Open the R project called
+`Lessons.Rproj` and a blank R script. As always, you'll first need to
+load the necessary packages into the current R session:
+
+```{r}
+library(healthds)
+library(tidyverse)
+```
+
+## The `ggplot` template
+
+Here is the basic template for creating plots in ggplot:
+
+```{r, echo = TRUE, eval = FALSE}
+ggplot(data = <DATA>) + 
+  geom_<GEOMNAME>(mapping = aes(<MAPPINGS>))
+```
+
+It is only a *template*, and it won't run correctly until you replace the 
+bracketed expressions, namely `<DATA>`, `<GEOMNAME>`, and `<MAPPINGS>`, with
+appropriate R code. 
+
+The `<DATA>` expression should be replaced with the name of a dataset that
+exists in your R session. In our guided practice, we exclusively use `growth_data`. 
+
+The `<GEOMNAME>` expression should be replaced with any valid geometric (geom)
+object. Perhaps most common is `geom_point`, which creates a scatterplot, i.e.
+plots individual points. Many other choices exist too, some of which we'll learn 
+about in this module. 
+
+The `<MAPPINGS>` expression should be replaced by one or more equations, separated
+by commas, that *map* certain variables fin your dataset to certain aesthetics. 
+The `x` and `y` aesthetics, respectively controlling the x-axis and y-axis, 
+are the most common aesthetics, and there are several others. 
+
+Note also that when using multiple `ggplot2`-specific functions, you *add* 
+the functions together using the `+` sign (not the `%>%` operator as you might 
+expect). 
+
+Putting this all together, we can create a simple scatterplot of the infant
+growth data, plotting the height measurements on the y-axis against the weight
+measurements on the x-axis:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_point(mapping = aes(x = weight_kg, y = height_cm))
+```
+
+## Using aesthetics in `geom_point`
+
+In `ggplot2`, aesthetics are visual cues, which may either be directional, like
+the `x` and `y` aesthetics, or shape-, color-, or size-based. To see this more concretely, 
+we can map the `id` variable in `growth_data` to the `shape` aesthetic:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_point(mapping = aes(x = weight_kg, y = height_cm, shape = id))
+```
+
+Notice that a legend corresponding to the shape aesethetic is automatically
+added to the right of the figure. Although it may not be evident at first glance,
+the legend is analogous to the x-axis and y-axis: just like the axes are 
+instructions for interpreting values of the `x` and `y` aesthetics, legends
+are instructions for interpreting the other aesthetics. 
+
+We could alternatively the `id` variable in `growth_data` to the `color` aesthetic:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_point(mapping = aes(x = weight_kg, y = height_cm, color = id))
+```
+
+You can map any variable in your dataset to (nearly) any aesthetic, but not all
+choices will be equally desirable. As an example, consider the plot that maps
+the `months` variable to the `size` aesthetic:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_point(mapping = aes(x = weight_kg, y = height_cm, size = months))
+```
+
+This is a bit strange-looking because ggplot is interpreting `months` as a number --
+in particular a number with small and large values -- and so months with "small"
+values get a smaller size, and months with "large" values get a larger size. So, 
+while it technically allows us to distinguish between differenb values of 
+`months`, it is also somewhat distracting and potentially even misleading. 
+
+The same basic conclusion would apply if we were to map `months` to the `alpha`
+aesthetic, which controls the transparency of each point:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_point(mapping = aes(x = weight_kg, y = height_cm, alpha = months))
+```
+
+or if we were to map `months` to the `color` aesthetic:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_point(mapping = aes(x = weight_kg, y = height_cm, color = months))
+```
+
+Notice that the legend for color is a so-called color-bar, in which there are 
+intermediate shades reserved for fractional values of `months`. Since we do not
+have fractional values of `months` in our data, this is probably not the best
+way to distinguish between months. 
+
+You may be wondering why, when we mapped `id` to the `color` aesthetic a few plots
+above, the legend had two completely different colors, whereas when we mapped `months`
+to the `color` aesthetic, a colorbar was used. The difference is that `id` is
+considered to be a discrete-valued variable, whereas `months` is considered
+to be a number. You can see this by printing `growth_data` to the screen:
+
+```{r}
+growth_data
+```
+
+Just below each column name is a bracketed expression. Under `id` is `<chr>`, 
+indicating that this is stored as a *character*, which is a flexible data-type
+that can be basically any collection of letters and numbers. In contrast, under
+`months` is `<dbl>`, indicating that this is stored as a *double*, a computer-ish
+term for a number. Characters are more flexible than doubles, meaning that
+one can always turn a double into a character, but not necessarily the other way
+around. And if `ggplot` encounters a character, it will treat it like a discrete-
+valued variable. 
+
+What this means is that, if we wanted to tell `ggplot` to treat `months` like a *character* instead of a *double*, we could run the following code:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_point(mapping = aes(x = weight_kg, y = height_cm, color = as.character(months)))
+```
+
+Now, we get a discrete-valued legend for months, with one distinctive color for 
+each unique value. We have used the `as.character()` function to coerce the `months`
+variable into a character. 
+
+If desired, you can save this script as `geom_point.R`, for example, and then create
+a new script before moving on to the next topic. This is not mandatory, though. 
+
+## Practicing new geoms
+
+In this section you will learn about other geoms besides `geom_point`. Let's
+consider two geoms that replace the points with labels that can be treated as
+a new aesthetic:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_text(mapping = aes(x = weight_kg, y = height_cm, label = id))
+```
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_label(mapping = aes(x = weight_kg, y = height_cm, label = id))
+```
+
+Both `geom_text` and `geom_label` require that you map an additional aesthetic, 
+called `label`. Here, we have mapped the `id` variable to the `label` aesthetic. 
+In place of each point is either `001` or `002`, which are the values taken directly
+from the `id` variable in `growth_data`. Compare the two plots to see that 
+`geom_text` provides the "naked" values whereas `geom_label` frames each value
+in a contrasting box. 
+
+A lineplot is constructed through the use of `geom_line`:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_line(mapping = aes(x = weight_kg, y = height_cm))
+```
+
+Pay close attention to how the line segments are connected. Pairs of points are
+defined by neighboring values of the variable mapped to the `x` aesthetic and
+*not* the `y` aesthetic. Thus, `geom_line` may sometimes result in a line that
+squiggles up and down because the `y` values are not guaranteed to be increasing,
+but it will never squiggle left or right because the `x` values are explicitly
+pair to be increasing. 
+
+Finally, you can construct a column plot using `geom_col`:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_col(mapping = aes(x = weight_kg, y = height_cm))
+```
+
+As we've already noted, this plot should be interpreted with care. `geom_col`
+creates columns that point up starting at zero: the horizontal position of
+each column is determined by the `x` value and the vertical height is equal to 
+the `y` value. In this case, there are two observations having `x=5.5`, and so
+because they cannot occupy the same space, `geom_col` stacks the resulting columns. 
+However, it is not obvious from simply looking at the plot that this is what has
+happened. 
+
+If desired, you can save this script as `more_geoms.R`, for example, and create
+a new script before moving on to the next topic. This is not mandatory, though. 
+
+## Layering geoms
+
+The `ggplot2` package is extremely customize-able, and one of the ways in which 
+this manifests is in its ability to layer multiple geoms in one figure. To 
+start, let us first create a line plot showing the relationship between height
+and weight, mapping the `id` variable to the color `aesthetic`:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_line(mapping = aes(x = weight_kg, y = height_cm, color = id))
+```
+
+From our experience working with `growth_data`, we know that each line is comprised
+of four points, but it is basically impossible to see that here. On the other hand, 
+this plot does an exceptional job of showing the relationship between weight and height. 
+We can achieve both of these, i.e. showing the individual points *and* showing
+the trajectories, by layering. To layer, you add, literally, calls to multiple geoms. 
+Here I am layering on a call to `geom_point`:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_line(mapping = aes(x = weight_kg, y = height_cm, color = id)) +
+  geom_point(mapping = aes(x = weight_kg, y = height_cm))
+```
+
+
+As before, you can save your work in this script, using a name like `layering_geoms.R`, 
+for example. 
