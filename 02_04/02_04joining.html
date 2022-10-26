@@ -547,7 +547,7 @@ library(tidyverse)</code></pre>
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="full_join" class="section level2">
-<h2><code>full_join()</code></h2>
+<h2><code>full_join</code></h2>
 <p>Let’s consider the <code>growth_data_aux</code> dataset contained in
 <code>healthds</code>. This dataset contains measurements on the same
 infants as the <code>growth_data</code>. However, there are four
@@ -592,7 +592,7 @@ unique combination of the identifier variables (e.g., ID and month
 variables).</p>
 </div>
 <div id="left_join-and-right_join" class="section level2">
-<h2><code>left_join()</code> and <code>right_join()</code></h2>
+<h2><code>left_join</code> and <code>right_join</code></h2>
 <p>The <code>left_join</code> function ensures that every unique
 combination of the identifier variables from the first dataset are
 returned in the joined data:</p>
@@ -609,9 +609,10 @@ returned in the joined data:</p>
 ## 6 002        1       4.2      52.6       39.2
 ## 7 002        2       5.5      54.9       41.4
 ## 8 002        3       6.6      57         NA</code></pre>
-<p>This left join appears to give the same result as the full join we
-practiced earlier since every unique combination of the identifier
-variables is captured in the first dataset.</p>
+<p>This left join gives the same result as the full join we practiced
+earlier since every unique combination of the identifier variables is
+captured in the first dataset. In general this equivalence will not be
+the case.</p>
 <p>On the other hand, the <code>right_join</code> function returns only
 the unique combinations of the identifier variables that exist in the
 second dataset:</p>
@@ -637,7 +638,7 @@ as <code>right_join(y, x)</code> (except that the order of the columns
 will be different).</p>
 </div>
 <div id="inner_join" class="section level2">
-<h2><code>inner_join()</code></h2>
+<h2><code>inner_join</code></h2>
 <p>The <code>inner_join</code> function returns the unique combinations
 of the identifier variables that exist in both datasets:</p>
 <pre class="r"><code>inner_join(growth_data, growth_data_aux)</code></pre>
@@ -657,7 +658,8 @@ full and left joins return the same results, and the same is true for
 right and inner joins. This behavior depends on the specific qualities
 of both datasets.</p>
 <p>Remember to save the work you’ve done. Try saving the script you’ve
-been working in as <code>joining.R</code> for later reference.</p>
+been working in as <code>02_04moredplyr.R</code> for later
+reference.</p>
 </div>
 <div id="help-pages" class="section level2">
 <h2>Help Pages</h2>

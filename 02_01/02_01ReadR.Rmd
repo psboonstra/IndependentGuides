@@ -48,7 +48,7 @@ first line, then save the script by pressing 'Cmd+S' or 'Ctrl+S', choosing
 `IndicatorTable.R` as the file name. 
 
 
-## `read_csv()`
+## `read_csv`
 
 The function from the `readr` that we'll practice using here is the `read_csv`
 function, which takes a computer file is saved as a **c**omma-**s**eparated **v**alue (csv)

@@ -1,0 +1,251 @@
+---
+title: "Module 3, Lesson 3: Advanced topics in ggplot"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In the third lesson of Module 3, you delved into some more advanced topics
+in ggplot. Layering geoms can tell multiple stories about your data, and we saw
+that you can create fairly complicated plots with simple code by leveraging 
+concepts such as 'positional matching' (a concept you can use for *any* R function, 
+not just `ggplot2` functions) and 'inheritance', which is a 'ggplot2'-specific feature. 
+
+You learned how to begin to fine-tune your plots using the `scale` family of
+functions. And finally, you learned how to make use of the concept of small multiples
+to create faceted plots. 
+
+Open the R project called `Lessons.Rproj` and a blank R script. Then, 
+load the necessary packages into the current R session:
+
+```{r}
+library(healthds)
+library(tidyverse)
+```
+
+
+## Layering, positional matching, and inheritance
+
+The standard `ggplot` template is not too onerous to write when creating a single
+geometric object. For example, a boxplot showing the distribution of weight
+measurements for each infant is created by
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_boxplot(mapping = aes(x = weight_kg, y = id))
+```
+
+However, when showing boxplots, it is usually good practice to also show the underlying
+data, especially when your data are small-ish. To do so, we layer on a call
+to `geom_point`:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_boxplot(mapping = aes(x = weight_kg, y = id)) +
+  geom_point(mapping = aes(x = weight_kg, y = id))
+```
+
+The code starts to get a bit more complicated looking, and we can trim things down
+to make it cleaner. First, we can lean on three key facts: (i) the first
+argument of `ggplot` is `data`; (ii) the first argument of every `geom_<GEOMNAME>`
+is `mapping`; (iii) and the first and second arguments of `aes` are `x` and `y`, respectively. 
+
+Because of these key facts, we can use the R concept of 'positional matching', which
+allows you to specify arguments in their expected order *without naming them*. So, 
+the code below is equivalent to the above code:
+
+```{r, eval = FALSE}
+ggplot(growth_data) + 
+  geom_boxplot(aes(weight_kg, id)) +
+  geom_point(aes(weight_kg, id))
+```
+
+In particular, we don't need `data = ` in the call to `ggplot` because the `data`
+argument comes first, and therefore `growth_data`, which is now an 
+'unnamed' argument, is matched to `data` by virtue of its position. The same
+principle applies to justify not needing to write `mapping = `, `x = `, and `y = `.
+
+There's an additional way we can make this code even more concise using 'inheritance', 
+which is a `ggplot` specific feature. Inheritance says that we can place inside of 
+`ggplot` all elements of a plot that are intended to be shared in common by every layer. 
+Referring to our figure, one shared element is `data`, and inheritance is already
+happening for this: the provided `data` object is silently passed down to and
+used by `geom_boxplot` and `geom_point`. Another shared element are the mapped
+aesthetics, as specified by `aes(weight_kg, id)`. For this reason, the `ggplot`
+function has its own mapping argument (which is positioned second in the 
+set of arguments), which, when specified, also gets passed down to the geoms. 
+
+Thus, the following code is also equivalent to all of the above code chunks:
+
+```{r, eval = FALSE}
+ggplot(growth_data, aes(weight_kg, id)) + 
+  geom_boxplot() +
+  geom_point()
+```
+
+Now, both the `data` argument (the first argument in our call to `ggplot`, 
+by virtue of positional matching) and the `mapping` argument (the second argument,
+for the same reasons) get passed down to each of the geoms. 
+
+Inheritance is very flexible. If there's an aesthetic mapping that you want to
+apply to one geom, you can still incorporate it in the usual way without 
+affeting the inheritance:
+
+```{r, eval = FALSE}
+ggplot(growth_data, aes(weight_kg, id)) + 
+  geom_boxplot() +
+  geom_label(aes(label = months))
+```
+
+In the above plot, the points are labeled according the value of `months`. You 
+can also overwrite an aesthetic that would otherwise be inherited from `ggplot`. 
+
+Before continuing, save your work thus far. Save your script as `03_03advancedggplot.R`.
+
+## The scale family of functions
+
+Please note that in the remaining sections of this independent guide, we will 
+still cover all of the  same topics discussed in the corresponding guideded 
+practice but with slightly different examples.
+
+The code below creates several plots. We first create a plot showing individual
+pairs of height-weight measurements, using different colors for each infant id. 
+We then layer on the infant-specific height-weight trajectories. We have
+done so while taking full advantage of positional matching and inheritance, but
+we also use a novel feature that we've previously not used:
+
+```{r}
+weight_versus_height <- 
+  ggplot(growth_data, aes(weight_kg, height_cm, color = id)) + 
+  geom_point()
+
+weight_versus_height
+```
+
+We've first *assigned* the output from ggplot to an object named `weight_versus_height`. 
+The plot isn't shown when we make the assignment, but if we type the name of the 
+object in the console and press  enter, we view the plot. It is the 'base' plot 
+showing just the points.
+
+```{r}
+weight_versus_height +
+  geom_line(aes(color = id))
+```
+
+With this plot object created, we can extend it by adding on other `ggplot` 
+features before printing, as you can see in the chunk above. Specifically, 
+we've layered on a call to `geom_line` to show the trajectories.
+
+To make the variable labels more informative, we use the `scale_<AESTHETIC>_continous`
+and `scale_<AESTHETIC>_discrete` families of functions. Every aesthetic has its
+own set of scale functions. Within these functions, we can modify the way in which 
+the aesthetic is visualized and presented. So, for example, to change the labels, we 
+would write the following:
+
+```{r}
+weight_versus_height + 
+  geom_line() +
+  scale_y_continuous(name = "Height (cm)") +
+  scale_x_continuous(name = "Weight (kg)") +
+  scale_color_discrete(name = "ID")
+```
+
+These scale features are added to the baseplot just like other functions in `ggplot2`.
+We have to use the *continuous* versions of these scale functions for the `x`
+and `y` aesthetics because they are doubles, whereas we have to use the *discrete*
+version for the `color` aesthetic, because the `id` variable is a character. 
+
+The quoted names can be whatever you choose. Take care in writing out these aesthetic names. 
+If you accidentally switch the values of the `name` argument for the `x` and `y` 
+aesthetics, the labels of the x-axis the y-axis will be switched, and the
+plot will be misleading. 
+
+The scale family of functions allows for other useful modifications of your plot. 
+A common example is to change the number or nature of the tick marks along an axis. 
+
+```{r}
+weight_versus_height +
+  geom_line() +
+  scale_y_continuous(name = "Height (cm)", 
+                     breaks = seq(from = 48, to = 58, by = 2)) +
+  scale_x_continuous(name = "Weight (kg)") +
+  scale_color_discrete(name = "ID")
+```
+
+Here I am using a function from base R called `seq`, which is used to create
+a sequence of numbers stored as a vector. In this case, I'm creating a vector
+that starts at 48, increments by 2 at a time, and continues on in this manner
+until it would go beyond a number larger than 58, stopping just before this point.
+
+You can alternatively use the concatenate function, `c()`, to provide a
+custom set of breaks, as in:
+
+```{r}
+weight_versus_height +
+  geom_line() +
+  scale_y_continuous(name = "Height (cm)", 
+                     breaks = c(50, 51, 53, 57)) +
+  scale_x_continuous(name = "Weight (kg)") +
+  scale_color_discrete(name = "ID")
+```
+
+To see what other features of an aesthetic you can modify with the `scale` family
+of functions, you should inspect the help page, e.g. `?scale_x_continuous`. 
+
+If you only need to change the labels of aesthetics and nothing else, there is
+a shortcut function provided called `labs`:
+
+```{r}
+weight_versus_height +
+  geom_line() +
+  labs(y = "Height (cm)", 
+       x = "Weight (kg)",
+       color = "ID")
+```
+
+Save your script at this point using `Cmd+S` or `Ctrl+S` and then keep
+reading to add more code to this script. 
+
+## `facet_grid` and `facet_wrap`
+
+Faceting uses the idea of small multiples to show data across time or space. Faceting
+is sort of like another aesthetic, allowing you to show your data across multiple
+panels. To highlight how to facet as well as to demonstrate that we can add 
+any `ggplot` function to an existing plot (and not just `scale` or `geom_` 
+functions as above), run the following code:
+
+```{r}
+weight_versus_height + 
+  facet_grid(rows = vars(months))
+```
+
+As an aside: this code will only run if you created the `weight_versus_height` object
+as we did above. Otherwise, you will get an error message from R that states
+
+```{r, echo = FALSE}
+cat("Error: object 'weight_versus_height' not found")
+```
+
+Here we have taken our base plot of weight versus height, which we created
+earlier, and added instructions to plot each id separately. The `vars` function
+acts similarly to the `aes` function and should contain the name or names of 
+variables that we wish to facet by, separated by commas. The `rows` argument 
+in `facet_grid` means that each unique combination of the variables in `vars` 
+will get its own row. To facet by columns, we would use the following:
+
+```{r}
+weight_versus_height + 
+  facet_grid(cols = vars(months))
+```
+
+Save your script once again before closing.

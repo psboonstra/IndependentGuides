@@ -50,7 +50,7 @@ plots individual points. Many other choices exist too, some of which we'll learn
 about in this module. 
 
 The `<MAPPINGS>` expression should be replaced by one or more equations, separated
-by commas, that *map* certain variables fin your dataset to certain aesthetics. 
+by commas, that *map* certain variables in your dataset to certain aesthetics. 
 The `x` and `y` aesthetics, respectively controlling the x-axis and y-axis, 
 are the most common aesthetics, and there are several others. 
 
@@ -84,7 +84,7 @@ the legend is analogous to the x-axis and y-axis: just like the axes are
 instructions for interpreting values of the `x` and `y` aesthetics, legends
 are instructions for interpreting the other aesthetics. 
 
-We could alternatively the `id` variable in `growth_data` to the `color` aesthetic:
+We could alternatively map the `id` variable in `growth_data` to the `color` aesthetic:
 
 ```{r}
 ggplot(data = growth_data) + 
@@ -100,10 +100,10 @@ ggplot(data = growth_data) +
   geom_point(mapping = aes(x = weight_kg, y = height_cm, size = months))
 ```
 
-This is a bit strange-looking because ggplot is interpreting `months` as a number --
+This plot is strange-looking because ggplot is interpreting `months` as a number --
 in particular a number with small and large values -- and so months with "small"
 values get a smaller size, and months with "large" values get a larger size. So, 
-while it technically allows us to distinguish between differenb values of 
+while it technically allows us to distinguish between different values of 
 `months`, it is also somewhat distracting and potentially even misleading. 
 
 The same basic conclusion would apply if we were to map `months` to the `alpha`
@@ -126,8 +126,8 @@ intermediate shades reserved for fractional values of `months`. Since we do not
 have fractional values of `months` in our data, this is probably not the best
 way to distinguish between months. 
 
-You may be wondering why, when we mapped `id` to the `color` aesthetic a few plots
-above, the legend had two completely different colors, whereas when we mapped `months`
+You may be wondering why -- when we mapped `id` to the `color` aesthetic a few plots
+above -- the legend had two completely different colors, whereas when we mapped `months`
 to the `color` aesthetic, a colorbar was used. The difference is that `id` is
 considered to be a discrete-valued variable, whereas `months` is considered
 to be a number. You can see this by printing `growth_data` to the screen:
@@ -156,8 +156,7 @@ Now, we get a discrete-valued legend for months, with one distinctive color for
 each unique value. We have used the `as.character()` function to coerce the `months`
 variable into a character. 
 
-If desired, you can save this script as `geom_point.R`, for example, and then create
-a new script before moving on to the next topic. This is not mandatory, though. 
+Save this script as `03_01grammarofgraphics.R`. 
 
 ## Practicing new geoms
 
@@ -192,9 +191,9 @@ ggplot(data = growth_data) +
 Pay close attention to how the line segments are connected. Pairs of points are
 defined by neighboring values of the variable mapped to the `x` aesthetic and
 *not* the `y` aesthetic. Thus, `geom_line` may sometimes result in a line that
-squiggles up and down because the `y` values are not guaranteed to be increasing,
-but it will never squiggle left or right because the `x` values are explicitly
-pair to be increasing. 
+squiggles up and then down because the `y` values are not guaranteed to be increasing,
+but it will never squiggle left and then right because the `x` values are explicitly
+paired to be increasing. 
 
 Finally, you can construct a column plot using `geom_col`:
 
@@ -211,8 +210,7 @@ because they cannot occupy the same space, `geom_col` stacks the resulting colum
 However, it is not obvious from simply looking at the plot that this is what has
 happened. 
 
-If desired, you can save this script as `more_geoms.R`, for example, and create
-a new script before moving on to the next topic. This is not mandatory, though. 
+Save your script to preserve the additional work you've done. 
 
 ## Layering geoms
 
@@ -230,7 +228,7 @@ From our experience working with `growth_data`, we know that each line is compri
 of four points, but it is basically impossible to see that here. On the other hand, 
 this plot does an exceptional job of showing the relationship between weight and height. 
 We can achieve both of these, i.e. showing the individual points *and* showing
-the trajectories, by layering. To layer, you add, literally, calls to multiple geoms. 
+the trajectories, by layering. To layer, you add -- literally -- calls to multiple geoms. 
 Here I am layering on a call to `geom_point`:
 
 ```{r}
@@ -240,5 +238,4 @@ ggplot(data = growth_data) +
 ```
 
 
-As before, you can save your work in this script, using a name like `layering_geoms.R`, 
-for example. 
+As before, remember to save your work in this script. 

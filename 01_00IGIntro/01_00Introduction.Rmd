@@ -32,15 +32,15 @@ steps called 'independent guides', which cover all topics in a lesson.
 In this document, we provide some context for the independent guides in Step 4, 
 namely: what they will cover, when to work them, and how to use them. 
 
-#### Independent guides will re-visit all content covered in the guided practice
+#### Independent guides will re-visit the content covered in the guided practice
 
-For some, the most efficient way to learn to code is by watching and repeating,
-whereas for others it is by reading and copying. Step 2 (implementing via guided 
-practice) relies upon the former, whereas Step 4 (reinforcing via independent
-guides) uses the latter. Thus, a defining feature of the independent guides is that
-everything covered in Step 2 will be covered again in Step 4. If you don't understand
-something the instructor *says* (or even if you do understand), you will have a second chance 
-to engage with the same content by reading what the instructor *writes*. 
+For some, the most efficient way to learn to code is by watching and repeating, 
+whereas for others it is by reading and copying. Step 2 (implementing via guided  
+practice) relies upon the former, whereas Step 4 (reinforcing via independent guides) 
+uses the latter. Thus, a defining feature of the independent guides is that what's
+covered in Step 2 will be covered again in Step 4. If you don't understand 
+something the instructor *says* (or even if you do understand), you will have a 
+second chance to engage with the same content by reading what the instructor *writes*. 
 
 #### Independent guides sometimes provide additional nuance or explanation
 

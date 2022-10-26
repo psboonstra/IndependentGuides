@@ -552,7 +552,7 @@ library(tidyverse)</code></pre>
 <p>Run these lines of code the ‘usual’ way (‘Cmd+Enter’ or
 ‘Ctrl+Enter’).</p>
 <div id="filter" class="section level2">
-<h2><code>filter()</code></h2>
+<h2><code>filter</code></h2>
 <p>The <code>filter</code> function allows us to include or exclude
 observations (i.e., rows) from a dataset based on one or more
 conditions. The general structure for using this function follows:
@@ -650,12 +650,12 @@ commas:</p>
 <p>Comma-separated conditions are interpreted as AND operators, so you
 are free to use either commas or ampersands.</p>
 <p>Remember to save the work you’ve done. Save the script you’ve been
-working in as <code>filter.R</code> for later reference.</p>
+working in as <code>02_02dplyr.R</code> for later reference (the first
+‘02’ refers to Module 2, the second ‘02’ refers to Lesson 2).</p>
 </div>
 <div id="group_by-and-summarize" class="section level2">
-<h2><code>group_by()</code> and <code>summarize()</code></h2>
-<p>To practice additional functions from the dplyr package, open another
-blank script.</p>
+<h2><code>group_by</code> and <code>summarize</code></h2>
+<p>Continue working in this same script.</p>
 <p>The <code>group_by</code> function allows us to group data into
 sub-datasets defined by a common value. In turn, the
 <code>summarize</code> function provides a summary of the data based on
@@ -751,9 +751,7 @@ using the assignment operator:</p>
   growth_data %&gt;%
   group_by(months) %&gt;%
   summarize(mean_weight_kg = mean(weight_kg))</code></pre>
-<p>Just as before, remember to save the work you’ve done. Try saving the
-script you’ve been working in as <code>groupby_summarize.R</code> for
-later reference.</p>
+<p>Just as before, remember to save the work you’ve done.</p>
 </div>
 
 

@@ -1,0 +1,325 @@
+---
+title: "Module 3, Lesson 2: Collective geoms"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In the second lesson of Module 3, you learned about histograms, barplots, and
+boxplots -- all of which are "collective geoms". Remember that collective geoms are 
+so-called because rather than plotting individual data they plot summaries of the
+data. A collective geom is intended to show some overall feature of the data
+instead of specific data points. 
+
+Open the R project called `Lessons.Rproj` and a blank R script. Then, 
+load the necessary packages into the current R session:
+
+```{r}
+library(healthds)
+library(tidyverse)
+```
+
+
+## `geom_histogram`
+
+As you saw in the video, a histogram is created by first binning or grouping
+together observations having numeric values that are considered near to one another
+in some sense (more on this in a moment) and then plotting these groups as rectangles 
+with height equal to the number of observations in a bin.
+
+To create a histogram of the infant weights, we use the following code, mapping `weight_kg` to the `x` aesthetic:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_histogram(mapping = aes(x = weight_kg), 
+                 binwidth = 1)
+```
+
+From the plotted result, we see that two measured weights were between 
+2.5 and 3.5, because the height of the bar is 2. Similarly, two were between 
+3.5 and 4.5,3 were between 4.5 and 5.5, and one was between 6.5 and 7.5. By
+constructing a histogram, we exchange precision of individual measurements (e.g. 
+we can't say anything more than that a measurement feel *somewhere* between 
+6.5kg and 7.5kg) for a better characterization of the whole distribution of 
+weight measurements.
+
+This geom has an extra argument that we've not seen before, `binwidth`, 
+which we set equal to 1 in the call above. Note that it falls *outside* of
+the aesthetic mappings in the `aes` function. This choice means that the
+size of the bins is equal to 1. For example, the first bin starts at 2.5
+and ends at 3.5, hence the width is 3.5 - 2.5 or 1. And the same goes for
+the rest of the bins: 4.5 - 3.5, 5.5 - 4.5, etc. Different choices of `binwidth` 
+may give dramatically different results, particularly for small datasets like 
+this one. Try out different values of `binwidth` to see for yourself. 
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_histogram(mapping = aes(x = weight_kg), 
+                 binwidth = 0.25)
+```
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_histogram(mapping = aes(x = weight_kg), 
+                 binwidth = 2.0)
+```
+
+You might be thinking that only choosing `binwidth` is not sufficient to determine
+how the histogram should appear. For example, if `binwidth` is 1, you could have
+a bin of (2.5, 3.5) or (2.6, 3.6) or  (2.7, 3.7) or... How does `ggplot` 
+choose (2.5, 3.5)? In fact, if you only specify `binwidth`, by default `ggplot` will 
+anchor all bins based upon the (potentially theoretical) bin centered at 0, 
+with boundaries equal to half of `binwidth` in either direction (I say this is 
+"potentially theoretical" because your numbers may be much much bigger than 0). 
+So this anchoring bin in our case is (-0.5, 0.5). Once you know this bin, all 
+of the other bins become automatically determined, i.e. (0.5, 1.5), (1.5, 2.5), etc.
+
+As you might be figuring out by know, you can override this default behavior
+by specifying `center`, as in:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_histogram(mapping = aes(x = weight_kg), 
+                 binwidth = 1, 
+                 center = 1.5)
+```
+
+Centering the first bin at 1.5, the bins become (2, 3), (3, 4), etc.
+Alternatively, instead of specifying `center`, you can specify `boundary`,
+which gives the edge of a bin:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_histogram(mapping = aes(x = weight_kg), 
+                 binwidth = 1, 
+                 boundary = 1)
+```
+
+Setting `center = 0.5` gives the same result as `boundary = 1` (when `binwidth=1`). 
+
+There are opportunities to have your histogram tell a different story through 
+your choice of `binwidth` and `center` or `boundary`. For example, consider what
+happens when we move the value of `center` from 1.5 above to 1.4 below:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_histogram(mapping = aes(x = weight_kg), 
+                 binwidth = 1, 
+                 center = 1.4)
+```
+
+A small change in one argument results in a much different-looking histogram.
+Related to this, if you fail to choose `binwidth`, `ggplot` will make some default decisions, and these won't necessarily be good decisions:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_histogram(mapping = aes(x = weight_kg))
+```
+
+Having failed to set `binwidth`, `ggplot` informs us of this fact and suggests to choose our own value. 
+
+Your responsibility as a data scientist is to choose values that most
+faithfully represent your data, and this can be challenging sometimes!
+
+Lastly, note that you can create a horizontal histogram by mapping your 
+variable to the `y` aesthetic:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_histogram(mapping = aes(y = weight_kg), 
+                 binwidth = 1)
+```
+
+Now, the x-axis is used to represent the counts. 
+
+Save this script as `03_02collectivegeoms.R`.
+
+## `geom_bar`
+
+A barplot, created using `geom_bar`, is similar to a histogram, the main difference 
+being that it is intended to be used for *characters* rather than *doubles* (the
+Independent Guide for Module 3, Lesson 1 also talks about *characters* versus *doubles*).
+A simple barplot counting the number of observations per infant id is created by:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_bar(mapping = aes(x = id))
+```
+
+Barplots, like histograms, give counts. And from this barplot we see that
+there are four observations per id. 
+
+Often, one wants to incorporate more aesthetics into a barplot. To demonstrate, 
+we will apply some of our `dplyr` knowledge to add a new variable to our 
+`growth_data`. Specifically, we will create a variable that equals `TRUE` when 
+a measured weight exceeds 5kg and `FALSE` otherwise. Different from the guided 
+practice video, we will create this new variable and *assign* the resulting 
+data frame to a new dataset called `growth_data_expanded` (we used this same
+variable name in Module 2, Lesson 3; although the names are the same, they 
+are unrelated):
+
+```{r}
+growth_data_expanded <- 
+  growth_data %>%
+  mutate(weight_gt_5kg = weight_kg > 5)
+```
+
+The expression `weight_gt_5kg = weight_kg > 5` may be confusing at first glance. 
+Remember from Module 2, Lesson 2 that the `=` sign is serving as a declaration, 
+and so we are telling R to create a new variable called `weight_gt_5kg` that
+takes on value equal to the right-hand side of the equation sign. Focusing now 
+on the right-hand side, `weight_kg > 5` is asking a question: "is `weight_kg` 
+greater than 5?" And the answer to this question is the value that `weight_gt_5kg` 
+takes on. This happens on a row-by-row basis, so the answer to the question may 
+be `FALSE` ('no') for one row and `TRUE` ('yes') for another row. 
+
+By assigning this expanded dataset to a new object called `growth_data_expanded`, we 
+preserve this result for future analyses. 
+
+Returning to barplots, let's create a barplot that maps this `weight_gt_5kg` 
+variable to the `fill` aesthetic:
+
+```{r}
+ggplot(data = growth_data_expanded) + 
+  geom_bar(mapping = aes(x = id, fill = weight_gt_5kg))
+```
+
+Notice how, in contrast to the guided practice, we aren't piping the data into
+`ggplot` here, but we could:
+
+```{r, eval = FALSE}
+growth_data_expanded %>% 
+  ggplot() + 
+  geom_bar(mapping = aes(x = id, fill = weight_gt_5kg))
+```
+
+(remember that the the pipe operator sends the thing that is being piped as the 
+first argument of the function that the pipe points to, which in the case of the
+function `ggplot` is `data`)
+
+We have the same barplot as before but now with each bar filled to represent the number of counts for which `weight_gt_5kg` is `TRUE` and `FALSE`. These colored bars are, by default, stacked on top of each other. We can use the `position` argument inside of `geom_bar` change this behavior. For example, to stack the bars next to each other, we do:
+
+```{r}
+ggplot(data = growth_data_expanded) + 
+  geom_bar(mapping = aes(x = id, fill = weight_gt_5kg), 
+           position = "dodge")
+```
+
+Each value if the `id` variable now gets *two* bars, one for `weight_gt_5kg` equal 
+to `TRUE` and another for `weight_gt_5kg` equal to `FALSE`. We are abusing the
+`x` aesthetic slightly here -- the fact that the reddish bar corresponding to
+`FALSE` is on the left and greenish bar corresponding to `TRUE` is on the
+right should not be interpreted to mean that they have different values of `id`. 
+Dodging the bars this way allows for an easier direct comparison of the colored 
+bars to one another, at the cost of making it slightly more difficult to compare 
+the total counts combining all colors. 
+
+We can also normalize the heights of the bars so that the filled bars represent 
+proportions instead of counts:
+
+```{r}
+ggplot(data = growth_data_expanded) + 
+  geom_bar(mapping = aes(x = id, fill = weight_gt_5kg), 
+           position = "fill")
+```
+
+(unfortunately, there are two distinct uses of the word 'fill' here. It is an 
+aesthetic that can be mapped inside of the `aes()` function and also a word, in quotes, 
+that specifies a type of barplot.) Although setting `position="fill"` doesn't 
+look different at first glance from the default stacked barplot, this is only the 
+case because each value of `id` has equal numbers of observations. Upon closer 
+inspection one notices that the y-axis ends at 1 instead of at 4 in the stacked barplot. 
+All bars will always have height equal to 1 when using `position="fill"`. Because
+of this, the default label for the y-axis ("count") is no longer accurate, and 
+you can change this label using what you will learn in Module 3, Lesson 3.
+
+One potential source of confusion is understanding the difference between the 
+`color` and `fill` aesthetics. Generally speaking, if a geometric object has 
+area to it (like a bar), the `fill` aesthetic controls the shading of the inside 
+and the `color` aesthetic controls the shading of its perimeter. If you're not 
+sure which is appropriate, try them both and see which you prefer:
+
+```{r}
+ggplot(data = growth_data_expanded) + 
+  geom_bar(mapping = aes(x = id, color = weight_gt_5kg))
+```
+
+In this case, coloring just the perimeter of the bars makes it hard to visually 
+distinguish between groups, and we'd probably prefer to use the `fill` aesthetic.
+
+Save your script to preserve the additional code you've added to this script.
+
+## `geom_boxplot`
+
+Much of what we've done so far has been within the `tidyverse` family of packages. 
+In this lesson we briefly leave the `tidyverse` to learn about some new base
+R functions: `sort` and `quantile`. We also learn about the `pull` function (which
+happens to be in the `tidyverse` although it's new to us). We introduce these
+functions only to help understand how `geom_boxplot` works. 
+
+`pull` is analogous to `select` (Module 2, Lesson 3) but with two key differences:
+it can only include one variable (whereas `select` can include more than one), and
+it gives back a vector of numbers rather than a dataset. The advantage to `pull`ing
+a variable is that we can then use the `sort` and `quantile` functions, which 
+both only work on a vector of numbers. Consider the following three lines of code:
+
+```{r}
+growth_data %>% pull(weight_kg)
+growth_data %>% pull(weight_kg) %>% sort()
+growth_data %>% pull(weight_kg) %>% quantile()
+```
+The first pulls the `weight_kg` variable. From it, you can see the resulting vector. 
+It is still comprised of the measured infant weights, but we have lost all context, 
+e.g. we don't know which id or month each measured weight corresponds to.
+The second line pulls this variable and then sorts it in increasing order. This should
+should remind you of the `arrange` function (but remember that `arrange` is intended
+to be used in the context of a dataset, not a vector). The third line pulls this variable
+and then calculates the minimum, three quartiles, and maximum of this vector. 
+
+The first, second, and third quartiles of a set of numbers are those for which 
+25%, 50%, and 75%, respectively, of the numbers in the set fall below. These quartiles
+form the *box* of a boxplot:
+
+```{r}
+ggplot(data = growth_data) + 
+    geom_boxplot(mapping = aes(x = weight_kg))
+```
+
+The thick middle line is the second quartile (also called the median), and the
+left and right edges of the box are the first and third quartiles. From the
+boxplot, we know that 50% of the measured infant weights fall inside the box. The
+lines on each end of the boxplot are sometimes called 'whiskers'. As discussed
+in the videos, the whiskers encompass all data points within 1.5 times the 
+interquartile range (the difference between the third and first quartiles) of the
+box's edge. 
+
+**You don't need to use the `quantile` function to create a boxplot.** All calculations
+are done automatically simply by calling `geom_boxplot`. 
+
+As with histograms and barplots, you can rotate a boxplot by mapping `weight_kg`
+to the `y` aesthetic:
+
+```{r}
+ggplot(data = growth_data) + 
+    geom_boxplot(mapping = aes(y = weight_kg))
+```
+
+Finally, you can create separate boxplots by mapping a categorical variable, such
+as `id`, to another aesthetic, such as `y`:
+
+```{r}
+ggplot(data = growth_data) + 
+    geom_boxplot(mapping = aes(x = weight_kg, y = id))
+```
+
+Save your script once again before closing.

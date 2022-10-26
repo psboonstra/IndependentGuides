@@ -26,7 +26,7 @@ library(healthds)
 library(tidyverse)
 ```
 
-## `pivot_wider()`
+## `pivot_wider`
 
 Replicating the example from the lecture, we can pivot the `growth_data` from
 long format into wide format using the `pivot_wider` function so that all
@@ -105,12 +105,12 @@ the `pivot_wider` and `pivot_longer` functions are natural inverses of each
 other.
 
 Remember to save the work you've done. Try saving the script you've been working
-in as `pivot_wider.R` for later reference.
+in as `02_03tidyr.R` for later reference.
 
-## `mutate()`
+## `mutate`
 
-To practice the `mutate` function from the dplyr package, open another blank
-script within the same R project.
+Here we practice using the `mutate` function from the dplyr package. Continue
+adding code to the same script as before. 
 
 Let's consider the task of creating a BMI variable using the height and weight
 measurements from the `growth_data`. Within the `mutate` function, we name the
@@ -151,12 +151,14 @@ growth_data_expanded <-
          bmi = weight_kg / height_m^2)
 ```
 
-Just as before, remember to save the work you've done. Try saving the script
-you've been working in as `mutate.R` for later reference.
+Just as before, remember to save the work you've done by pressing `Cmd+S` or
+`Ctrl+S`. 
 
-## `arrange()` and `select()`
+## `arrange` and `select`
 
-Some of your data-wrangling steps will not be for purposes of changing the information in the data but rather focusing your attention on certain columns using `select` or sorting rows using `arrange`. To practice the `arrange` and `select` functions from the dplyr package, open another blank script within the same R project.
+Some of your data-wrangling steps will not be for purposes of changing the 
+information in the data but rather focusing your attention on certain columns 
+using `select` or sorting rows using `arrange`. 
 
 The `arrange` function requires the variable by which to sort or arrange the
 data. The following code sorts the data by the month variable in ascending
@@ -193,7 +195,7 @@ growth_data %>%
   select(id, months)
 ```
 
-Using the NOT (!) operator, we can also select everything except a particular
+Using the NOT (`!`) operator, we can also select everything except a particular
 column:
 
 ```{r}
@@ -218,7 +220,10 @@ growth_data %>%
   select(months, everything())
 ```
 
-The `everything` function is pretty clever: it will take note of any column
+(if you don't put parentheses after `everything`, you will encounter an error, 
+because R will think you're looking for an object named `everything` rather
+than running a function named `everything`). The `everything` function is pretty 
+clever: it will take note of any column
 you explicitly named prior to calling `everything` and only include the *remaining*
 columns. 
 
@@ -247,5 +252,4 @@ growth_data %>%
   select(months, contains("ght"))
 ```
 
-Remember to save the work you've done. Try saving the script you've been working
-in as `arrange_select.R` for later reference.
+Remember to save the work you've done before closing. 

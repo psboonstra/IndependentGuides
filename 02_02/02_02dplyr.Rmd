@@ -31,7 +31,7 @@ library(tidyverse)
 
 Run these lines of code the 'usual' way ('Cmd+Enter' or 'Ctrl+Enter'). 
 
-## `filter()`
+## `filter`
 
 The `filter` function allows us to include or exclude observations
 (i.e., rows) from a dataset based on one or more conditions. The general
@@ -54,8 +54,7 @@ filter(growth_data, months == 3)
 
 Notice the use of *two* equal signs in the above line of code. In R, two equal
 signs is used to denote "is equal to", which is distinct from using a single
-equal sign to set an argument value. Think of two equal signs as asking a question 
-and one equal sign as making a declaration. 
+equal sign to set an argument value. Think of two equal signs as asking a question and one equal sign as making a declaration. 
 
 Similarly, you would write the following line of code if you wanted to filter
 out the infants' two-month observations:
@@ -94,12 +93,12 @@ Comma-separated conditions are interpreted as AND operators, so you are free to
 use either commas or ampersands. 
 
 Remember to save the work you've done. Save the script you've been working
-in as `filter.R` for later reference.
+in as `02_02dplyr.R` for later reference (the first '02' refers to Module 2, the
+second '02' refers to Lesson 2).
 
-## `group_by()` and `summarize()`
+## `group_by` and `summarize`
 
-To practice additional functions from the dplyr package, open another blank
-script. 
+Continue working in this same script. 
 
 The `group_by` function allows us to group data into sub-datasets defined by a
 common value. In turn, the `summarize` function provides a summary of the data
@@ -193,5 +192,4 @@ growth_data_weights <-
   summarize(mean_weight_kg = mean(weight_kg))
 ```
 
-Just as before, remember to save the work you've done. Try saving the script
-you've been working in as `groupby_summarize.R` for later reference.
+Just as before, remember to save the work you've done. 
