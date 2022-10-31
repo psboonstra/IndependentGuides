@@ -32,7 +32,7 @@ these percentages by the World-Bank-designated income level of each country, is 
 available in `micro_world.csv`. These data are freely available from the World Bank
 (https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups). For completeness, we describe exactly how we obtained these data from
 this url, but note that **a reduced version of the data are available for 
-download directly for from the course website, as described in the next paragraph.** 
+download directly from the course website, as described in the last paragraph.** 
 
 The data are taken from the .xlsx file that the link "[historical classification by income in XLSX format](http://databank.worldbank.org/data/download/site-content/OGHIST.xlsx)"
 points to: 
@@ -51,11 +51,11 @@ four possible values: L (low-income), LM (lower-middle-income), UM
 on Figure 1.1.
 
 You can download directly from the course website a .csv version of the 
-income-level data that contains all of and only the information you need for 
-Figure 1.1. The file is named `wb_income.csv`. We've also renamed the values of
-the income levels ('L' is changed to '1Low', 'LM' is changed to '2LowerMid', 
+income-level data that contains all of and only the information that is relevant
+for Figure 1.1. The file is named `wb_income.csv`. In this file we've renamed 
+the values of the income levels ('L' is changed to '1Low', 'LM' is changed to '2LowerMid', 
 'UM' is changed to '3UpperMid', and 'H' is changed to '4High'). Download and 
 save this file into your GlobalFindex project folder before proceeding to the 
-Practice Quiz for Module 3, Lesson 1. Note that you will need to join these 
-two datasets once you've read them into R, using skills that you've already 
+Practice Quiz for Module 3, Lesson 1. Once you've read them into R, you will 
+need to join these two datasets using skills that you've already 
 learned in Module 2. 
