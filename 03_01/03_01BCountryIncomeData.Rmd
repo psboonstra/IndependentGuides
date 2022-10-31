@@ -19,7 +19,7 @@ klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 In Module 3, you will practice and reinforce your `ggplot2` skills by 
 making Figure 1.1 from The Global Findex Database 2017, which you can see here:
 
-```{r echo = FALSE,  out.width='60%', fig.cap = "**Image description: Figure 1.1 from The Global Findex Database 2017** (source: https://openknowledge.worldbank.org/handle/10986/29510)"}
+```{r echo = FALSE,  out.width='70%', fig.cap = "**Image description: Figure 1.1 from The Global Findex Database 2017** (source: https://openknowledge.worldbank.org/handle/10986/29510)"}
 knitr::include_graphics(normalizePath("03_01/figure11_globalfindex.png"), rel_path = FALSE)
 ```
 
@@ -28,12 +28,34 @@ country's overall account ownership. You will use the dataset we've already
 analyzed in Module 2, which is saved in your GlobalFindex project folder on your
 computer in a file named `micro_world.csv`, to calculate these percentages. 
 However, the y-axis (the up-down direction) of this figure, which separates
-these percentages the World-Bank-designated income level of each country, is not 
+these percentages by the World-Bank-designated income level of each country, is not 
 available in `micro_world.csv`. These data are freely available from the World Bank
-(https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups), and for convenience you can download directly from the course website
-a reduced version of these data that contains only the information necessary 
-for Figure 1.1. 
+(https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups). For completeness, we describe exactly how we obtained these data from
+this url, but note that **a reduced version of the data are available for 
+download directly for from the course website, as described in the next paragraph.** 
 
-The file is named `wb_income.csv` and you will need to download and save
-this file into the GlobalFindex project folder before proceeding to the
-Practice Quiz for Module 3, Lesson 1. 
+The data are taken from the .xlsx file that the link "[historical classification by income in XLSX format](http://databank.worldbank.org/data/download/site-content/OGHIST.xlsx)"
+points to: 
+
+```{r echo = FALSE,  out.width='70%', fig.cap = "**Image description: screen capture from https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups as of 31-Oct-2022. The link pointing to country-level income is highlighted**"}
+knitr::include_graphics(normalizePath("03_01/03_01BWorldBank.png"), rel_path = FALSE)
+```
+
+If you navigate to that second tab of the linked .xlsx file, which is entitled 
+"Country Analytical History", we need the information between rows 12 and 229 
+(inclusive) for two columns: column A identifies each country using its World Bank
+abbreviation, and  column AE provides each country's designated income level in 
+the year 2017 (the same year as The Global Findex Database 2017). Column AE has 
+four possible values: L (low-income), LM (lower-middle-income), UM 
+(upper-middle-income), and H (high-income), which correspond to y-axis labels 
+on Figure 1.1.
+
+You can download directly from the course website a .csv version of the 
+income-level data that contains all of and only the information you need for 
+Figure 1.1. The file is named `wb_income.csv`. We've also renamed the values of
+the income levels ('L' is changed to '1Low', 'LM' is changed to '2LowerMid', 
+'UM' is changed to '3UpperMid', and 'H' is changed to '4High'). Download and 
+save this file into your GlobalFindex project folder before proceeding to the 
+Practice Quiz for Module 3, Lesson 1. Note that you will need to join these 
+two datasets onceyou've read them into R, using skills that you've already 
+learned in Module 2. 
