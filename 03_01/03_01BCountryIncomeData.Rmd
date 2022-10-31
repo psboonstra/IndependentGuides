@@ -16,7 +16,7 @@ knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; 
 klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 ```
 
-In Module 3, you will practice and reinforce your developing `ggplot2` skills by 
+In Module 3, you will practice and reinforce your `ggplot2` skills by 
 making Figure 1.1 from The Global Findex Database 2017, which you can see here:
 
 ```{r echo = FALSE,  out.width='60%', fig.cap = "**Image description: Figure 1.1 from The Global Findex Database 2017** (source: https://openknowledge.worldbank.org/handle/10986/29510)"}
