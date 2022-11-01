@@ -74,16 +74,13 @@ In particular, we don't need `data = ` in the call to `ggplot` because the `data
 argument comes first, and therefore `growth_data`, which is now an 
 'unnamed' argument, is matched to `data` by virtue of its position. The same
 principle applies to justify not needing to write `mapping = `, `x = `, and `y = `.
+The tradeoff from using positional matching is that you must be sure you have
+specified the arguments in the exact order that the function expects them. For
+example, `aes(weight_kg, id)` will give you a different result than `aes(id, weight_kg)`: in the first case `weight_kg` is matched (and therefore mapped) to 
+the `x` aesthetic, and in the second case `weight_kg` is matched and mapped to the
+`y` aesthetic.
 
-There's an additional way we can make this code even more concise using 'inheritance', 
-which is a `ggplot` specific feature. Inheritance says that we can place inside of 
-`ggplot` all elements of a plot that are intended to be shared in common by every layer. 
-Referring to our figure, one shared element is `data`, and inheritance is already
-happening for this: the provided `data` object is silently passed down to and
-used by `geom_boxplot` and `geom_point`. Another shared element are the mapped
-aesthetics, as specified by `aes(weight_kg, id)`. For this reason, the `ggplot`
-function has its own mapping argument (which is positioned second in the 
-set of arguments), which, when specified, also gets passed down to the geoms. 
+There's an additional way we can make this code even more concise using 'inheritance',  which is a `ggplot` specific feature. Inheritance says that we can place inside of  `ggplot` all elements of a plot that are intended to be shared in common by every layer.  Referring to our figure, one shared element is `data`, and inheritance is already happening for this: the provided `data` object is silently passed down to and used by `geom_boxplot` and `geom_point`. Another shared element are the mapped aesthetics, as specified by `aes(weight_kg, id)`. For this reason, the `ggplot` function has its own mapping argument (which is positioned second in the set of arguments), which, when specified, also gets passed down to the geoms. 
 
 Thus, the following code is also equivalent to all of the above code chunks:
 
@@ -115,7 +112,7 @@ Before continuing, save your work thus far. Save your script as `03_03advancedgg
 ## The scale family of functions
 
 Please note that in the remaining sections of this independent guide, we will 
-still cover all of the  same topics discussed in the corresponding guideded 
+still cover all of the same topics discussed in the corresponding guideded 
 practice but with slightly different examples.
 
 The code below creates several plots. We first create a plot showing individual
@@ -160,15 +157,12 @@ weight_versus_height +
   scale_color_discrete(name = "ID")
 ```
 
-These scale features are added to the baseplot just like other functions in `ggplot2`.
+These scale features are added to the base plot just like other functions in `ggplot2`.
 We have to use the *continuous* versions of these scale functions for the `x`
 and `y` aesthetics because they are doubles, whereas we have to use the *discrete*
 version for the `color` aesthetic, because the `id` variable is a character. 
 
-The quoted names can be whatever you choose. Take care in writing out these aesthetic names. 
-If you accidentally switch the values of the `name` argument for the `x` and `y` 
-aesthetics, the labels of the x-axis the y-axis will be switched, and the
-plot will be misleading. 
+The quoted names can be whatever you choose. Take care in writing out these aesthetic names. If you accidentally switch the values of the `name` argument for the `x` and `y` aesthetics, the labels of the x-axis the y-axis will be switched, and the plot will be misleading. 
 
 The scale family of functions allows for other useful modifications of your plot. 
 A common example is to change the number or nature of the tick marks along an axis. 
@@ -198,6 +192,25 @@ weight_versus_height +
   scale_x_continuous(name = "Weight (kg)") +
   scale_color_discrete(name = "ID")
 ```
+
+You can also use the `scale` functions to extend the limits of your aesthetics 
+using the `limits` argument. This is most intuitively demonstrated by 
+extending the x- or y-axes. For example, smallest and largest weight measurements
+are 2.9kg and 6.6kg, respectively, and `ggplot` will automatically set the limits
+of the x-axis to go just a little bit beyond these most extreme values. We can
+specify that the limits should instead be 2.5kg and 7.5kg as follows:
+
+```{r}
+weight_versus_height +
+  geom_line() +
+  scale_y_continuous(name = "Height (cm)") +
+  scale_x_continuous(name = "Weight (kg)", 
+                     limits = c(2.5, 7.5)) +
+  scale_color_discrete(name = "ID")
+```
+
+Relative to the base plot, the x-axis is stretched out a bit further on either
+side. 
 
 To see what other features of an aesthetic you can modify with the `scale` family
 of functions, you should inspect the help page, e.g. `?scale_x_continuous`. 
