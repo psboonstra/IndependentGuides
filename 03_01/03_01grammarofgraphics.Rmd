@@ -226,7 +226,7 @@ ggplot(data = growth_data) +
 
 From our experience working with `growth_data`, we know that each line is comprised
 of four points, but it is basically impossible to see that here. On the other hand, 
-this plot does an exceptional job of showing the relationship between weight and height. 
+this line plot does an exceptional job of showing the relationship between weight and height. 
 We can achieve both of these, i.e. showing the individual points *and* showing
 the trajectories, by layering. To layer, you add -- literally -- calls to multiple geoms. 
 Here I am layering on a call to `geom_point`:
@@ -237,5 +237,21 @@ ggplot(data = growth_data) +
   geom_point(mapping = aes(x = weight_kg, y = height_cm))
 ```
 
+Finally, note that the ordering in which the layers are written matters. Visually
+compare the plot above, in which `geom_line` comes first and `geom_point` comes
+second, to the plot below, in which the order is reversed:
+
+```{r}
+ggplot(data = growth_data) + 
+  geom_point(mapping = aes(x = weight_kg, y = height_cm)) +
+  geom_line(mapping = aes(x = weight_kg, y = height_cm, color = id))
+```
+
+In the first plot, the points cover a small portion of the line because they 
+are in the second layer, whereas in the second plot the lines cover a small
+portion of the points. In this example, it does not matter too much
+which plot is used; however, this will not always be the case. In general, 
+it is good to think carefully about the order in which your geoms are layered 
+and whether there is an order that makes more sense. 
 
 As before, remember to save your work in this script. 
