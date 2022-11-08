@@ -1,0 +1,215 @@
+---
+title: "Module 4, Lesson 1: Sharing your work"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+
+In this lesson, we learned about two functions for exporting your work from R:
+`ggsave` from the `ggplot2` package for exporting images and `write_csv` from the
+`readr` package for exporting tables. 
+
+
+## Exporting images using `ggsave`
+
+Here is the plot of infant height against weight, faceted by the month of the 
+measurement.
+
+```{r}
+library(healthds)
+library(tidyverse)
+
+ggplot(growth_data, 
+       aes(x = height_cm, y = weight_kg, color = id)) + 
+  geom_point() + 
+  facet_grid(cols = vars(months))
+```
+
+The astute observers among you will notice that Phil (accidentally)
+swapped his x and y aesthetics in the videos: in the video lecture, he mapped
+`weight_kg` to the x aesthetic and `height_cm` to the y aesthetic,
+whereas in the guided practice he mapped `height_cm` to the x aesthetic and 
+`weight_kg` to the y aesthetic. For purposes of illustration, whichever you do
+is fine, but we will use here the version from the guided practice. 
+
+The simplest use case of `ggsave` is as follows:
+
+```{r, eval = FALSE}
+ggsave("weight_vs_height.png")
+```
+
+```{r, echo = FALSE}
+message("Saving 8.83 x 6.82 in image")
+```
+
+Running this code, there should now be a new .png image file on your computer's 
+hard drive named `weight_vs_height.png`. If you are working from inside 
+the `Lessons.Rproj` project, the file will be in the same folder. If you are
+working on rstudio.cloud, the file will be visible in the files tab in the lower
+left corner of your screen:
+
+```{r echo = FALSE, out.width='60%', fig.cap = "**Image description: screen capture from rstudio.cloud project as of 08-Nov-2022**"}
+knitr::include_graphics(normalizePath("04_01/04_01a.png"), rel_path = FALSE)
+```
+
+The message that is printed to your screen (`Saving 8.83 x 6.82 in image`) 
+indicates that `ggsave` has selected the dimensions of the image file that 
+is saved. In this case, the image is 8.83in wide by 6.82in tall. When you run
+this code, the dimensions of the file may be
+different. This is because the image size is determined by the 
+size of the lower-right panel of your Rstudio session: if you make the horizontal
+size larger and re-run the call to `ggsave` above, it will increase the width 
+of the resulting image file. 
+
+Inevitably, you will need to recreate an image, perhaps days or weeks after you
+initially created it. At that point, it is hopeless to try to resize the panel
+by trial and error to match the dimensions of the previous version. For this 
+reason, it is recommended that you explicitly provide the dimensions in the call
+to `ggsave`:
+
+```{r, eval = FALSE}
+ggsave(filename = "weight_vs_height.png", width = 8, height = 4)
+```
+
+Now we have saved the plot as a .png image file that is 8in wide and 4in tall 
+(note that the message about the dimensions is no longer printed to the screen, 
+being redundant information). Since the first argument to `ggsave` is `filename`, 
+you can rely upon the concept of positional matching (see Module 3, Lesson 3)
+to avoid writing `filename = `:
+
+```{r, eval = FALSE}
+ggsave("weight_vs_height.png", width = 8, height = 4)
+```
+
+The `width` and `height` arguments are not the second and third arguments, 
+so you cannot use positional matching to avoiding writing their names
+explicitly. You also might be interested in changing the default units 
+of measurement from inches to something more intuitive, like cm. To do so, 
+use the `units` argument:
+
+```{r, eval = FALSE}
+ggsave("weight_vs_height.png", width = 18, height = 8, units = "cm")
+```
+
+The values of `width` and `height` should represent whatever units of measurement
+you have specified, meaning that the code above would save the plot as an image
+file 18cm wide and 8cm tall. 
+
+Another useful piece of information is that the `filename` name argument can be a *path*
+and not just a file name. Look at *but don't yet run* the following code:
+
+```{r, eval = FALSE}
+ggsave("module4/weight_vs_height.png", width = 18, height = 8, units = "cm")
+```
+
+Before the file name is `module4/`, which is a 'relative path' pointing to a
+folder called 'module4'. The word 'relative' means that R will look for this folder
+relative to your working directory, which, as long as you are working inside the
+the 'Lessons' R project, will be the folder called 'Lessons'. So, in order
+for this code to run without an error, you should first create on your computer
+a new folder called 'module4' *inside of the 'Lessons' folder*. After doing so, 
+run the code above. If you run the code without having created the 'module4' 
+folder, you will encounter an error from R.
+
+It is not required that you specify a relative path; however, doing so will save 
+you some work if you would otherwise have to move the image file to a different
+location after creating it. 
+
+The last thing to observe about `ggsave` is that the second argument is named
+`plot`, and in none of the examples above did we even bother to specify a value
+for `plot`. How is this possible? This is possible because the default value 
+for `plot` is to use the last plot that you created in R. So, if you were to 
+run the following code on your computer, the resulting image files would 
+contain distinct plots even though we did not specify the `plot` argument 
+in either call to `ggsave`:
+
+```{r, eval = FALSE}
+ggplot(growth_data, 
+       aes(x = height_cm, y = weight_kg, color = id)) + 
+  geom_point() + 
+  facet_grid(cols = vars(months))
+ggsave("module4/weight_vs_height.png", width = 18, height = 8, units = "cm")
+
+ggplot(growth_data, 
+       aes(x = height_cm)) + 
+  geom_histogram(binwidth = 5) 
+ggsave("module4/height_distribution.png", width = 18, height = 8, units = "cm")
+```
+
+In contrast, were you to run the following code, it would save the *same* plot
+(namely, the histogram from the second block of code) twice -- one in a file
+named 'weight_vs_height.png' and another in 'height_distribution.png':
+
+```{r, eval = FALSE}
+# Don't run this code!
+ggplot(growth_data, 
+       aes(x = height_cm, y = weight_kg, color = id)) + 
+  geom_point() + 
+  facet_grid(cols = vars(months))
+
+ggplot(growth_data, 
+       aes(x = height_cm)) + 
+  geom_histogram(binwidth = 5) 
+
+ggsave("module4/weight_vs_height.png", width = 18, height = 8, units = "cm")
+ggsave("module4/height_distribution.png", width = 18, height = 8, units = "cm")
+```
+
+This is presumably not what you would intend. 
+
+## Exporting tables using `write_csv`
+
+You can write `data.frame`s (of which `tibble`s are special cases) to your
+computer's hard drive using the `write_csv` function. Typically, the sort of 
+`data.frame` that you would want to export would be tables of statistics or
+results. However, we will demonstrate use of `write_csv` on the `growth_data`
+object in the `healthds` packages. 
+
+### Remark: `write_csv` versus `write.csv`
+
+The `write_csv` function is part of the `tidyverse` and therefore the function 
+that we will be using here. There is a similar-looking function called `write.csv` 
+which comes pre-loaded as part of the base installation of R. Which functions 
+you end up using is not critical -- `write_csv` will be faster when you are 
+writing large `data.frame`s, and there are some other differences in other
+default behavior. 
+
+To use `write_csv`, we need to specify two arguments at a minimum: the name of
+the `data.frame` (the `x` argument) to write and the desired filename (the
+`file` argument). In contrast to `ggsave`, there is no default behavior to 
+write the "last" `data.frame` used and so you need to explicitly indicate 
+what `data.frame` you want to save to the computer via `x`. The `file` 
+argument in `write_csv` is analogous to the `filename` argument in `ggsave`, 
+but note that it comes *second* in `write_csv` and not first. 
+
+```{r, eval = FALSE}
+write_csv(x = growth_data, file = "module4/growth_data.csv")
+```
+
+Like `ggsave`, this code will save the `growth_data` object to the folder named
+'module4' that is within your current working directory, which is the 'Lessons'
+folder in our case. We *don't* put quotes around `growth_data` because it is an
+R object name; we *do* put quotes around `module4/growth_data.csv` because it
+is not an R object but rather a path. 
+
+You can use positional matching here, too, meaning that the following code has
+the same behavior:
+
+```{r, eval = FALSE}
+write_csv(growth_data, "module4/growth_data.csv")
+```
+
+There will now be a new file with a '.csv' suffix in the module4 folder. You 
+can distribute it just as you would any other file, and if you double-click it, 
+it will open in your spreadsheet program. 
