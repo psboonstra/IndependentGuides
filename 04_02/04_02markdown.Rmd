@@ -1,0 +1,305 @@
+---
+title: "Module 4, Lesson 2: Markdown"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+
+In this lesson, we were introduced to the `rmarkdown` package for creating
+and sharing documents. R Markdown is a seamless way to combine R code with 
+interpretation all within one document -- all of the independent guides in
+this course were written with R Markdown!
+
+This independent guide will not go through all of the
+content from the guided practice. Rather, it will cover a few key steps to get 
+you started on your first R Markdown document. At the end, we point you to a
+"cheatsheet" for referencing basic (and not-so-basic) commands with R Markdown.
+
+## Your first markdown 
+
+To create an R Markdown document, go to File > New File > R Markdown...
+
+```{r echo = FALSE, out.width='60%', fig.cap = "**Image description: Creating a R Markdown document**"}
+knitr::include_graphics(normalizePath("04_02/04_02a.png"), rel_path = FALSE)
+```
+
+If this is the very first time creating an R Markdown document on your computer, 
+or if you are working on rstudio.cloud, you will likely get a prompt that says
+you need to first install some missing R packages, the most relevant of which
+is called `rmarkdown`:
+
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: Prompt to install necessary R packages for using R Markdown**"}
+knitr::include_graphics(normalizePath("04_02/04_02b.png"), rel_path = FALSE)
+```
+
+As long you work on this computer, you will not need to re-install these packages
+in the future. In fact, you won't even need to *load* them in the future. That
+will all be taken care of in the background. 
+
+After installation is complete, you will see a window asking you to provide basic
+information for your document -- title, name, and date -- and also the type of
+document you want to create:
+
+```{r echo = FALSE, out.width='60%', fig.cap = "**Image description: Initial configuration of your R Markdown document**"}
+knitr::include_graphics(normalizePath("04_02/04_02c.png"), rel_path = FALSE)
+```
+
+Your choices are not permanent -- they can be modified and updated later. 
+
+Choose **HTML** as the output format (not PDF, as we did in the guided practice), 
+and then press 'OK' to create the document. 
+
+## Navigating an .Rmd document
+
+Now, a tab should be on your RStudio application, containing an R Markdown (.Rmd) 
+document that is pre-filled with content. This approach is intended as a scaffold 
+for new learners: immediately you get to see working examples of the different 
+elements of an R Markdown document, and then you can change the actual content 
+for your purposes. Eventually, you will presumably want to delete this pre-filled content.  
+
+The first thing to do is *knit* the document into its final form. 
+This will allow you to visualize how the components in the .Rmd file affect
+the final output. To knit the document, look for a needle-and-thread symbol
+at the top of the page, next to the word 'Knit'. Press it now. After being
+prompted to save the .Rmd file, a new page should pop up in front of you, 
+displaying the knitted final output. Since we chose HTML as the 
+output, this will be an .html file. It is saved in the same directory as the
+.Rmd file. Toggle between the .Rmd file in RStudio and the knitted output to help
+you begin to see the connections between the two files. Notice, for example, that
+when a word(s) is bordered by two asterisks on either side, i.e. \*\*Knit\*\*, 
+the knitted document renders that word(s) in boldface font: **Knit**.
+
+### Header
+
+Now go back to the .Rmd file. At the very top is the header, where you can
+modify the title, the author, the date, and the output format:
+
+```{r, eval = FALSE}
+---
+title: "First markdown document"
+author: "Health DS Learner"
+date: "2022-06-15"
+output: html_document
+---
+```
+
+Change the contents of the title, author, or date and re-knit the document. It 
+doesn't matter what you change, just notice that the top of the re-knitted 
+document reflects whatever change you made. If you don't want
+a title, author, or date printed at the top, you can replace the quoted
+string with <span style="color: red;">`""`</span> (empty quotes). 
+
+### R chunks
+
+In an .R script, R assumes by default that what you type is meant to be 
+interpreted as R code, and if you want to write prose, e.g. an English language
+comment, you need to preface what you write with `#` (otherwise you'll get an 
+error). In contrast, in an .Rmd file, R assumes by default that what you write 
+is meant to be interpreted as prose, and so you need a special demarcation to 
+indicate what *should* be interpreted as R code. That demarcation is called an 
+R chunk: the chunk starts with three backticks followed by curly braces around 
+the letter r, and the chunk ends with three more backticks:
+
+````r
+```{r}`r ''`
+# this is an R chunk. put R code here
+# it can be as many lines as you need
+library(tidyverse)
+library(healthds)
+```
+````
+
+```{r, echo = FALSE, message = FALSE}
+library(tidyverse)
+library(healthds)
+```
+
+Think of chunks as miniature R scripts. When you knit the document, then when
+R encounters a chunk, it will run the contents inside as if it were R code. In 
+your .Rmd file, there are already code chunks, the first of which spans lines
+8-10 and looks like this:
+
+````r
+```{r setup, include=FALSE}`r ''`
+knitr::opts_chunk$set(echo = TRUE)
+```
+````
+
+Copy and paste just the two `library` commands into that existing chunk. 
+at this point you're not creating a new chunk but just making an existing one 
+bigger. Your final revised chunk should look like this:
+
+````r
+```{r setup, include=FALSE}`r ''`
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(healthds)
+```
+````
+
+If you have multiple chunks in a document, they are evaluated chronologically based
+upon the order they appear in the file, meaning that the results from an early
+chunk can be referenced and used by a later chunk. So, for example, I can
+use functions from the `tidyverse` and `healthds` packages because I loaded
+them in the chunk above:
+
+````r
+```{r}`r ''`
+ggplot(growth_data) + 
+  geom_point(aes(x = weight_kg, y = height_cm))
+```
+````
+
+```{r, echo = FALSE}
+ggplot(growth_data) + 
+  geom_point(aes(x = weight_kg, y = height_cm))
+```
+
+In your document, there is the following chunk:
+
+````r
+```{r}`r ''`
+summary(cars)
+```
+````
+
+Replace that chunk with the chunk we wrote just above and re-knit
+the document. 
+
+Chunks have options to control whether and how they are displayed and evaluated. 
+Chunk options appear as comma-separated arguments after the letter `r` inside
+the curly braces. For example, if you want to run R code but don't want your 
+readers to see the actual code, e.g. you want to show just the plot itself, 
+you use would use set `echo = FALSE`:
+
+````r
+```{r, echo = FALSE}`r ''`
+ggplot(growth_data) + 
+  geom_point(aes(x = weight_kg, y = height_cm))
+```
+````
+
+Normally, R "echos" your code chunk back to you, but by setting `echo = FALSE`, we
+are turning off this behavior. Another common chunk option is `eval = FALSE`, which
+means that the chunk won't be evaluated. So, if your chunk is this:
+
+````r
+```{r, eval = FALSE}`r ''`
+ggplot(growth_data) + 
+  geom_point(aes(x = weight_kg, y = height_cm))
+```
+````
+
+then the output in the knitted document will be this:
+
+```{r, eval = FALSE}
+ggplot(growth_data) + 
+  geom_point(aes(x = weight_kg, y = height_cm))
+```
+
+This is useful to demonstrate code concepts without actually executing the code
+itself. Try adding `echo = FALSE` to your own chunk. 
+
+Other options are `include = FALSE` (which means run the code but don't echo
+the code *and* don't print any of the output in the output) and 
+`message = FALSE` (which suppresses the printing of any informational messages 
+in the output). 
+
+### Tables
+
+You can print tables just as they would appear in RStudio:
+
+````r
+```{r}`r ''`
+growth_data
+```
+````
+
+```{r, echo = FALSE}
+growth_data
+```
+
+Alternatively, you can use the `knitr` package to format your tables nicely:
+
+````r
+```{r, echo = FALSE}`r ''`
+library(knitr)
+kable(growth_data)
+```
+````
+
+```{r, echo = FALSE}
+library(knitr)
+kable(growth_data)
+```
+
+The `kable` function makes your resulting tables much "friendlier" to read, 
+especially for non-R users. Note that in my code chunk above, I'm suppressing
+echoing of the code chunk, so that it won't actually get printed in the 
+final compiled document. Copy and paste this R chunk into your own R Markdown document, 
+and re-knit the result. 
+
+### Choosing output format
+
+There are pros and cons to selecting each output type. HTML, which we've been using
+in this guided practice, has the fewest additional requirements on your system.
+On the other hand, PDF reports are arguably the most flexible in terms of being 
+the most widely accessible. However, knitting R Markdown files to PDF requires 
+one additional step when working on your own computer (note: the following step 
+is not required if you are working on rstudio.cloud). You must first install another
+R package called `tinytex` and run a single function from it; if you don't run this
+code before the first time you try to compile to a PDF, you will enounter an error:
+
+```{r, eval = FALSE}
+install.packages('tinytex')
+tinytex::install_tinytex()  # install TinyTeX
+```
+
+You only need to run the above two lines of code *once*. Doing so will download 
+and install files onto your computer that will allow R to knit an R Markdown 
+document to a PDF. Having done so, you can now change header of your R Markdown
+file so that it looks like this:
+
+```{r, eval = FALSE}
+---
+title: "First markdown document"
+author: "Health DS Learner"
+date: "2022-06-15"
+output: pdf_document
+---
+```
+
+Re-knitting the document after having made this change, you will get a PDF instead
+of HTML file. 
+
+### Cheatsheet
+
+R Markdown offers a great deal more than what we are able to cover here. On the
+Coursera page is a cheat sheet specifically for R Markdown that is produced by 
+the RStudio company (note: in November 2022, the RStudio company official changed
+its name to Posit). You can also find it here: 
+<https://raw.githubusercontent.com/rstudio/cheatsheets/main/rmarkdown-2.0.pdf>
+This cheatsheet covers everything we've done here plus much much more. 
+
+
+
+
+
+
+
+
+
+
+
+
