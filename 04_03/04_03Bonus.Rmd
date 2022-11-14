@@ -1,0 +1,324 @@
+---
+title: "Module 4, Lesson 3: Towards ggplot2 mastery"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+## 
+
+In this final (and *bonus* -- meaning it does not have an accompanying
+guided practice video) independent guide, we will walk through some more
+complex functions within `ggplot2` that allow you to not only re-create the content
+in Figure 1.1 of The Global Findex Database 2017 but also all of the same details:
+color scheme, labels, etc. 
+
+This content is beyond the scope of what we could practically cover in the course, 
+which means much of it will be non-intuitive at first. The goal here is help
+jumpstart your own self-directed learning by offering more advanced examples
+within a context you are already familiar with. 
+
+We first re-create the approximation to Figure 1.1 that we came up with by the
+end of Module 3:
+
+```{r, fig.width = 6.63, fig.cap = "**Image description: Initial approximation of Figure 1.1 from The Global Findex Database 2017**"}
+library(tidyverse) 
+
+micro_world <- 
+  read_csv("micro_world.csv")
+
+micro_world_account <-
+  micro_world %>%
+  group_by(economycode) %>%
+  summarize(account = 
+              100 * weighted.mean(account, w = wgt))
+
+wb_income <- 
+  read_csv("wb_income.csv")
+
+account_by_income <-
+  left_join(micro_world_account, 
+            wb_income)
+
+ggplot(data = account_by_income, 
+       mapping = aes(x = account,
+                     y = income_category,
+                     color = income_category)) + 
+  geom_point()
+```
+
+Compare this to the published version of Figure 1.1 from The Global Findex Database
+2017, reproduced here:
+
+```{r echo = FALSE,  out.width='70%', fig.cap = "**Image description: Figure 1.1 from The Global Findex Database 2017** (source: https://openknowledge.worldbank.org/handle/10986/29510)"}
+knitr::include_graphics(normalizePath("03_01/figure11_globalfindex.png"), rel_path = FALSE)
+```
+
+To be sure, our plot and Figure 1.1 are clearly plotting the same data. 
+However, if our goal was to replicate Figure 1.1, we fell short. In the following
+sections, we will make incremental changes to our code to more precisely
+replicate Figure 1.1. The list of changes we'll make are as follows:
+
+1. Change the type and size of the points that are plotted
+2. Add a title, subtitle, and caption to the plot
+3. Drop the color legend on the right, match the color scheme
+4. Increase the size of the text, drop the grey background, and make other minor
+modifications to formatting
+
+## 1. Change point-type, size
+
+Notice from Figure 1.1 that each plotted point has a faint white border. This is
+a special choice of the `shape` aesthetic. In fact, there are 25 different 
+choices of the `shape` aesthetic available to you, all of which you can see in 
+the table midway through 
+[Section 12.2](https://ggplot2-book.org/scale-other.html#scale-shape)
+of the ggplot2 book. The default choice for `geom_point` is to use the 19th value:
+a filled circle. With this default choice, you cannot specify distinct choices for
+the color of the *perimeter*  (or *border*) and the color of the *interior*, and 
+this common color is controlled by the `color` aesthetic. On the other hand, if
+we want to provide one color for the perimeter and another for the interior, 
+we should instead use the 21st value, which appears as an empty circle. One 
+cannot necessarily see this from the table, but the 21st-25th shape values 
+all have two aesthetics that control their color:
+the `fill` aesthetic controls the perimeter color and the `color` aesthetic
+controls the interior color. This should hopefully sound familiar to you from 
+Module 3, Lesson 2, in which we used the `fill` aesthetic for barplots. 
+
+There is another new idea to learn here: the distincition between **mapping** an
+aesthetic to a variable in your dataset versus **setting** an aesthetic value
+to a constant value that does not depend on your data. We already know how to
+map an aesthetic to a variable. For example, to map the `x` and `y` aesthetics, 
+we write `aes(x = <VARIABLE_NAME>, y = <VARIABLE_NAME2>)` inside `geom_point`. 
+If we want to *set* an aesthetic, we would provide it as an argument
+inside `geom_point` but *outside* of the `aes()` call. In our case, we want to 
+set three aesthetics to specific values: the `shape` should be set to 21 (as 
+discussed in the previous paragraph), the `color` aesthetic, which controls the 
+color of the perimeter, should be set to white, and the `size` aesthetic should
+be set to a bigger number than its default value, which, for your information, 
+is 1.5. In addition, we now want to map the `fill` aesthetic to the variable `income_category`, in contrast to what we were doing previously, which was 
+mapping `color` to `income_category`. 
+
+Putting this all together, Step 1 of our improvements are implemented with the
+following code. 
+
+```{r, fig.width = 6.63, fig.cap = "**Image description: Step 1 for updating Figure 1.1 from The Global Findex Database 2017**"}
+figure1.1_step1 <- 
+  ggplot(data = account_by_income, 
+         mapping = aes(x = account,
+                       y = income_category,
+                       fill = income_category)) + 
+  geom_point(shape = 21, color = "#FFFFFF", size = 4) 
+figure1.1_step1
+```
+
+If you are not familiar with hexidecimal (hex) representation of colors, the
+code `color = "#FFFFFF"` may look strange. Hex codes are formal ways of specifying
+colors on computers. They are comprised of the number sign (`#`) followed by any
+combination of the numbers 0-9 or the letters A-F. The code `"#FFFFFF"` is
+the hex code for the color white. You can read more about hex codes on [Wikipedia](https://en.wikipedia.org/wiki/Web_colors#Hex_triplet). 
+
+There are a limited number of colors written as strings that R will recognize, 
+`"white"` being one of them. So, you could also write `color = "white"` in the 
+code above and get the same result. If you type `colors()` in your R console
+and press Enter, you will see the entire set of colors that you can write as 
+a string. 
+
+## 2. Titles, subtitle, and caption
+
+To add a title, subtitle, and caption, we use the `labs` function from Module 3, 
+Lesson 3. In that lesson, we practiced changing the labels for aesthetics, e.g.
+`x = <XLABEL>` AND `y = <YLABEL>`. But
+`labs` also allows you to change the title (`title = <TITLE>`), subtitle 
+(`subtitle = <SUBTITLE>`), and caption (`caption = <CAPTION>`). 
+
+We also want to change the number and nature of the tick marks on the x and y
+axes. Specifically, as you practiced in the Practice Quiz for Module 3, Lesson 3, 
+we want to extend the limits of the x-axis to cover the smallest and largest possible
+of 0 and 100 (`limits = c(0, 100)`), respectively, and we want the tick marks
+to land at every increment of 20 (`breaks = c(0, 20, 40, 60, 80, 100)`). 
+
+As for the y-axis, we don't want to change the number or position of the tick 
+marks but rather the labels for the existing tick marks. This is achieved by providing
+a so-called "named vector": `c(<VALUE1> = <LABEL1>, <VALUE2> = <LABEL2>, ...)`
+The VALUES should be the the values from your variable; in our case we have four:
+`4High`, `3UpperMid`, `2LowerMid`, and `1Low`. And the LABELS can be whatever you
+want to actually be shown. 
+
+Putting this all together, Step 2 of our improvements are implemented with the
+following code:
+
+```{r, fig.width = 6.63, fig.cap = "**Image description: Step 2 for updating Figure 1.1 from The Global Findex Database 2017**"}
+figure1.1_step2 <- 
+  figure1.1_step1 +
+  scale_x_continuous(limits = c(0, 100), 
+                     breaks = c(0, 20, 40, 60, 80, 100)) + 
+  scale_y_discrete(labels = c("4High" = "High-income countries",
+                              "3UpperMid" = "Upper-middle-income countries",
+                              "2LowerMid" = "Lower-middle-income countries",
+                              "1Low" = "Low-income countries")) + 
+  labs(x = "", # an empty string completely suppresses the label 
+       y = "", 
+       title = "Account ownership differs substantially even within income groups", 
+       subtitle = "Adults with an account (%), 2017", 
+       caption = "Source: Global Findex database") 
+figure1.1_step2
+```
+
+We will address the issue with the figure title getting truncated in Step 4. 
+
+Note that what we do above is create a new ggplot2 object called `figure1.1_step2`, 
+which starts with the improvements from step 1 and adds our further modifications.
+We then print the resulting new ggplot2 object `figure1.1_step2`. 
+
+## 3. Drop legend, modify colors
+
+In this third step, we want to do two things: (a) drop the legend on the right-hand
+side of the plot, which is redundant because the y-axis already allows us to 
+distinguish between each income category and (b) change the colors for each value
+of `income_category` to match Figure 1.1. 
+
+
+To modify the legend of an aesthetic, we use a `ggplot2`
+function called `guides`. To completely suppress the legend for a particular 
+aesthetic, as we desire here, we would write `guides(<AESTHETIC_NAME>="none")`. 
+
+To change the colors that the `fill` aesthetic uses, we need to use a `scale`
+function as we did in Step 2. Specifically, because we are mapping the `fill` 
+aesthetic, we need to use a function that starts with `scale_fill`. Different 
+from our previous experiences, we will use a function called `scale_fill_manual`, 
+which is a function that allows for more customization of an aesthetic's 
+values, since the color scheme for Figure 1.1 in The Global Findex Database 
+2017 is (to the best of our knowledge) not a standard color scheme. Thus, 
+we need to provide a named vector that communicates the value of `fill` that 
+should correspond to each value of the `income_category` variable:
+`c(<VALUE1> = <HEXCODE1>, <VALUE2> = <HEXCODE2>, ...)`. From top to bottom, 
+the hex codes for the four colors are #6AA8BD, #D36033, #F3BC44, and #2D698C. 
+
+Incorporating these two extensions into our plot from Step 2, we have:
+
+```{r, fig.width = 6.63, fig.cap = "**Image description: Step 3 for updating Figure 1.1 from The Global Findex Database 2017**"}
+figure1.1_step3 <- 
+  figure1.1_step2 +
+  scale_fill_manual(values = c("4High" = "#6AA8BD",
+                               "3UpperMid" = "#D36033",
+                               "2LowerMid" = "#F3BC44",
+                               "1Low" = "#2D698C")) + 
+  guides(fill = "none")
+figure1.1_step3
+```
+
+Helpfully, having now suppressed the printing of the legend for `fill`, 
+`ggplot` automatically increases the size of the plotted panel to fill 
+that space, making the plot seem less "squished". 
+
+## 4. Increase text size, drop grey background
+
+Finally, we will use the `theme` function from `ggplot2` to modify the overall
+appearance of the plot. The function is complicated upon first introduction, 
+which is the cost of the flexibility it provides. Because there are so many
+options, we first provide the code for implementing Step 4 and then describe
+how to interpret what we've done. 
+
+```{r}
+figure1.1_step4 <- 
+  figure1.1_step3 +
+  theme(axis.ticks.y = element_blank(),
+        axis.text = element_text(size = 11.5),
+        panel.background = element_blank(),
+        plot.title = element_text(face = "bold", size = 13.5),
+        plot.subtitle = element_text(size = 11.5),
+        plot.caption = element_text(hjust = 0),
+        plot.title.position = "plot",
+        plot.caption.position = "plot")
+```
+
+Inside the call to `theme`, we have made the following choices:
+
+* `axis.ticks.y = element_blank()` means that we want to completely suppress 
+printing of the tick marks, but only along the y-axis. If we want to suppress
+printing of the tick marks on the x-axis, we would use 
+`axis.ticks.x = element_blank()`, and if we wanted to suppress printing on 
+both axes at the same time, we could use `axis.ticks = element_blank()`
+
+* `axis.text = element_text(size = 11.5)` means that we want to change 
+the font size to 11.5 for all text elements related to each axis. Since we use
+`axis.text` and not `axis.text.x` or `axis.text.y` (which are other arguments 
+in theme), we are changing the font size for both axes
+
+* `panel.background = element_blank()` suppresses the grey background that 
+is shown by default
+
+* `plot.title = element_text(face = "bold", size = 13.5)` means that the
+title will be plotted in boldface and with font size 13.5
+
+* `plot.subtitle = element_text(size = 11.5)` means that the subtitle
+will be plotted with font size 11.5
+
+* `plot.caption = element_text(hjust = 0)` means that the caption
+will be left-justified and not right-justified (its default)
+
+* `plot.title.position = "plot"` and `plot.caption.position = "plot"` means 
+that the title and subtitle will be justified according to the edge of
+entire *plot* instead of according to the edge of the *panel* containing the 
+data (its default)
+
+
+Having implemented Step 4, our final version looks like this:
+
+```{r, fig.width = 6.63, fig.cap = "**Image description: Step 4 for updating Figure 1.1 from The Global Findex Database 2017**"}
+figure1.1_step4
+```
+
+And, for comparison, here is Figure 1.1. again:
+
+```{r echo = FALSE,  out.width='70%', fig.cap = "**Image description: Figure 1.1 from The Global Findex Database 2017** (source: https://openknowledge.worldbank.org/handle/10986/29510)"}
+knitr::include_graphics(normalizePath("03_01/figure11_globalfindex.png"), rel_path = FALSE)
+```
+
+## Appendix
+
+For reference, the entire code block for making our final version of the figure
+is given here:
+
+```{r, eval = FALSE}
+ggplot(data = account_by_income, 
+       mapping = aes(x = account,
+                     y = income_category,
+                     fill = income_category)) + 
+  geom_point(shape = 21, color = "#FFFFFF", size = 4)  +
+  scale_x_continuous(limits = c(0, 100), 
+                     breaks = c(0, 20, 40, 60, 80, 100)) + 
+  scale_y_discrete(labels = c("4High" = "High-income countries",
+                              "3UpperMid" = "Upper-middle-income countries",
+                              "2LowerMid" = "Lower-middle-income countries",
+                              "1Low" = "Low-income countries")) + 
+  labs(x = "", # an empty string completely suppresses the label 
+       y = "", 
+       title = "Account ownership differs substantially even within income groups", 
+       subtitle = "Adults with an account (%), 2017", 
+       caption = "Source: Global Findex database") +
+  scale_fill_manual(values = c("4High" = "#6AA8BD",
+                               "3UpperMid" = "#D36033",
+                               "2LowerMid" = "#F3BC44",
+                               "1Low" = "#2D698C")) + 
+  guides(fill = "none") +
+  theme(axis.ticks.y = element_blank(),
+        axis.text = element_text(size = 11.5),
+        panel.background = element_blank(),
+        plot.title = element_text(face = "bold", size = 13.5),
+        plot.subtitle = element_text(size = 11.5),
+        plot.caption = element_text(hjust = 0),
+        plot.title.position = "plot",
+        plot.caption.position = "plot")
+```
+
