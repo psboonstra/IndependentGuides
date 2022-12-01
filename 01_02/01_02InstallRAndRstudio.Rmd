@@ -36,42 +36,47 @@ knitr::include_graphics(normalizePath("01_02/01_02a.png"), rel_path = FALSE)
 ```
 
 
-Second, having downloaded R, go to https://www.rstudio.com/products/rstudio/download/ 
-to get RStudio. Look for a link to the RStudio Open Source License (see below 
-for a screenshot of what you should be looking for as of the time of this writing)
+Second, having downloaded R, go to https://posit.co/downloads/ to get RStudio
+(Posit is the name of the company that developed RStudio. In November 2022, the
+name of the company, which was *also* RStudio, changed to Posit) Look for a link
+to the RStudio Desktop Open Source Edition (AGPL v3)  (see below for a screenshot of what you should be looking for as of the time of this writing)
 
 
-```{r echo = FALSE, out.width='25%', fig.cap = "**Image description: screen capture from https://www.rstudio.com/products/rstudio/download/ as of 11-Oct-2022**"}
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: screen capture from https://posit.co/downloads/ as of 1-Dec-2022**"}
 knitr::include_graphics(normalizePath("01_02/01_02b.png"), rel_path = FALSE)
 ```
 
+Clicking through this link, you will see a webpage with 2 steps. You've already
+done Step 1 (installing R), so scroll down to Step 2 ('Install
+RStudio Desktop'). Click the link corresponding to your operating system and follow
+the instructions to install it on your computer. 
 
 ## Option 2 
 
-Go to https://rstudio.cloud (see below for a screenshot of what you should be 
-looking for as of the time of this writing) and click 'GET STARTED FOR FREE'. 
+Go to https://posit.cloud/ (see below for a screenshot of what you should be 
+looking for as of the time of this writing) and click 'GET STARTED'. 
 Follow the instructions to create a free account and then login. 
 
-```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: screen capture from https://rstudio.cloud/ as of 11-Oct-2022**"}
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: screen capture from https://posit.cloud/ as of 1-Dec-2022**"}
 knitr::include_graphics(normalizePath("01_02/01_02c.png"), rel_path = FALSE)
 ```
 
 Once you've logged in, create a new project by clicking 'New Project' in the upper
 right of the screen, then 'New RStudio Project'. 
 
-```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: creating a new R project on rstudio.cloud**"}
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: creating a new R project on posit.cloud**"}
 knitr::include_graphics(normalizePath("01_02/01_02d.png"), rel_path = FALSE)
 ```
 
 Your new project is not-yet named, as can be seen in the upper left of your screen:
 
-```{r echo = FALSE, out.width='45%', fig.cap = "**Image description: an untitled R project on rstudio.cloud**"}
+```{r echo = FALSE, out.width='45%', fig.cap = "**Image description: an untitled R project on posit.cloud**"}
 knitr::include_graphics(normalizePath("01_02/01_02e.png"), rel_path = FALSE)
 ```
 
 Name your new project 'GlobalFindex':
 
-```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: R project on rstudio.cloud after naming it 'GlobalFindex'**"}
+```{r echo = FALSE, out.width='40%', fig.cap = "**Image description: R project on posit.cloud after naming it 'GlobalFindex'**"}
 knitr::include_graphics(normalizePath("01_02/01_02f.png"), rel_path = FALSE)
 ```
 
