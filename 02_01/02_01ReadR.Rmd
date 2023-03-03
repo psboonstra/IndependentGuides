@@ -63,9 +63,9 @@ To get the Global Findex data onto your computer, go to this url:
 https://microdata.worldbank.org/index.php/catalog/3324/get-microdata
 
 If you haven't already done so, you will need to register for a free account
-before you can access the data. After logging in, download the data in CSV format. 
-The ZIP file will be named `WLD_2017_FINDEX_v02_M_CSV.zip`, and when you unzip it
-the resulting folder will contain a single file named `micro_world.csv`, which is 
+before you can access the data. After logging in, you will need to complete a simple form called 'Application for Access to a Public Use Dataset'. The form asks your name, organization, and the intended use of the data. For intended use, you can write something like 'Educational purposes'. Read through the *Terms and conditions* and check the box if you agree. Then press Submit. 
+
+Now you can download the data -- choose the CSV format. The ZIP file will be named `WLD_2017_FINDEX_v02_M_CSV.zip`, and when you unzip it the resulting folder will contain a single file named `micro_world.csv`, which is 
 the data we need. 
 
 *If you are working on RStudio installed on your own computer*,  move this 
