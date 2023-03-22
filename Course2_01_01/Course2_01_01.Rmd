@@ -1,0 +1,166 @@
+---
+title: "Module 1, Lesson 4: Pseudo-random numbers and the t-test"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+Welcome to the independent guide for the first lesson of Module 1. 
+
+Open a new R script. At the top of this script, load the `tidyverse` by writing the following in your script: 
+
+```{r}
+library(tidyverse)
+```
+
+## Pseudo-random numbers in R
+
+There are many reasons why it's helpful to be able to generate random numbers from 
+a distribution. In our case, we want to generate random numbers from a distribution
+to demonstrate use of the function for conducting t-tests in R. 
+
+However, computers cannot generate truly random numbers but rather so-called
+*pseudo* random numbers. Pseudo random numbers appear to be random but are
+actually pre-determined sequences of numbers that are nearly indistinguishable 
+from truly random numbers. One implication of this is that if you start at the 
+same point in the sequence as someone else, you will obtain the same set of "random"
+numbers.
+
+In R, you can choose where to start in this sequence by providing a so-called
+seed, using the `set.seed()` function:
+```{r}
+set.seed(1)
+```
+
+Above, we have set the seed to be equal to 1. In general, you can choose any positive
+integer as a seed (the largest possible seed on most computers is $2^{31}-1=2147483647$).
+
+Now, to see what happens when you set a seed, let us sample twenty-five numbers
+from a normal distribution with mean 4.5 and standard deviation 0.5 using the
+`rnorm` function, which is named as such to make you think of 'random normal':
+
+```{r}
+rnorm(n = 25, mean = 4.5, sd = 0.5)
+```
+Having generated some (pseudo) random numbers, we have advanced along the pre-determined
+sequence of numbers, meaning that if we run this same code again we will get a 
+different set of numbers than above:
+
+```{r}
+rnorm(n = 25, mean = 4.5, sd = 0.5)
+```
+
+However, if we re-set the seed to be 1 and run the code, this time assigning the
+results to an object named `x` so that we can use them later, we get the initial
+values back:
+
+```{r}
+set.seed(1)
+x <- rnorm(n = 25, mean = 4.5, sd = 0.5)
+x
+```
+
+Notice how these 25 numbers are *identical* to the first 25 numbers we sampled above. 
+
+It is not required that you set a seed in R. When R needs one and you haven't
+set it, it will choose one silently and automatically. We are doing so here for
+purposes of reproducibility: so that you can exactly reproduce the steps and
+results as you read along.
+
+## The `t.test` function
+
+We can visualize the numbers in `x` using `ggplot`:
+
+```{r}
+ggplot() +
+  geom_histogram(aes(x = x), bins = 10)
+```
+
+Because we generated these data ourselves, we know that they are normally distributed, 
+meaning that the true shape of the distribution is the familiar bell-shape. 
+However, because of *sampling variability*, the histogram of these twenty-five
+numbers doesn't look particularly normal. Let's create another sample from a
+normal distribution with a mean of 3 (be sure not to re-set the seed):
+
+```{r}
+y <- rnorm(n = 25, mean = 3, sd = 0.5)
+y
+```
+
+If you ran the steps exactly as above, then your `y` should be identically
+equal to the `y` that you see printed to the screen. 
+
+Before we demonstrate the function for conducting t-tests, remember that we
+already *know* whether `x` and `y` come from distributions having different means, 
+because we generated these data as such! With the caveat, let us see how we would
+use the `t.test` function (which comes pre-installed with R) to test for a difference in means. 
+
+```{r}
+t.test(x, y)
+```
+
+As you can see, this function outputs several pieces of information to the
+screen. We see that `t = 13.247`, meaning that the t-statistic is 13.247. If the
+null hypothesis -- namely that `x` and `y` come from distributions with the same
+mean -- is true, then this t-statistic has arisen from a so-called t-distribution,
+centered at zero, with approximately 44.32 degrees of freedom. This
+t-statistic will tend to be 'close' to zero if the null hypothesis is true. The
+p-value is the probability that this t-statistic, or an even larger t-statistic,
+could have arisen from this null t-distribution. It is incredibly small:
+`p-value = 2.2e-16` is R's notation for $2.2\times 10^{-16}$. Thus, we would
+conclude that these data are extremely unlikely to have come from distributions
+where the null hypothesis is true. 
+
+It is tempting, but incorrect, to say that the p-value is the probability that
+the null hypothesis is true.  
+
+We also have a 95 confidence interval for the difference in the means. The probability
+that this interval covers the true difference in the means is 0.95. Or, put differently,
+if we were to repeat this experiment 100 times, we would expect that about 95 of
+these intervals would cover the true difference in the means (in fact, we
+know that the true difference in the means is 1.5).
+
+Finally, the function reports the sample means of the observations from each group:
+the average value in `x` is 4.584 and the average value in `y` is 3.016. 
+
+## How to think about a t-test
+
+In this part of the independent guide, we will get a better sense of how to think
+about conducting a t-test. We will use a function called `simulate_t` from the
+`healthds` package, which will need to be loaded into your R session:
+
+```{r}
+library(healthds)
+```
+
+The `simulate_t` function is a helper function we have developed to repeat
+the steps we did above (sample data from one group, sample data from a second
+group, conduct the t-test, and inspect the results) multiple times. 
+
+Here we will use `simulate_t` to conduct a single t-test on simulated data:
+
+```{r}
+set.seed(1)
+simulate_t(rep = 1, mean = 4.5, mean2 = 3, n1 = 25, n2 = 25, sd = 0.5)
+```
+
+The output is a tibble (remember from Course 1 that this is one way to store data
+in R). If we wanted to conduct 20 t-tests, we could run the following:
+
+```{r}
+simulate_t(rep = 20, mean = 4.5, mean2 = 3, n1 = 25, n2 = 25, sd = 0.5)
+```
+
+Now we have simulated 20 t-tests, using different data for each test but drawn
+from the same distribution. 
