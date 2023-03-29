@@ -26,15 +26,13 @@ library(tidyverse)
 
 ## Pseudo-random numbers in R
 
-There are many reasons why it's helpful to be able to generate random numbers from 
-a distribution. In our case, we want to generate random numbers from a distribution
-to demonstrate use of the function for conducting t-tests in R. 
+There are many reasons why it's helpful to be able to generate random numbers. In our case, we want to generate random numbers to demonstrate use of the function for conducting t-tests in R. 
 
 However, computers cannot generate truly random numbers but rather so-called
 *pseudo* random numbers. Pseudo random numbers appear to be random but are
-actually pre-determined sequences of numbers that are nearly indistinguishable 
+actually pre-determined (very long) sequences of numbers that are nearly indistinguishable 
 from truly random numbers. One implication of this is that if you start at the 
-same point in the sequence as someone else, you will obtain the same set of "random"
+same point in the sequence as someone else, you will each obtain the same set of "random"
 numbers.
 
 In R, you can choose where to start in this sequence by providing a so-called
@@ -155,7 +153,7 @@ set.seed(1)
 simulate_t(rep = 1, mean = 4.5, mean2 = 3, n1 = 25, n2 = 25, sd = 0.5)
 ```
 
-The output is a tibble (remember from Course 1 that this is one way to store data
+The output is a tibble (remember from Course 1 that the tibble is one way to store data
 in R). If we wanted to conduct 20 t-tests, we could run the following:
 
 ```{r}
@@ -163,4 +161,70 @@ simulate_t(rep = 20, mean = 4.5, mean2 = 3, n1 = 25, n2 = 25, sd = 0.5)
 ```
 
 Now we have simulated 20 t-tests, using different data for each test but drawn
-from the same distribution. 
+from the same distribution. **Remember that in actual research, one typically
+collects data and conducts exactly one t-test.** In contrast, using simulation 
+techniques, here we can do as many t-tests as we want -- not so that we can learn 
+about the true distribution of the data (we are in control of that distribution, 
+so we don't need to learn about it) but rather to see how t statistics are distributed
+when, in truth, a difference between the means exists or when there is no difference
+between the means. 
+
+Let's consider this second scenario of no differences between the means. We will 
+first generate 2000 t-statistics and pipe that into a call to `ggplot` to create
+a histogram of these 2000 values:
+
+```{r}
+simulate_t(rep = 2000, mean = 3, mean2 = 3, n1 = 25, n2 = 25, sd = 0.5) %>%
+  ggplot() + 
+  geom_histogram(aes(x = t), bins = 50)
+```
+
+(For those of you paying close attention to the videos, you will see that this
+histogram doesn't exactly match the same histogram we created in the Guided
+Practice. The reason is subtle but has to do with pseudo-random numbers and the
+fact that here we skipped one of the examples from the Guided Practice video.)
+
+The resulting histogram is centered at zero. Importantly, in the situation where
+there is no difference between the means, we know what this distribution should
+look like without needing to conduct a simulation; sometimes this is called the
+'null distribution'. And because of this we can compare our observed t-statistic
+to the left and right extremes of the null distribution. We calculate the
+p-value, which is defined as probability of observing a t-statistic that is at
+least as large (in magnitude, meaning we ignore the sign) as the one we actually
+observed under the assumption that there is no difference in the means, i.e.
+when compared against the null distribution.
+
+If this p-value is small, then that means it is unlikely that our t-statistic
+arose from this scenario, and so we would conclude that the data must have come
+from a scenario where the means are not equal. On the other hand, if the p-value
+is large, then all that means is that we cannot make that conclusion; it does
+not mean that the difference in the means is zero, but just that we couldn't
+conclude as such.
+
+The probability of concluding that the data came from a scenario where the means
+are not equal increases as the *true* difference in the means increases. For
+example, if we generate data from a scenario where the true difference is only
+0.25, we get a slight shift away from zero.
+
+```{r}
+simulate_t(rep = 2000, mean = 3.25, mean2 = 3, n1 = 25, n2 = 25, sd = 0.5) %>%
+  ggplot() + 
+  geom_histogram(aes(x = t), bins = 50)
+```
+
+By random chance, we might observe a t-statistic that is, for example, equal to
+1, and such a t-statistic is not that extreme when compared to the null
+distribution.
+
+In contrast, in the scenario where the true difference is 1.5, the probability
+is very large; every t-statistic would be considered extreme when compared to
+the null distribution.
+
+```{r}
+simulate_t(rep = 2000, mean = 4.5, mean2 = 3.5, n1 = 25, n2 = 25, sd = 0.5) %>%
+  ggplot() + 
+  geom_histogram(aes(x = t), bins = 50)
+```
+
+Our task is easier when, in truth, there is greater separation between the two
+groups.

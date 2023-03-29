@@ -1,0 +1,99 @@
+---
+title: "Module 2, Lesson 1: Simple linear regression"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+Open a new R script. At the top of this script, load the `tidyverse` and the
+`healthds` package. 
+
+```{r}
+library(healthds)
+library(tidyverse)
+```
+
+As you read about just before the Guided Practice, the `healthds` package 
+contains several synthetic datasets for purposes of practicing statistical 
+methods. Please refer to that reading for additional details.
+
+Having loaded the `healthds` package, we can access these synthetic data using the 
+following command:
+
+```{r}
+data(BPUrban300)
+```
+
+(in the Guided Practice video, Dr. Boonstra mistakenly said that you could not put double
+quotes around the object -- that is not true.)
+
+These data are stored as so-called data.frames and not tibbles, which is how most
+of the data we've encountered so far are stored. For tibbles, R will automatically trim the rows and columns that are printed, but for data.frame it will not. The practical implication is that
+if you try to print these data to the screen, it will be too much data for the screen.
+Instead, you can type `View(BPUrban300)` in your console to open up a spreadsheet-like
+interface in RStudio, or you can use the `head` function to view just the first
+few rows of the data:
+
+```{r}
+head(BPUrban300)
+```
+
+Let's first inspect some of the variables in these data. The distribution of systolic
+blood pressure (`systolic`) in these data can be constructed as such:
+
+```{r}
+ggplot(BPUrban300) + 
+  geom_histogram(aes(systolic), bins = 30)
+```
+
+We can also inspect the relationship between systolic blood pressure and the
+age of the person:
+
+```{r}
+ggplot(BPUrban300) + 
+  geom_point(aes(age, systolic))
+```
+
+## Linear models in R
+
+We will now fit a linear regression model, regressing `systolic` against `age`
+to estimate the extent to which typical values systolic blood pressure change
+with a person's age in these data. We will use the `lm` function in R to do so. 
+
+The regression equation is specified via the `formula` argument in `lm`. A formula
+starts with the name of a variable that is intended to be the outcome. Next comes
+ a tilde (`~`) symbol. Finally, it ends with the name of a variable that is intended to be the covariate / predictor. So, our formula will be `systolic ~ age`. We also need to point `lm` to the dataset in which to "look" for these variables -- in our case that is `BPUrban300`. Putting this
+ together, we can fit our regression model with the following:
+ 
+```{r}
+lm(formula = systolic ~ age, data = BPUrban300)
+```
+
+The output gives us just two things: the Call, which just gives back the code
+that we gave it, and the Coefficients, which gives the intercept parameter
+($\beta_0$ from Dr. Mukherjee's slides) and the slope parameter corresponding to
+age ($\beta_1$). Importantly, this tells us that the expected systolic blood
+pressure increases by about 0.5 points between any two people in our data who
+are 1 year apart in age.
+
+Congratulations on fitting your first linear regression. There is much more to
+be done and learned with regard to regression. In future lessons, we will learn
+more about how to conduct estimation and prediction.
+ 
+ 
+ 
+ 
+
+
+
