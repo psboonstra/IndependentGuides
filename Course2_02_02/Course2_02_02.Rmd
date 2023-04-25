@@ -1,0 +1,231 @@
+---
+title: "Module 2, Lesson 2: Digging into SLR"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+Here is the linear regression model that we fit previously, regressing systolic
+blood pressure (`systolic`) against the person's age (`age`) and using the `lm` 
+function to do so:
+
+```{r}
+library(healthds)
+library(tidyverse)
+
+BPUrban300 %>% 
+  lm(formula = systolic ~ age)
+```
+
+You will notice that we are now using the pipe operator, which we learned about
+in Course 1. Specifically, we are piping in the `BPUrban300` dataset into `lm`. 
+However, in order to do so correctly, we must explicitly match the formula
+argument, i.e. `formula = systolic ~ age`, so that `lm` knows we want to match 
+`BPUrban300` with its *second* argument (`data`) and not its first argument (`formula`). 
+
+Now let us re-create the scatterplot comparing systolic blood pressure to age 
+in these data:
+
+```{r}
+age_systolic_plot <- 
+  ggplot(BPUrban300) + 
+  geom_point(aes(age, systolic))
+age_systolic_plot
+```
+
+Note that the first three lines above create the ggplot object (which will allow
+us to modify and augment it below), and the last line renders the plot. 
+
+Now let us augment this scatterplot with the fitted linear regression line. To 
+do so, we layer -- or add -- on a new geom, `geom_abline`:
+
+```{r}
+age_systolic_plot + 
+  geom_abline(slope = 0.537, intercept = 93.876)
+```
+
+The two most important arguments of `geom_abline` are *not* aesthetics that are
+mapped to a variable, meaning that they do not appear inside of a call to `aes()`. These
+two argument names are `slope` 
+and `intercept` arguments, and for some of you this will take you back to your
+days of high school algebra. When we call `geom_abline`, we are plotting the line
+$y = ax + b$, where $a$ is the value of the `slope` argument and $b$ is the value
+of the `intercept` argument. In the code above, we've provided the values from the 
+fitted regression line. 
+
+One natural risk from linear regressions -- and statistical modeling generally --
+is that of extrapolation. If we extend the limits of the x-axis from 1 year to 99
+years using the `scale_x_continuous` function, we see the following:
+
+```{r}
+age_systolic_plot + 
+  geom_abline(slope = 0.537, intercept = 93.876) + 
+  scale_x_continuous(limits = c(1, 99))
+```
+
+We see from this that our linear regression estimates that the systolic blood
+pressure for a one-year old is about 94.5 (which, by the way, you could
+mathematically determine by taking the intercept, 93.9, and adding to it one
+value of the slope, 0.54, since this slope represents the per-year increase in
+estimated systolic blood pressure). Alternatively, our model estimates that the
+systolic blood pressure a 99-year old is about 147. In this case, these are not
+ridiculous estimates, but the more important lesson here is that the youngest
+persons in our data are in their early 20s, and the oldest persons are 75. We
+have no data to support the notion that this line can be used to estimate the
+blood pressure of very young or very old persons. Even more foolish that our
+model will happily estimate something that is biologically impossible, say, the
+blood pressure of someone who is -2 (negative 2) years old.
+
+### Centering variables 
+
+We now make use of another Course 1 idea, that of defining new variables in our
+data with the `mutate` function. Specifically, we create a variable called 
+`age_centered`, which is defined as each person's age minus the overall average
+age of the persons in our dataset. The average value of this new variable will
+be zero, and so the "_centered" descriptor means 'centered around zero'. 
+
+Creating this centered age and regressing upon *it* instead of age, we get the
+following:
+
+```{r}
+BPUrban300 %>% 
+  mutate(age_centered = age - mean(age)) %>%
+  lm(formula = systolic ~ age_centered)
+```
+
+Relative to our first regression model, one estimated parameter has stayed the same and
+one estimated parameter has changed. The one that has stayed the same is the slope
+parameter: we still estimate that systolic blood pressure changes by about 0.537
+units for each year that a person is older. The one that has changed is the
+intercept parameter, which now takes on value 121.593.
+
+Why has the intercept changed value when we regress on centered age? Because its
+interpretation has also changed. In the first model, the intercept is the expected
+systolic blood pressure for a person who is zero years old (remember -- this is 
+a mathematically accurate statement even though our data do not support such an extrapolation); 
+in the second model, the intercept is the expected systolic blood pressure for a
+person whose *centered* age is zero, or, equivalently, a person whose age is
+equal to the overall mean age. In these data, the mean age is 51.6 years:
+
+```{r}
+BPUrban300 %>% summarize(mean(age))
+```
+
+To be clear, these models are giving the **same** conclusions. To see this, let us
+use the first model to estimate the systolic blood pressure of someone who is
+51.6 years old: we take the estimated intercept, 93.876, and add to it
+51.6*0.537, or 27.709, which yields 121.59. We have lost some digits of
+precision due to rounding, but apart from that this is exactly the intercept
+value from our second model.
+
+### Statistical inference with linear regression
+
+Generally speaking, the *sample* (sometimes called 'estimated') associations
+from a linear regression will never be equal to zero, even when we have data
+arising from a *population* in which the association is zero. This is because of
+sampling variability. Thus, we usually do not stop at fitting the regression and
+interpreting the associations, as we've done above. Rather, we ask statistical
+questions about how consistent our estimated associations are with a scenario in
+which no association exists in truth. For that, we need to quantify the
+uncertainty our data have about these estimated associations. If the uncertainty
+is small, then we have more confidence in our estimated association.
+
+To do this in R, we use the `summary` function. Note, that this is different than 
+the `summarize` function, which we used above and discussed in detail in Course 1. 
+`summarize` is part of the `tidyverse` set of packages and useful for looking
+at summary statistics in tibbles; `summary` is a helper function for "unpacking"
+fitted regression models, such as quantifying uncertainty. 
+
+Here is the simplest use of `summary`:
+
+```{r}
+BPUrban300 %>% 
+  lm(formula = systolic ~ age) %>%
+  summary()
+```
+
+We see point estimates of the intercept and slope parameters. We also see
+estimates of the standard error, `Std. Error`, which quantifies the uncertainty
+about each of the point estimates. Larger standard errors correspond to more
+uncertainty. In the next column over, we have a column called `t value`, which
+are the test statistics. Remember that test statistics have a certain
+theoretical distribution under a null hypothesis -- in this case that null
+hypothesis is that the true value of the parameter is 0. The last
+column, `Pr(>|t|)`, gives us the the p-values: the probability of observing the
+test statistics (or one even larger in magnitude) under the null hypothesis.
+
+Consider the two p-values we see in the table above. The first, corresponding to
+the intercept parameter, is `<2e-16`, which is R's way of writing
+$<2\times10^{-16}$ or, equivalently, $<0.0000000000000002$. This is incredibly
+small and means that the t-statistic is extremely unlikely to have arisen from a
+distribution with a mean of zero. Perhaps more helpfully, we would consequently
+infer that we have strong evidence to suggest that the *true* intercept
+parameter, which we've *estimated* to be 93.9, is not equal to 0. Translating
+this to the context of the problem, we have strong evidence to suggest that, for
+someone who is zero years old, the mean systolic blood pressure is not equal to
+zero. This is answers a question that no one is asking and is why Dr. Mukherjee
+said that inference on the intercept parameter is not usually of interest.
+
+More interesting is the other p-value: `6.75e-10` or $6.75\times 10^{-10}$. This
+is also incredibly small. Following the same logic as before, we would conclude
+that there is strong evidence to suggest that the change in the mean systolic blood
+pressure as the age of the person increases is not equal to zero. This is presumably
+a more interesting question to be answered.
+
+Just above the Coefficients table, we see information about the model's residuals. Recall
+that the residual is the difference between the person's actual systolic blood
+pressure and their predicted systolic blood pressure according to our model. Any
+fitted linear model minimizes the sum of the *squared* residuals -- here we see a
+summary of the residuals themselves: the smallest residual, the three middle
+quartiles, and the largest residual. We can use these to get a sense of the unexplained
+variability in our model. For example, the first and the third quartiles are
+-12.9 and 13.9, respectively, meaning that for half of our sample, the
+discrepancy between the actual systolic blood pressure and predicted systolic
+blood pressure is less than -12.9 points or greater than 13.9 points. Despite
+the highly significant association with age, age alone is not good at
+predicting blood pressure.
+
+In additional to calculating standard errors and p-values, we are also often
+interested in obtaining confidence intervals for parameters of interest. To do
+so, we use the `confint` function in R:
+
+```{r}
+BPUrban300 %>% 
+  lm(formula = systolic ~ age) %>%
+  confint()
+```
+
+This function calculates 95% confidence intervals for all of the parameters in a
+regression. Just like p-values, the formal interpretation of a confidence
+interval requires thinking about repeating the experiment multiple times: if we
+were to conduct a large number of identical but independent studies in this
+population, then 95% of the confidence intervals that we generate would cover
+the true population parameter. In real analyses we do not (and cannot) know
+whether our one interval has covered the true parameter or not. Informally, confidence
+intervals quantify uncertainty that we have about our parameter estimate: wider
+intervals correspond to greater uncertainty and narrower intervals correspond to
+less uncertainty.
+
+For the parameter corresponding to age, the lower bound of the interval
+is 0.371, and the upper bound of the interval is 0.702. Given how far away from
+zero the lower bound of this confidence interval is, we have a great deal of
+certainty that the true association between age and systolic blood pressure is
+greater than 0. Note that this inference leads us to the same conclusion as
+an inference based upon the p-value. 
+
+
+
+
+
+
