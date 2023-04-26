@@ -1,0 +1,158 @@
+---
+title: "Module 3, Lesson 1: From simple to multiple regression"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+```{r, message = F, warning = F}
+library(healthds)
+library(tidyverse)
+```
+
+Here is the code to fit the simple linear regression that we considered at the
+end of Module 2, regressing systolic blood pressure against a dichotomized age:
+
+```{r, eval = F}
+BPUrban300 %>% 
+  mutate(age_gt66 = case_when(age > 66 ~ "yes", 
+                              age <= 66 ~ "no")) %>%
+  lm(formula = systolic ~ age_gt66) %>%
+  summary()
+```
+
+Now we will expand this model to additionally adjust for the body mass index (BMI, 
+named `bmi` in the data) of the person (a number) as well as their smoking status (`smoking`, a TRUE/FALSE variable). To fit a multiple linear regression, we add more variable names to the right-hand
+side of the `formula` argument. These variables names must all exist in the corresponding
+dataset. 
+
+```{r}
+BPUrban300 %>% 
+  mutate(age_gt66 = case_when(age > 66 ~ "yes", 
+                              age <= 66 ~ "no")) %>%
+  lm(formula = systolic ~ age_gt66 + bmi + smoking) %>%
+  summary()
+```
+
+The most notable difference relative to a simple linear regression is that the
+coefficients table now has four rows instead of two. The additional two rows
+correspond to the additional regression coefficients that we've estimated. What
+do these results tell us?
+
+First, we see that there is a fairly small estimated association between BMI and
+systolic blood pressure. BMI is measured in units of kg/m$^2$, and so this table
+tells us that, for each kg/m$^2$ increase in BMI, we estimate that systolic
+blood pressure increases by about 0.07 points, holding fixed the other variables
+in the model (more on that in a moment). Keeping in mind that for most adults
+BMI ranges from 15 to 40, for a total range of about 25. Thus, comparing a very
+low BMI of 15 to a very large BMI of 40, we would only estimate the change in
+the systolic blood pressure to be about 1.75 (or 25 times 0.07) points.
+Moreover, this there is a great deal of uncertainty about this estimated
+association: the standard error is about 0.33, resulting in a p-value of 0.829.
+We would conclude from this analysis that this association is not statistically
+significant, meaning that it is not inconsistent with the scenario where the
+true association between BMI and systolic blood pressure is 0.
+
+Let's turn to the phrase "holding fixed the other variables". What does this mean?
+It is an important part of the interpretation of any multiple linear regression. 
+Because we are adjusting for several variables at once, when we interpret any 
+single association, we must assume that the other variables are not changing. 
+So, for example, when we state that the expected systolic blood pressure is estimated
+to increase by 0.07 points for someone whose BMI is 20 versus someone whose BMI is 19, 
+we must also assume that these persons are in the same age group (holding fixed `age_gt66`)
+and have the same smoking status (holding fixed `smokingTRUE`). We don't have to 
+assume what age or smoking status they are, but just that they are the same. 
+
+Now let's interpret the smoking association. Remember that smoking is a TRUE/FALSE
+variable. Just as it did with `age_gt66`, R has chosen a reference category (FALSE, 
+in this case) and assigned FALSE to take on values of 0 and TRUE to take on values
+of 1. Thus, we interpret the estimated association of 2.83 to be the expected
+increase in systolic blood pressure for someone who is a smoker compared to someone
+who is not a smoker, holding fixed age and BMI. As before, there is quite a bit
+of uncertainty surrounding this estimate, and the p-value tells us that this
+estimated association is not inconsistent with something that we would observe
+if the true association between smoking and systolic blood pressure was zero. 
+
+One final comment about this model. The interpretation of the estimated
+intercept has also changed, because we now must set-to-zero all of the
+variables: the intercept is interpreted as the estimated systolic blood pressure
+for someone whose age is in the reference category (younger than 66 years),
+whose BMI is equal to zero, and whose smoking status is in the reference
+category (non-smoker). Because it is biologically impossible to have a BMI of
+zero, this intercept has no practical meaning.
+
+### Fitting this same model to `BPUrban1000`
+
+Recall that we have a separate dataset called `BPUrban1000`, comprised of 1000 observations from this same hypothetical target population. Let's look at what
+our fitted model looks like when we regress upon this dataset with more than
+triple the sample size:
+
+```{r}
+BPUrban1000 %>% 
+  mutate(age_gt66 = case_when(age > 66 ~ "yes", 
+                              age <= 66 ~ "no")) %>%
+  lm(formula = systolic ~ age_gt66 + bmi + smoking) %>%
+  summary()
+```
+
+Compared to the model fit to `BPUrban300`, the point estimates have changed
+fairly substantially: the expected difference in systolic blood pressure between
+the two age groups changed from 16.8 in the earlier model to 11.8 in this current
+model. The estimated associations changed similarly for age and smoking status.
+This change in point estimates is a consequence of sampling variability: the
+estimated associations are random and will change from dataset to dataset.
+
+Separate from this, we see that a consequence of increasing the sample size is
+obtaining smaller standard errors: the standard errors are approximately 1/2 the
+size of their counterparts from the `BPUrban300` model. Because we have this
+gain in precision for estimating associations, the p-values are also closer to
+zero. This highlights a subtle point regarding the concept of statistical
+significance, namely that it is driven, in part, by sample size. The larger your
+dataset, the more likely it is that you will identify a statistically
+significant association (all other things being equal). This is not necessarily
+a good thing, because statistical significance is not always the same as
+practical significance, the latter referring to what the scientific consequences
+of your findings are. For example, if you find that a particular dichotomous
+risk factor is statistically significantly associated with a 0.09 point
+change in average systolic blood pressure, that may not be a practically
+significant finding. Even if you were confident that this was a causal relationship and
+that policies could modify this risk factor in the population, the cost would
+not justify such a small change. This relates to our last topic for this
+independent guide, that of $R^2$, or the proportion of variance explained.
+
+### Proportion of variance explained
+
+At the very bottom of the output from our fitted model above, we see that 
+the `Adjusted R-squared` is 0.054. Thus, this model does not explain 
+a great deal of variability in the outcome. This may be surprising at first glance, 
+given how statistically significant these associations are. But statistical significance
+is not necessarily related to proportion of variability explained -- in fact this
+is closely related to the distinction between statistical significance and practical
+significance. 
+
+To further highlight this point, let's inspect the `Adjusted R-squared` value for
+the model regressing against dichotomized age alone in these data:
+
+```{r}
+BPUrban1000 %>% 
+  mutate(age_gt66 = case_when(age > 66 ~ "yes", 
+                              age <= 66 ~ "no")) %>%
+  lm(formula = systolic ~ age_gt66) %>%
+  summary()
+```
+
+That value is 0.040 (rounded to the 3rd digit), meaning that 4% of the variability in systolic blood pressure
+is explained by dichotomized age alone. Adding both BMI and smoking status into
+the model, we only explain an additional 1.4% of variation in that outcome, despite
+them being both very statistically significantly related to systolic blood pressure. 
