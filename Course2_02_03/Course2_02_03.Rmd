@@ -1,0 +1,146 @@
+---
+title: "Module 2, Lesson 3: SLR with dichotomized predictors"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+```{r, message = F, warning = F}
+library(healthds)
+library(tidyverse)
+```
+
+In this independent guide, we will learn how to regress an outcome on a
+dichotomous variable and how to interpret the results. We will also start to
+make a connection to the t-test, which Dr. Mukherjee will make clear in her
+upcoming lecture.
+
+To begin, we will create a dichotomous version of age from the `BPUrban300` data
+using a new function from the `tidyverse` called `case_when`:
+
+
+```{r}
+BPUrban300 %>% 
+  mutate(age_gt66 = case_when(age > 66 ~ "yes", 
+                              age <= 66 ~ "no")) %>%
+  select(age, age_gt66) %>%
+  head()
+```
+
+Let's go over each line above one at a time. First we call `mutate` and create a
+new variable `age_gt66` ("age greater than 66"). It is defined using
+`case_when`: when the `age` variable (which already exists in `BPUrban300`)
+exceeds 66, then we instruct that `age_gt66` should take on the value `"yes"` (a
+character); when the `age` variable is less than or equal to 66, then we
+instruct that `age_gt66` should take on the value `"no"`. Note that we use the
+tilde (`~`, which we've also seen used in the `formula` argument of `lm`) to
+separate the condition (on its left) from the resulting value if the condition
+is true (on its right). For each observation in your data `case_when` will
+evaluate each condition, one at a time, until it finds one that is true, and
+that observation will be assigned the corresponding value. On the next line, we
+are selecting only `age` and the newly created `age_gt66` variables, simply to
+assess whether we have constructed the variable correctly. Finally, we use the
+`head` function, introduced in the first Independent Guide of this Module, to inspect just the first 6 rows
+of the result. Comparing `age` to `age_gt66`, we see that this variable seems to
+have been appropriately constructed: in the first row, the person's `age` was 60
+and `age_gt66` was 'no'; in the fourth row, the person's `age` was 75 and
+`age_gt66` 'yes'.
+
+Now we are ready to fit a linear regression against dichotomous age. We copy and
+paste the code from above that creates this variable and then pipe it into a
+call to `lm`, this time putting `age_gt66` on the right-hand side of the
+formula:
+
+```{r}
+BPUrban300 %>% 
+  mutate(age_gt66 = case_when(age > 66 ~ "yes", 
+                              age <= 66 ~ "no")) %>%
+  lm(formula = systolic ~ age_gt66) %>%
+  summary()
+```
+
+Note that the parameter estimates take on different values when compared to our
+previous fitted linear regression of systolic blood pressure against
+(continuously valued) age. Not only are the values different but also the
+*interpretations*. In the fitted model, the estimated intercept is now 118.1 and
+the estimated regression coefficient for `age_gt66` is 16.7. What do these mean?
+
+When we have a binary predictor like `age_gt66` in our model, we must first
+identify the so-called 'reference category' for that predictor. Whenever you
+provide a variable with named categories as opposed to numbers, R automatically
+translates these into 0/1 variables. In this case, one value of `age_gt66` has
+been assigned to 0 (the reference category) and the other value has been
+assigned to 1. We can tell which value has been assigned to 1 by looking at the
+name of the second row of the Coefficients table: `age_gt66yes`. This means that
+the 'yes' values have been assigned to 1 and therefore that the 'no' values
+has been assigned to 0.
+
+Knowing this, we can interpret 118.1 to be the estimated systolic blood pressure
+for any person who is 66 years old or younger, and 16.7 is the estimated change
+in systolic blood pressure between someone who is 66 years old or younger versus
+someone who is older than 66. Moreover, we can know that 134.8 (or 118.1 + 16.7)
+is the estimated systolic blood pressure for someone who is older than 66 years.
+
+Take note of the assumption that we have imposed on this model: everyone who is 66
+years old or younger in our data has a common estimated systolic blood pressure,
+and similarly for everyone who is older than 66 years. This is not necessarily a
+better or worse assumption than our previous one, which imposed a different
+belief that systolic blood pressure changes with age in a constant fashion.
+
+### Visualizing SLR with a binary predictor
+
+Now let's view the fitted regression line under this dichotomous age. To do
+so, we use a new geometric object called `geom_segment`, which allows you to
+plot lines that have a start and end on your plot:
+
+```{r}
+ggplot(BPUrban300) + 
+  geom_point(aes(age, systolic)) + 
+  geom_segment(aes(x = 21, xend = 66, y = 118.09, yend = 118.09)) +
+  geom_segment(aes(x = 66, xend = 75, y = 118.09 + 16.669, yend = 118.09 + 16.669))
+```
+
+We must provide the starting and ending values of the x-coordinates, `x` and
+`xend`, as well as the starting and ending values of the y-coordinates, `y`, and
+`yend`. What's plotted is a line segment connecting (`x`,`y`) to (`xend`,
+`yend`). The first call to `geom_segment` plots the fitted regression line for
+those who are 66 years old or younger, and the second plots the fitted
+regression line for those who are older than 66 years.
+
+One small aside: in his Guided Practice, Dr. Boonstra put the `x`, `xend`,
+`y`, and `yend` arguments inside the `aes` function. In doing so, some of you
+may have noticed that he did not follow the grammar of graphics that we learned
+in Course 1: instead of *mapping* these aesthetics to variables in the data, we
+should have been *setting* these aesthetics at particular values. Therefore, he
+should not have put these inside the `aes` function, and the more correct version
+of this code looks like this:
+
+```{r, eval = FALSE}
+ggplot(BPUrban300) + 
+  geom_point(aes(age, systolic)) + 
+  geom_segment(x = 21, xend = 66, y = 118.09, yend = 118.09) +
+  geom_segment(x = 66, xend = 75, y = 118.09 + 16.669, yend = 118.09 + 16.669)
+```
+
+In this case, the resulting plot looks identical, but that will not necessarily
+always be the case.
+
+### Connecting back to the t-test
+
+As you will see in the next video lecture from Dr. Mukherjee, a simple linear
+regression with one binary predictor is in fact very similar to conducting
+a t-test, in this case, comparing the average systolic blood pressure in the
+group of persons older than 66 years against the average systolic blood
+pressure in the group of persons 66 years old or younger. 
+
