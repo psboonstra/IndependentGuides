@@ -1,5 +1,5 @@
 ---
-title: "Module 3, Lesson 1: From simple to multiple regression"
+title: "Module 3, Lesson 2: From simple to multiple regression"
 output: 
   html_document:
   html_notebook:
