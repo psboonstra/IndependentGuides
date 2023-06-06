@@ -55,26 +55,28 @@ all topics.*
 #### Work through the independent guides after watching the guided practice
 
 As stated above, the independent guides are intended to complement and enhance
-the guided practice videos from a single lesson. After working through all videos in a single lesson 
-(Steps 1 and 2), we recommend you also open the independent guide for that lesson and
-then test your own understanding by taking the practice quiz (Steps 4 and 5). 
-In other words, working through an entire lesson (Steps 1--5) is the most natural 
-'learning unit' in this course. It is not absolutely necessary that you complete 
-an entire lesson in one sitting, but bear in mind that these steps are intended to be 
-reinforcing, and so taking breaks between lessons is preferred to taking
-breaks within a lesson. 
+the guided practice videos from a single lesson. After working through all
+videos in a single lesson (Steps 1 and 2), we recommend you also open the
+independent guide for that lesson and then test your own understanding by taking
+the practice quiz (Steps 4 and 5). In other words, working through an entire
+lesson (Steps 1--5) is the most natural 'learning unit' in this course. It is
+not absolutely necessary that you complete an entire lesson in one sitting, but
+bear in mind that these steps are intended to be reinforcing, and so taking
+breaks between lessons is preferred to taking breaks within a lesson.
 
 #### Run R code from the independent guides in your own session
 
 The language in the independent guides is informal and instructional. Like the
-guided practice videos, these guides teach by doing, so it is assumed you will have an R 
-session open and that you'll be copying and pasting (or re-typing) code from the 
-independent guide into your R session as you read through the guide. You will be
-instructed to copy and paste lines of code from the document into your own R session.
+guided practice videos, these guides teach by doing, so it is assumed you will
+have an R session open and that you'll be copying and pasting (or re-typing)
+code from the independent guide into your R session as you read through the
+guide. You will be instructed to copy and paste lines of code from the document
+into your own R session.
 
-However, because the independent guides will repeat everything done in the guided 
-practice session, you will ultimately need to decide whether you will only actually copy 
-and run code while watching the guided practice, only while reading the independent 
-guides, or both. Whatever you decide, it is recommended that you still both 
-watch the guided practice videos and read through indepedent guides. 
+However, because the independent guides will repeat everything done in the
+guided practice session, you will ultimately need to decide whether you will
+only actually copy and run code while watching the guided practice, only while
+reading the independent guides, or both. Whatever you decide, it is recommended
+that you still both watch the guided practice videos and read through
+independent guides.
 

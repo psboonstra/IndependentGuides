@@ -18,11 +18,13 @@ klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 
 Welcome to the independent guide for the first lesson of Module 1. 
 
-Open a new R script. At the top of this script, load the `tidyverse` by writing the following in your script: 
+Open a new R script. At the top of this script, load the `tidyverse` by writing 
+the following in your script: 
 
 ```{r}
 library(tidyverse)
 ```
+
 
 ## Pseudo-random numbers in R
 
