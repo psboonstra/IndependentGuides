@@ -1,0 +1,248 @@
+---
+title: "Module 2, Lesson 2: Fitting a logistic regression against multiple variables"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In this independent guide, we will learn how to fit a logistic regression model
+with multiple variables in R, which is usually called a *multiple* logistic
+regression model. To start, load the `healthds` and `tidyverse` packages in the
+usual way.
+
+```{r, message = F, warning = F}
+library(healthds)
+library(tidyverse)
+```
+
+### Fitting a multiple logistic regression model
+
+We previously fit a simple logistic regression model to the  `BPUrban1000` data,
+estimating the association between a person's hypertension status (recorded as
+yes/no outcome) and whether they are a smoker. Now, we will expand that model to
+adjust for both smoking status *and* the person's age. As before, we will use
+the `glm` function:
+
+```{r}
+htn_smk_age_model <- 
+  BPUrban1000 %>%
+  glm(formula = hypertension ~ smoking + age, family = "binomial")
+```
+
+Compared to a simple logistic regression model, what has changed is that we have
+"added" `age` to the right-hand side of the formula.
+
+### Interpreting a multiple logistic regression model
+
+Mathematically, the model that the above code corresponds to is this:
+
+$$
+\ln\left(\dfrac{\Pr(\mathrm{hypertension=1})}{1 - \Pr(\mathrm{hypertension=1})}\right) = \beta_0 + \beta_1 \mathrm{smoking} + \beta_2 \mathrm{age},
+$$
+where 'ln' refers to the natural logarithm, 'Pr' is shorthand for 'Probability
+[that what's in the parentheses is true]', 'hypertension' can be either 1 or 0,
+'smoking' equals 1 for a smoker and 0 for a non-smoker, 'age' is the age in
+years of a person, and $\beta_0$, $\beta_1$, and $\beta_2$ are the three
+parameters to be estimated. The left-hand side of the equation gives the
+log-odds of having hypertension, as before. The right-hand side is sometimes
+called the 'linear predictor'. For a non-smoker who is zero years old, the
+linear predictor evaluates to just $\beta_0$, meaning that the log-odds of
+hypertension for "zero-year-old" non-smokers are given by the value of
+$\beta_0$. Trying to interpret this parameter is therefore both nonsensical and
+an extrapolation of what we are able to learn from the data -- the youngest
+people in the `BPUrban1000` data are 18 years old. It is for this reason that
+the intercept parameter in a multiple logistic regression is not generally of
+interest.
+
+However, we can calculate the log-odds of hypertension for other age/smoking
+combinations, e.g. the log-odds of hypertension for a 63-year-old non-smoker
+would be given by $\beta_0 + \beta_2 \times 63$, and the log-odds of
+hypertension for a 63-year-old smoker would be given by $\beta_0 + \beta_1 +
+\beta_2\times 63$. Taking the difference of these two quantities, and noting
+that the contribution due to each person's age cancels out upon taking this
+difference, we also see that the *change* in log-odds between smokers and
+non-smokers who are *the same age* is $\beta_1$. It does not matter what age we
+plug in here, as long as the age is the same between the two people, because the
+contribution due to each person's age would always cancel out. For this reason,
+instead of writing 'who are the same age', one could also write 'adjusting for
+age' or 'holding age constant'. Note that this interpretation differs from
+$\beta_1$ in the previous lesson on simple logistic regression, which did not
+include age.
+
+The log-odds for a 64-year-old non-smoker is $\beta_0 + \beta_2\times 64$. Thus,
+the difference between this quantity and the log-odds of hypertension for a
+63-year-old non-smoker is $(\beta_0 + \beta_2\times 64) - (\beta_0 +
+\beta_2\times 63)$, or just $\beta_2$. Similarly, the log-odds for a 64-year-old
+smoker is $\beta_0 + \beta_1+\beta_2\times 64$; the difference between this
+quantity and the log-odds of hypertension for a 63-year-old smoker is *also*
+$\beta_2$. In general, $\beta_2$ is interpreted as the change in
+the log-odds of hypertension for each year increase in age, adjusting for
+smoking status.
+
+As with simple logistic regression, any log-odds can be turned into more
+intuitive quantities, such as odds or probabilities, using mathematical
+operations. Specifically, following the same steps as in the
+previous lesson, the probability of hypertension in general is
+$\exp\{\beta_0+\beta_1\mathrm{smoker}+\beta_2\mathrm{age}\}/(1+\exp\{\beta_0+\beta_1\mathrm{smoker}+\beta_2\mathrm{age}\})$, 
+where you provide the value for 'smoker' and 'age', corresponding to the person 
+who's probability you are trying to calculate. 
+
+
+### Obtaining numerical summaries of logistic regressions
+
+Running the above code will (i) fit the model and (ii) save the result in a new
+object called `htn_smk_age_model`. We again use the `summary` function, as in
+the previous lesson, to inspect the fitted model and conduct inference:
+
+```{r}
+summary(htn_smk_age_model)
+```
+
+The `(Intercept)` parameter in the first row of the `Coefficient` section is the
+estimate of $\beta_0$, the log-odds of hypertension for non-smokers who are zero
+years old, and it is estimated to be approximately -6.5920, with a standard
+error of 0.5146. This is a much smaller value than that estimated in the
+previous lesson, and this is because the interpretation is much different, as
+discussed above.
+
+Looking in the second row, `smokingTRUE` gives the estimate of $\beta_1$, which
+is the *change in the log-odds* of hypertension between non-smokers and smokers,
+adjusting for age. It is 0.7847, meaning that the log-odds of hypertension are
+larger for a smoker as compared to a non-smoker of the same age, and the p-value
+in the last column is 0.00575, which suggests that this change is statistically
+significant. If we exponentiate this change in the log-odds, i.e. exp{0.7847},
+we obtain the odds ratio of hypertension between non-smokers and smokers, adjusting
+for age. This value is `r round(exp(0.7847),3)`, which means that the odds of
+hypertension are `r round(exp(0.7847),3)` greater for smokers than they are for
+non-smokers, adjusting for age.
+
+From the third row, `age` gives the estimate of $\beta_2$, which is the change
+in log-odds per year increase in age, adjusting for the person's smoking status.
+It is highly statistically significant, with the p-value being less than
+$2\times 10^{-16}$ (R's way of writing this is `2e-16`). Note that, $\beta_2$
+and $\beta_1$ aren't directly comparable, and we can't conclude from this that
+smoking has a more meaningful or larger association with hypertension than age
+simply because the estimate of $\beta_1$ is larger than that of $\beta_2$.
+$\beta_1$ is a qualitative comparison between smokers and non-smokers, whereas
+$\beta_2$ gives a change with increasing age. In fact, we can straightforwardly
+calculate the change in log-odds of hypertension for an age differential that is
+more than one year. For example, the estimated change in the log-odds of
+hypertension between a 53-year-old non-smoker and a 63-year-old non-smoker is
+0.09172 $\times$ 10 (because they are ten years apart), or `r 0.09172*10`.
+
+### Predictions using `predict` function
+
+We can use this model to calculate the predicted probability of hypertension
+for any age/smoking combination. For example, the predicted probability of
+hypertension for a 63-year-old non-smoker is exp{-6.5920+63 $\times$ 0.09172}/
+(1+exp{-6.5920+63 $\times$ 0.09172}), or 
+`r round(exp(-6.5920+63*0.09172)/(1+exp(-6.5920+63*0.09172)),4)`. If this
+person were a smoker, their predicted probability of hypertension  would be
+exp{-6.5920+0.7847+63 $\times$ 0.09172}/(1+exp{-6.5920+0.7847+63 $\times$ 0.09172}), or 
+`r round(exp(-6.5920+0.7847+63*0.09172)/(1+exp(-6.5920+0.7847+63*0.09172)),4)`.
+
+However, it is tedious and error-prone to calculate probabilities by hand. Fortunately, 
+the `predict` function in R can do so automatically. A common way to use this function
+is as follows:
+
+```{r}
+htn_smk_age_model %>%
+  predict() %>% # by default 'predict' will calculate the log-odds (or linear predictors)
+  head()
+```
+
+If you provide a fitted logistic regression model to `predict`, as we do above,
+then the function will calculate the log-odds for the observations in the data
+that were used to estimate the model. In this case, those are the 1000 people in
+the `BPUrban1000`. Instead of looking at all 1000 people, above we use the
+`head` function to inspect just the first six persons' log-odds of hypertension.
+
+If instead we wanted the predicted probabilities of hypertension, we would use
+the following:
+
+```{r}
+htn_smk_age_model %>%
+  predict(type = "response") %>% # type = "response" will result in predicted probabilities
+  head()
+```
+
+Specifying `type = "response"` inside of `predict` is how we instruct R to
+return the probabilities themselves rather than the log-odds. We can compare these
+results to what we calculated "by hand". The first six rows of the `BPUrban1000`
+dataset are as follows:
+
+```{r}
+head(BPUrban1000)
+```
+
+In particular, the first person is a 63-year-old non-smoker, for whom we have
+already calculated a predicted probability of 
+`r round(exp(-6.5920+63*0.09172)/(1+exp(-6.5920+63*0.09172)),4)` (up to four
+significant digits). This matches the output from `predict`. Manually calculate
+on your own the predicted probability of hypertension for the second subject in
+the data, a 30-year-old non-smoker; if your calculations are correct, you should
+obtain a value of 0.02103, consistent with the output from `predict`.
+
+### Visualizing a logistic regression model
+
+To finish, we will learn how to visualize a fitted regression model. In Course 1, 
+we saw that the `mutate` function in the `tidyverse` lets one add new variables
+to a dataframe. We will add a new variable to `BPUrban1000` that records that 
+persons predicted probability of hypertension:
+
+```{r}
+BPUrban1000 %>%
+  mutate(pred_htn_prob = htn_smk_age_model %>% predict(type = "response")) %>%
+  head()
+```
+
+The code above creates this variable and shows just the first six rows of the
+resulting augmented dataset (printing the entire dataset would result in pages
+and pages of results). The very last column is the newly created
+`pred_htn_prob` variable. 
+
+We can now expand this code to visualize how the predicted probability of
+hypertension changes with age and smoking status. Using the `ggplot`
+functionality that we learned in Course 1, we will create a scatter plot,
+mapping `age` to the x aesthetic, `pred_htn_prob` to the y aesthetic, and
+`smoking` to the color aesthetic.
+
+```{r}
+BPUrban1000 %>%
+  mutate(pred_htn_prob = htn_smk_age_model %>% predict(type = "response")) %>%
+  ggplot() + 
+  geom_point(aes(x = age, y  = pred_htn_prob, color = smoking))
+```
+
+Each point of this scatter plot represents a predicted probability for a unique
+combination of age/smoking status; only those combinations appearing in our data
+are plotted. There are gaps in places where there were no observations in the
+data that had that combination, e.g. there are no 40-year-old smokers in the
+dataset. Importantly, this absence of data does not preclude us from using our
+model to predict the probability of hypertension for a 40-year-old smoker, and
+it could be appropriate to do so since we *do* have data on both younger and
+older smokers and data on 40-year-old non-smokers.
+
+Visualizations on the probability scale, like this, can be useful for
+communicating the implications of a fitted model, which can otherwise be
+difficult to understand since log-odds and changes in log-odds are not intuitive
+quantities. Here, we see that the model estimates that the probability of
+hypertension among people younger than 30 years old is quite small, even for
+smokers. On the other hand, among older people, smoking tends to correspond to a
+much greater probability of hypertension. An important statistical lesson here
+is that even though a logistic regression model may estimate a constant change
+in log-odds between two groups (in this case, smokers versus non-smokers), once
+we transform to the probability scale, this won't generally correspond to a
+constant change in the probability of the outcome, i.e. the difference between
+the heights of the two color dots is not constant with age.

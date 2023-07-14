@@ -1,0 +1,304 @@
+---
+title: "Module 3, Lesson 1: Assessing the predictive ability of your model"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In this independent guide, we will learn how to make predictions from a multiple
+logistic regression model, how to use different and complementary techniques to
+assess the quality of those predictions, and how assessing model fit using the
+same data as what was used to build the model will lead to optimism, i.e. a
+model that seems to be predicting more accurately than it actually is. As a
+consequence, we will see that it is desirable to assess your model's predictive
+performance on a separate testing dataset.
+
+To start, load the `healthds` and `tidyverse` packages in the usual way.
+
+```{r, message = F, warning = F}
+library(healthds)
+library(tidyverse)
+```
+
+At the end of Module 2, we fit a multiple logistic regression model predicting
+the risk of hypertension as a function of a person's smoking status, age, body
+mass index (BMI), activity level, and salt intake. We fit this model to the
+`BPUrban300` data. 
+
+```{r}
+htn_model <- 
+  glm(hypertension ~ smoking + age + bmi + activity + salt_group, 
+      family = "binomial", 
+      data = BPUrban300)
+summary(htn_model)
+```
+
+### Calibration plots
+
+One technique for assessing predictions of binary outcomes is to categorize the
+observations into groups that are expected to have similar probabilities and then
+compare the predicted probabilities of that group against the observed proportion
+of the outcome within that group. This is sometimes called a calibration plot. 
+
+To make a calibration plot, we will use the `mutate` function to add a new
+variable to our `BPUrban300` data that represents each observation's predicted
+probability of hypertension, according to the model. This is done using the
+`predict` function, which we've seen in Module 2 of this course. However, we
+will introduce here a new argument to `predict` called `newdata`, which allows
+one to provide a different dataset -- that is, different from the one that we
+used to build the model -- upon which to make predictions.
+
+```{r}
+BPUrban300 %>%
+  mutate(pred_htn_prob = predict(htn_model, newdata = BPUrban300, type = "response")) %>%
+  head()
+```
+
+Above we show the first six rows of the augmented `BPUrban300` data, with the
+newly added variable, `pred_htn_prob`, being at the bottom right. Note that we
+have not saved this result as anything at this point. In particular, were we to
+look at the `BPUrban300` data, we would not see this newly added variable.
+
+Next we are going to create a new variable `pred_htn_prob_cat` that categorizes
+the observations into ten equally sized groups based upon their predicted
+hypertension probabilities. We will use the `cut_number` function (available
+to us via `tidyverse`) to do so:
+
+```{r}
+BPUrban300 %>% 
+  mutate(pred_htn_prob = predict(htn_model, newdata = BPUrban300, type = "response")) %>%
+  mutate(pred_htn_prob_cat = cut_number(pred_htn_prob, n = 10)) %>%
+  head()
+```
+
+The `cut_number` function turns a continuous variable (`pred_htn_prob` in this
+case) into a categorical variable. Because we have chosen to create `n = 10`
+categories, it will identify the 30 observations (30 being 10% of 300) that have
+the smallest predicted probabilities and put them into the first category, then
+the 30 observations that have the smallest predicted probabilities among those
+remaining and put them into the second category, and so forth. The label for
+`pred_htn_prob_cat` indicates the smallest and largest probabilities in each
+category; observations that have the same label are in the same group. So for
+example, the first person's predicted probability of hypertension is 0.1242, 
+meaning that they fall into the category corresponding to the interval (0.0884, 0.159].
+
+Now we are going to group by this newly created categorical variable and
+calculate two numbers for each group: the average of the predicted hypertension
+probability and the observed proportion of individuals with hypertension:
+
+```{r}
+BPUrban300 %>% 
+  mutate(pred_htn_prob = predict(htn_model, newdata = BPUrban300, type = "response")) %>%
+  mutate(pred_htn_prob_cat = cut_number(pred_htn_prob, n = 10)) %>%
+  group_by(pred_htn_prob_cat) %>%
+  summarize(avg_pred_htn_prob = mean(pred_htn_prob), 
+            avg_obs_htn = mean(hypertension))
+```
+
+Generally speaking, we say that the model is calibrated if these two numbers are
+close within each group, and they seem to be. So, for example, the first row of
+these summarized data represents the group of 30 individuals with the smallest
+risk of hypertension. The average of these predicted risks in this first group
+is 0.0022, and the observed proportion of individuals in this group who actually
+are hypertensive is 0/30, or 0. Conversely, the average predicted risk in the
+highest-risk group is 0.638, and the observed proportion of individuals who are
+hypertensive is 19/30, or 0.633.
+
+We can visualize these data using a simple scatterplot, adding the line $y=x$
+to give a reference; the points from the scatterplot should fall close to this
+reference line if the the model is well-calibrated:
+
+```{r}
+BPUrban300 %>% 
+  mutate(pred_htn_prob = predict(htn_model, newdata = BPUrban300, type = "response")) %>%
+  mutate(pred_htn_prob_cat = cut_number(pred_htn_prob, 10)) %>%
+  group_by(pred_htn_prob_cat) %>%
+  summarize(pred_htn_prob = mean(pred_htn_prob), 
+            obs_htn = mean(hypertension)) %>%
+  ggplot() + 
+  geom_point(aes(x = pred_htn_prob, y = obs_htn)) + 
+  geom_abline(intercept = 0, slope = 1)
+```
+
+From this calibration plot, the model does indeed look well-calibrated, with the
+dots falling close to the reference line and not systematically above or below
+it. However, this assessment is likely too optimistic because we are assessing
+calibration on the same data that we used to build our model. A truer assessment
+would use data that our model has not 'seen' before. So, let us assess the
+calibration of this same model but now predicting hypertension in the
+`BPUrban1000` dataset:
+
+```{r}
+BPUrban1000 %>% 
+  mutate(pred_htn_prob = predict(htn_model, newdata = BPUrban1000, type = "response")) %>%
+  mutate(pred_htn_prob_cat = cut_number(pred_htn_prob, 10)) %>%
+  group_by(pred_htn_prob_cat) %>%
+  summarize(pred_htn_prob = mean(pred_htn_prob), 
+            obs_htn = mean(hypertension)) %>%
+  ggplot() + 
+  geom_point(aes(x = pred_htn_prob, y = obs_htn)) + 
+  geom_abline(intercept = 0, slope = 1)
+```
+
+This plot has some hallmarks that we would expect when assessing calibration in
+a new dataset. Specifically, we see that among individuals who are predicted to
+be very low risk according to the model, i.e. less than 1% risk of hypertension,
+the observed proportion of those individuals who have hypertension is actually
+4-7%. This might lead us to believe that our hypertension risk model is
+under-predicting the true risk of hypertension in this population. In general, 
+when constructing a calibration plot for new data, you should expect to see
+dots fall farther from the $y=x$ line. 
+
+### Receiver-Operator Characteristic (ROC) curves and Area under the ROC curve (AUC)
+
+The ROC curve is another way of assessing the predictive ability of a model. It
+is based on making classifications using predicted risk. So, for example,
+suppose we were to classify everyone with a predicted risk of 0.5 or greater as
+being hypertensive and everyone else as not being hypertensive. This
+approach would have a certain sensitivity, which is the probability of correctly
+classifying someone who in truth is hypertensive, and a certain specificity,
+which is the probability of correctly classifying someone who in truth is not
+hypertensive. Ideally sensitivity and specificity would both be high, with their
+best possible values being 1.
+
+However, we could also make a classification based upon a threshold that is different
+from 0.5. For example, we could classify everyone with a predicted risk of 0.2
+or greater as being hypertensive. By lowering this threshold, we will increase
+our sensitivity and decrease our specificity. Alternatively, we could increase
+this threshold, which would decrease our sensitivity and increase our specificity. 
+
+An ROC curve, then, is the plot of the resulting sensitivity against the resulting
+specificity for all possible thresholds (technically, the ROC curve plots sensitivity against
+*one minus specificity*, so that both values increase the threshold).
+
+To create an ROC curve, we will need install and load a new R package called `pROC`. 
+
+```{r, eval = FALSE}
+# Only run this code once per computer
+install.packages("pROC")
+```
+
+```{r}
+library(pROC)
+```
+
+Having done this, we will use the `roc` function from this package. This function
+requires a 'gold standard' (the truth), which is `hypertension` in our case, and
+a predicted risk (`pred_htn_prob`). It will take care of all of the actual calculations. 
+
+```{r}
+BPUrban300 %>% 
+  mutate(pred_htn_prob = predict(htn_model, newdata = BPUrban300, type = "response")) %>%
+  roc(hypertension, pred_htn_prob, plot = TRUE)
+```
+
+W get some information in the console, which is helpful to 
+ensure that the code is working as expected. We see that there are 243 controls
+in our data (those who are not hypertensive) and 57 cases (those who are hypertensive). 
+
+We also see the ROC curve plotted; this is the black step function. At perfect
+specificity, i.e. specificity = 1, in the lower left of the plot, we have no
+sensitivity. This means that if we want to correctly classify *all* individuals
+who in truth are not hypertensive, we will have no ability to correctly classify
+individuals who in truth are hypertensive. However, if we allow for
+less-than-perfect specificity, say specificity = 0.9, our sensitivity increases
+to something close to 0.4. Ideally we would have specificity = 1 and sensitivity
+= 1; in reality, no model will be that good, and we must make a tradeoff. The
+ROC curve visualizes this tradeoff. The closer the ROC curve is close to the
+$y=x$ line, the closer our predictions are to random guessing.
+
+The Area under the ROC curve, or AUC, is the size of the region underneath the
+ROC curve. From the output in the console, our model has an AUC of 0.8594 in
+these data. An ideal AUC is 1, and the worst AUC is 0.5. The AUC is sometimes
+used as a single-number summary of an ROC curve. It also has a nice
+interpretation as being the probability that our model can correctly
+discriminate between higher and lower risk individuals. Specifically, given
+two individuals, one with hypertension and one without, the AUC
+can be interpreted as the probability that our model gives the individual
+with hypertension a higher risk of hypertension than the individual without
+hypertension.
+
+As before, this assessment is optimistic because we are assessing our model on
+the same data as what was used to fit the model. A more honest assessment would
+use different data, e.g. the `BPUrban1000` data:
+
+```{r}
+BPUrban1000 %>% 
+  mutate(pred_htn_prob = predict(htn_model, newdata = BPUrban1000, type = "response")) %>%
+  roc(hypertension, pred_htn_prob, plot = TRUE)
+```
+
+Having done so, the ROC curve is now somewhat closer to the $y=x$ reference
+line, and the value of the AUC has dropped from 0.8594 to 0.811; still large but
+not as large as before.
+
+### Brier Scores
+
+Brier scores are numerical summaries of your model's predictive ability that
+combine elements of both calibration and discrimination. 
+
+The Brier score is defined as the average of the squared difference between an
+observation's predicted probability (which can be any number between 0 and 1)
+and an observation's actual outcome (coded as 0 for observations without the
+outcome and as 1 for observations with the outcome). The best possible Brier
+score is zero, corresponding to assigning a predicted probability of 1 to all
+individuals with the outcome and a predicted probability of 0 to all individuals
+without the outcome.
+
+Separately, we are also interested in the maximum Brier score for our particular
+dataset, which is the Brier score that we would get if we used the observed
+prevalence of the outcome across all observations as a prediction for everyone.
+The maximum Brier score reflects a contextual upper bound on the Brier score for
+a particular situation.
+
+Finally, the scaled Brier score is defined as one minus the ratio of the Brier
+score divided by the maximum Brier score. Whereas the Brier score ranges from 0
+to whatever value the maximum Brier score is, with smaller numbers being
+preferred, the *scaled* Brier score ranges from 0 to 1, and larger values are
+preferred. A *scaled* Brier score of 1 corresponds to a Brier score of 0.
+
+To calculate the Brier score and the maximum Brier score, we will use the
+`summarize` function. Interestingly, we won't precede our call to `summarize`
+with a call to `group_by`. This is because we want to summarize across the
+entire dataset, not separately by any group. Then, having calculated these
+numbers, we can calculate the scaled Brier score using a call to `mutate`.
+Altogether, this is the result:
+
+```{r}
+BPUrban300 %>% 
+  mutate(pred_htn_prob = predict(htn_model, newdata = BPUrban300, type = "response")) %>%
+  summarize(brier = mean((hypertension - pred_htn_prob)^2), 
+            brier_max = mean(hypertension) * (1 - mean(hypertension))) %>%
+  mutate(scaled_brier = 1 - brier / brier_max)
+```
+
+When applied to the same data used to fit the model, our model achieves a Brier
+score of 0.1085 and a scaled Brier score of 0.2949. Remember that 0 is the
+best possible Brier score and 1 is the best possible scaled Brier score.
+Now let us see what happens when we assess this model on the `BPUrban1000` data:
+
+```{r}
+BPUrban1000 %>% 
+  mutate(pred_htn_prob = predict(htn_model,  newdata = BPUrban1000, type = "response")) %>%
+  summarize(brier = mean((hypertension - pred_htn_prob)^2), 
+            brier_max = mean(hypertension) * (1 - mean(hypertension))) %>%
+  mutate(scaled_brier = 1 - brier / brier_max)
+
+
+```
+
+As we have already seen with the other metrics, the performance degrades. Now
+the Brier score is a larger, i.e. worse, 0.1254, and the scaled Brier score is 
+a smaller, i.e. worse, 0.2493. 
+

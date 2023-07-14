@@ -1,0 +1,237 @@
+---
+title: "Module 1, Lesson 1: Tests for comparing two proportions"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+Welcome to the independent guide for the first lesson of Module 1. 
+
+In this course, we will use the `tidyverse` and `healthds` R packages. If you
+have not yet installed these on your computer, you should do so now (you only
+need to install them once). For help on installing these packages, please refer
+to the instructions provided at the beginning of this course.
+
+Now, open a new R script. At the top of this script, write the following:
+
+```{r, message = F, warning = F}
+library(healthds)
+library(tidyverse)
+```
+
+You can copy this R code by pressing the small symbol in the top-right of each
+box and then pasting it into your own script. However, the script just putting
+this code into your script does not execute the code. To run a line of code from
+your script, put your cursor on the line of code to be run and press
+'Ctrl+Enter' (on your Windows computer) or 'Cmd+Enter' (on your Mac).
+
+### Comparing proportions across two groups
+
+In this independent guide, we will learn about two ways to compare proportions
+between two groups. The first is the two-sample test of proportions, as
+implemented in the R function `prop.test`, and the second is Fisher's exact
+test, as implemented in the `fisher.test` function.
+
+To demonstrate these functions, we will analyze the `BPUrban1000` data, which
+comprises health information on 1000 hypothetical individuals from India. In
+particular, we want to know whether the proportion of individuals who report
+having hypertension is different among those who are smokers versus those who
+are not smokers.
+
+
+#### Preparatory data wrangling
+
+To prepare the data for analysis, we want to create a two-by-two table, where
+the rows of the table indicate the person's smoking status based upon the
+`smoking` variable (`smoking = FALSE` corresponds to non-smokers, `smoking =
+TRUE` corresponds to smokers). It is this two-by-two table that is required
+by the `prop.test` and `fisher.test` functions. 
+
+Here is some code that *almost* gets us the two-by-two table that we need, using
+ideas that we covered in Course 1:
+
+```{r}
+BPUrban1000 %>%
+  group_by(smoking) %>%
+  summarize(num_htn = sum(hypertension),
+            num_no_htn = sum(1 - hypertension))
+```
+
+Walking through this code step by step, we first take the `BPUrban1000` data and
+group it by the `smoking` variable. As a consequence, subsequent actions will
+be conducted separately for each unique category of `smoking` (in this case `FALSE`
+and `TRUE`). There are two specific actions we take: we calculate the
+number of individuals with hypertension (`sum(hypertension)`) and save it as
+a variable called `num_htn`, and we calculate the number of individuals without
+hypertension (`sum(1 - hypertension)`) and save it as a variable called
+`num_no_htn`. 
+
+The result is a dataset with two rows (one for each smoking
+group) and three columns: the first column indicates the smoking category
+and the second and third columns give the counts of those with hypertension
+and without hypertension, respectively. 
+
+If you run the line of code above, the output will only be printed to the screen
+and not saved as an object to be used later, e.g. passed into the `prop.test`
+and `fisher.test` functions. We want to use the assignment operator (`<-`) to
+save this as object, and we'll name our new object `smoking_by_hypertension` (as
+seen below).
+
+In addition, we need to make some minor adjustments to the result in order to
+make it into an acceptable form. First, we want the first column not to be a
+literal column but rather an "implicit" column that denotes the label of each
+row (just like we have an implicit row that denotes the name of each column). We
+use the `column_to_rownames` function to do so. Second, the `prop.test` and
+`fisher.test` functions require that we provide a numeric `matrix` rather than a
+`data.frame`. Formally discussing the differences between a `matrix` and
+`data.frame` is beyond the scope of this course.
+
+Taking into account these extra steps, the code below implements everything that
+is needed to translate our data into the appropriate two-by-two table for
+testing whether there is a difference in hypertension proportions between
+smoking groups:
+
+```{r}
+smoking_by_hypertension <- 
+  BPUrban1000 %>%
+  group_by(smoking) %>%
+  summarize(num_htn = sum(hypertension),
+            num_no_htn = sum(1 - hypertension)) %>%
+  column_to_rownames("smoking") %>%
+  as.matrix()
+```
+
+Copy and paste this code into your script, and then run it. Having created this
+object, we can also see what it looks like by typing its name:
+
+```{r}
+smoking_by_hypertension
+```
+
+This is the two-by-two table that we need. The two rows indicate non-smokers
+and smokers, respectively, the two columns indicate hypertension and no 
+hypertension, respectively, and the numbers inside indicate the counts of the
+number of people with each combination. 
+
+#### Using `prop.test` to compare two proportions
+
+The two-sample test of proportions is implemented in `prop.test`. After creating
+the `smoking_by_hypertension` above, you can plug that directly into the
+function:
+
+```{r}
+prop.test(x = smoking_by_hypertension)
+```
+
+Having run this code, you should see some results printed to the screen. At the
+top of the results, we see the test that was conducted "2-sample test for
+equality of proportions with continuity correction". 
+
+Jumping down to the very bottom, we see the two observed proportions that are
+being statistically compared. The proportion of non-smokers who have
+hypertension is 0.2024, which is 186 (the number of non-smokers with
+hypertension) divided by 186 + 733 (the total number of non-smokers). Similarly,
+the proportion of smokers who have hypertension is 0.3210, which is 26 (the
+number of smokers with hypertension) divided by 26 + 55 (the total number of
+smokers). Interestingly, it does not print out the value for the difference in
+these proportions, but with some arithmetic we can determine that this
+difference is 0.2024 minus 0.3210, or -0.1186. And so we would estimate that the
+true proportion of hypertension in non-smokers is about 12% lower than in smokers.
+
+Although we don't see the estimated difference in this output, we do see an
+estimated 95% confidence interval for this difference. The lower bound of this
+confidence interval is -0.2302, and the upper bound is -0.0070.
+
+Looking up a little higher, we see that the p-value corresponding to this test
+is 0.0182. Were we to assume that in truth there is no difference in
+the true proportion of hypertension between smokers and non-smokers, this p-value is
+the probability of observing our data or data that are more extrem", where 
+"more extreme" means  a difference that is even farther away from zero than -0.1186. Since the
+p-value is small, we might conclude that it is unlikely that our data arose from
+a scenario in which the true proportions are equal.
+
+There is an alternative way to use `prop.test` by typing in the numbers in 
+each group with hypertension as the value for the `x` argument and the total 
+numbers in each group as the value for the `n` argument:
+
+```{r}
+prop.test(x = c(186, 26), n = c(186 + 733, 26 + 55))
+```
+
+This will yield the same statistical results as the first way. 
+
+
+#### Using `fisher.test` to compare two proportions
+
+The `fisher.test` implements Fisher's exact test:
+
+```{r}
+fisher.test(x = smoking_by_hypertension)
+```
+
+We are testing whether the 'odds ratio' comparing hypertension in non-smokers
+against smokers is equal to 1. Although the odds ratio is not the same as a
+difference in proportions, we can say that an odds ratio of 1 (which is
+the null hypothesis) corresponds to there being no difference in proportions
+
+How do odds ratios and proportions relate? The *odds ratio* is, as its name
+suggests, a ratio of two odds, and an *odds* is a proportion divided by one
+minus a proportion. From our work above we know that the observed proportion of
+non-smokers with hypertension is 0.2024, meaning that the odds of hypertension
+among non-smokers is 0.2024 / (1 - 0.2024), or about 0.2538. Similarly, the odds
+of hypertension among smokers is 0.3210 / (1 - 0.3210), or 0.4726. Thus, the
+odds ratio is 0.2538 / 0.4726, or 0.5370, which is very close^[In statistics,
+there are generally many different approaches to estimating parameters such as
+odds ratios, and `fisher.test` uses a slightly different estimation approach
+than what we have done, which is simply calculating the 'sample odds ratios'.
+Thus, the results are similar but not identical] to the output from
+`fisher.test`. From this, we would conclude that the odds of hypertension for
+non-smokers are nearly half as large as the odds of hypertension for smokers.
+
+We are also provided a 95% confidence interval for this odds ratio, the lower
+bound of which is 0.3211 and the upper bound of which is 0.9180. Because the
+entire interval falls below 1, we would conclude that the odds of hypertension 
+among non-smokers seem to be less than the odds of hypertension among smokers. 
+Qualitatively, this is the same conclusion as that of the two-sample test of
+proportions, namely that the non-smokers have lower rates of hypertension than
+smokers. 
+
+What would happen to our statistical conclusions if we were to switch the order 
+of the rows in the underlying data before conducting the test? Switching the 
+order of the rows can be done using the command `smoking_by_hypertension[c(2, 1), ]`.
+Running Fisher's exact test on these modified data is done as follows:
+
+```{r}
+fisher.test(smoking_by_hypertension[c(2, 1), ])
+```
+
+At first the results look much different, but upon closer inspection, we can see
+that the conclusions remain the same. The roles of the two smoking groups (and
+the numerator and denominator of the odds ratio) have switched. Now the odds
+ratio is estimated to be 1.8615, and this is interpreted to mean that the odds
+of hypertension among smokers is almost twice as large as the odds of
+hypertension among non-smokers. The confidence interval is for this alternative
+odds ratio, and now it falls entirely above 1. Finally, the p-value is
+identically equal to our first result. If we were to invert this odds ratio, we
+would see that 1 / 1.8615 equals 0.5372, which is the original estimated odds
+ratio. Thus, although we must interpret the results differently, our conclusion
+remains the same.
+
+
+
+
+
+
+
+

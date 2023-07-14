@@ -16,12 +16,17 @@ knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; 
 klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 ```
 
-If you've completed Course 1 from this series, you should already be familiar 
-with the purpose of independent guides for this course and do not need to read
-the rest of this document. 
+This document is intended for learners who skipped Course 1 from this series and
+already have some familiarity with R and RStudio, including either having
+downloaded and installed these programs on your own computer or having access to
+cloud-based versions of these programs via https://posit.cloud/. If you've
+completed Course 1 from this series, you should already be familiar with the
+purpose of independent guides for this course and do not need to read the rest
+of this document. If you are brand new to R and RStudio, we recommend you work
+through Course 1 in this series before proceeding.
 
 The pattern of learning for this course will generally proceed through the following
-steps, which are the same as those used in Course 1 of this series:
+steps:
 
 1. **Learning** about ideas through lecture-style videos.
 2. **Implementing** those ideas together in a guided practice video, where the
@@ -37,13 +42,14 @@ namely: what they will cover, when to work them, and how to use them.
 
 #### Independent guides will re-visit the content covered in the guided practice
 
-For some, the most efficient way to learn to code is by watching and repeating, 
-whereas for others it is by reading and copying. Step 2 (implementing via guided  
-practice) relies upon the former, whereas Step 4 (reinforcing via independent guides) 
-uses the latter. Thus, a defining feature of the independent guides is that what's
-covered in Step 2 will be covered again in Step 4. If you don't understand 
-something the instructor *says* (or even if you do understand), you will have a 
-second chance to engage with the same content by reading what the instructor *writes*. 
+For some, the most efficient way to learn to code is by watching and repeating,
+whereas for others it is by reading and copying. Step 2 (implementing via guided
+practice) relies upon the former, whereas Step 4 (reinforcing via independent
+guides) uses the latter. Thus, a defining feature of the independent guides is
+that what's covered in Step 2 will be covered again in Step 4. If you don't
+understand something the instructor *says* (or even if you do understand), you
+will have a second chance to engage with the same content by reading what the
+instructor *writes*.
 
 #### Independent guides sometimes provide additional nuance or explanation
 
@@ -74,56 +80,86 @@ guided practice videos, these guides teach by doing, so it is assumed you will
 have an R session open and that you'll be copying and pasting (or re-typing)
 code from the independent guide into your R session as you read through the
 guide. You will be instructed to copy and paste lines of code from the document
-into your own R session. If you paste them directly into your R console and
-press Enter, the code will run. Alternatively, you can paste them into
-an R script, which allows you to save a copy of the steps that you run; most
-analyses are saved in R scripts. However, pasting code into an R script does
-not execute the code; to do so, put your cursor on the line of code you want to
-run and press Ctrl+Enter (Windows) or Cmd+Enter (Mac). 
+into your own R session, examples of which are given in the next section. 
 
 Because the independent guides will repeat everything done in the
 guided practice session, you will ultimately need to decide whether you will
-only actually copy and run code while watching the guided practice, only while
+only actually copy and run code while watching the guided practice, while
 reading the independent guides, or both. Whatever you decide, it is recommended
 that you still both watch the guided practice videos and read through
 independent guides.
 
-## Installing R packages for this course
+### Installing R packages for this course and getting familiar with R
 
 You will need to install two R packages for this course: `tidyverse` and
-`healthds`.
+`healthds`. This section walks you through how to do so and covers the basics
+of interfacing with R and RStudio. 
 
 #### How to install `tidyverse`
 
-To install `tidyverse`, run the following line of code in your console:
+To install `tidyverse`, you need to run the following line of code in your 
+console:
 
 ```{r, eval = FALSE}
 install.packages("tidyverse")
 ```
+
+You can copy this R code by pressing the small symbol in the top-right of each
+box. The default location of the console in RStudio is in the lower-left panel of
+your screen. Find the console, put your cursor there, paste this code, and then
+press Enter/Return to run it.
 
 Installation of `tidyverse` may take a few minutes, since your computer will
 need to find the package on the internet, download it, and install it (along
 with other packages that `tidyverse` requires, called dependencies). A
 successful installation should print a message like this to the console:
 
-```{r, eval = TRUE, echo = FALSE}
+```{r install_tidyverse, eval = TRUE, echo = FALSE, message = TRUE, cache = TRUE}
 install.packages("tidyverse", repos = "https://cloud.r-project.org")
 ```
 
-Upon successful installation, the `tidyverse` package is now installed on your 
-computer but not yet loaded into your R session. Run the 
-following code to load the `tidyverse` into your R session. 
+Upon successful installation, the `tidyverse` package is now installed on your
+computer. You only need to *install* an R package onto your computer once, even
+if you close RStudio or turn off your computer. However, before you can use the
+additional functions in an R package, you need to take the additional step of
+*loading* any R package, and you need to load an R package anytime you close and
+re-open RStudio. Having installed `tidyverse` using the code above, the code
+below will load `tidyverse` into your R session and make its functions available
+for use:
 
-```{r}
+```{r, eval = FALSE}
 library(tidyverse)
 ```
 
-Having run this, you see a couple of messages. First, because `tidyverse` is in
-fact a package of packages, we are told which packages are loaded and their version numbers. 
-Second, we are told that there are two functions, `filter` and `lag`, that already
-existed in our R sessions. You cannot have two identically named functions at once, and
-so the `tidyverse` versions are taking precedence, or 'masking', the ones that
-were previously there. 
+Copy this code and paste it into your console following the same steps as
+before. If successful, you should see some messages in the R console similar to
+the image below:
+
+```{r echo = FALSE, out.width='55%', fig.cap = "**Image description: Successfully loaded tidyverse**"}
+knitr::include_graphics(normalizePath("Course2Course3_Intro/run_in_console.png"), rel_path = FALSE)
+```
+
+One of the features that makes R so powerful is the ability for a user to 
+write out and save a set of instructions, as opposed to directly pasting
+them in the console. This makes recreating and sharing analyses much easier. 
+To do so, we recommend you put your code into an R script and then run the commands
+from that script. 
+
+R scripts are files that you create in RStudio. You can open a new script by
+pressing 'Cmd+Shift+N' on your Mac or 'Ctrl+Shift+N' on your Windows computer.
+Or, from the dropdown menu, go to 'File > New File > R Script':
+
+```{r echo = FALSE, out.width='45%', fig.cap = "**Image description: creating a new script using dropdown menus**"}
+knitr::include_graphics(normalizePath("01_03/01_03g.png"), rel_path = FALSE)
+```
+
+A new window should have appeared in your RStudio console. It will be blank. R
+scripts are like recipes: they contain a list of step-by-step instructions for
+conducting your analysis. Also like recipes, scripts are not useful unless you
+actually implement the instructions, meaning that you can type code in an R
+script, but unless you run that code in the console, it won't do anything. To
+run code from a script into the console, put your cursor on the line of code you
+want to run and press Ctrl+Enter (Windows) or Cmd+Enter (Mac).
 
 You will not need to re-install `tidyverse` if you close RStudio, but you will
 need to re-load it, i.e. using the `library` command. Therefore, you should
@@ -132,10 +168,11 @@ to use functions from `tidyverse`.
 
 #### How to install `healthds`
 
-Installing the `healthds` package is slightly more complicated because it has been
-developed specifically for learners in this course, and it is not located in
-the usual repositories that the `install.packages` function would look in. 
-To install `healthds`, we first need to install and load a package called `remotes`:
+Installing the `healthds` package is slightly more complicated because it has
+been developed specifically for learners in this course, and it is not located
+in the usual repositories that the `install.packages` function would look in. To
+install `healthds`, we first need to install and load a package called
+`remotes`:
 
 ```{r, eval = FALSE}
 install.packages("remotes")
@@ -159,7 +196,8 @@ install_github("umich-biostatistics/healthds", upgrade = "never")
 If you run the above line of code without first having installed and loaded
 `remotes`, you will get an error message that the function `install_gitub` is not 
 found. Just as with `tidyverse`, you must load `healthds` using the `library`
-command. 
+command. Therefore, type `library(healthds)` in your script, just below
+`library(tidyverse)`. 
 
 To summarize, for any independent guide that you do in this course, 
 you should put the following commands at the top of your script to ensure that
@@ -172,6 +210,12 @@ library(healthds)
 
 And execute these commands by putting your cursor on each line and pressing
 Ctrl+Enter (Windows) or Cmd+Enter (Mac).
+
+```{r echo = FALSE, out.width='55%', fig.cap = "**Image description: Run a line of code from an R script**"}
+knitr::include_graphics(normalizePath("Course2Course3_Intro/run_from_script.png"), rel_path = FALSE)
+```
+
+
 
 
 

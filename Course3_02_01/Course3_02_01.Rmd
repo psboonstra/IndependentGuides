@@ -1,0 +1,177 @@
+---
+title: "Module 2, Lesson 1: Fitting a logistic regression against one variable"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In this independent guide, we will learn how to fit a logistic regression model
+with one variable in R. When there is only one variable, it is sometimes called
+a *simple* logistic regression model. To start, load the `healthds` and `tidyverse`
+packages in the usual way.
+
+```{r, message = F, warning = F}
+library(healthds)
+library(tidyverse)
+```
+
+### Fitting a simple logistic regression model
+
+Using the `BPUrban1000` data, we will estimate the association between a
+person's hypertension (recorded as yes/no outcome, which is the sort of outcome
+that a logistic regression expects) and whether they are a smoker. We will use
+the `glm` ('generalized linear model') function to actually fit the model:
+
+```{r}
+htn_smk_model <- 
+  BPUrban1000 %>%
+  glm(formula = hypertension ~ smoking, family = "binomial")
+```
+
+If you have taken Course 2 in this series, this will look familiar to you. We
+are 'piping' in our dataset (`BPUrban1000`) into the `glm` function. We specify
+the actual regression equation via the `formula` argument. The outcome
+(`hypertension`) goes on the left of the tilde symbol (`~`), and the predictor
+(`smoking`) goes on the right. The outcome and predictor (or predictor*s*, when
+fitting a multiple logistic regression model, as you will learn in future
+lessons) must be names of variables in the dataset.
+
+
+One thing that will be unfamiliar to you, even if you have taken Course 2, is
+the last argument: `family = "binomial"`. This is critical to include; failing
+to do so will result in fitting a *linear* regression (as in Course 2). This is
+because `glm` allows for fitting a whole class of models, of which linear
+regression (Course 2) or logistic regression (Course 3) are just two members. To
+fit a logistic regression, you must write either `family = "binomial"`, as we
+have done above, or, equivalently, `family = binomial("logit")`.
+
+### Interpreting the simple logistic regression model
+
+Mathematically, the model that the above code corresponds to is this:
+
+$$
+\ln\left(\dfrac{\Pr(\mathrm{hypertension=1})}{1 - \Pr(\mathrm{hypertension=1})}\right) = \beta_0 + \beta_1 \mathrm{smoking},
+$$
+where 'ln' refers to the natural logarithm, 'Pr' is shorthand for 'Probability
+[that what's in the parentheses is true]', 'hypertension' can be either 1 or 0,
+'smoking' equals 1 for a smoker and 0 for a non-smoker, and $\beta_0$ and
+$\beta_1$ are so-called parameters, or symbolic representations of numbers that
+we are trying to learn about. The left-hand side of the equation is the
+logarithm of the odds of having hypertension, or the 'log-odds'. For a
+non-smoker, the right-hand side of the equation evaluates to $\beta_0$, and so
+what the equation implies is that the log-odds for non-smokers are given by the
+value of $\beta_0$. For a smoker, the right-hand side of the equation evalutes
+to $\beta_0+\beta_1$, meaning that the log-odds for smokers are given by the
+value of $\beta_0+\beta_1$. Thus, $\beta_1$ is the change in the log-odds
+between smokers and non-smokers, and if $\beta_1$ is not zero, smokers have
+different log-odds of hypertension than non-smokers. The log-odds can be turned
+into more intuitive quantities, such as odds or probabilities, using
+mathematical operations. First, we can exponentiate both sides of the equation:
+
+$$
+\begin{aligned}
+\dfrac{\Pr(\mathrm{hypertension=1})}{1 - \Pr(\mathrm{hypertension=1})} &= \exp\{\beta_0 + \beta_1 \mathrm{smoking}\}.
+\end{aligned}
+$$
+Now the left-hand side gives the odds of hypertension, which
+are $\exp\{\beta_0\}$ for non-smokers and $\exp\{\beta_0+\beta_1\}$ for smokers. 
+We can go one step further, using algebra to solve for the probability of having
+hypertension:
+
+$$
+\begin{aligned}
+\Pr(\mathrm{hypertension=1})= \dfrac{\exp\{\beta_0 + \beta_1 \mathrm{smoking}\}}{1+\exp\{\beta_0 + \beta_1 \mathrm{smoking}\}}.
+\end{aligned}
+$$
+Based on this, the probability of hypertension for non-smokers is
+$\exp\{\beta_0\}/(1+\exp\{\beta_0\})$, and the probability of hypertension for
+smokers is $\exp\{\beta_0+\beta_1\}/(1+\exp\{\beta_0+\beta_1\})$. In summary,
+although the mathematical model is for the log-odds, once we have estimates of
+these parameters, we can translate them into odds or probabilities.
+
+
+### Obtaining numerical summaries of logistic regressions
+
+Running the above code will (i) fit the model and (ii) save the result in a new
+object called `htn_smk_model`. We are now prepared to inspect and interpret the
+result. To do so, we use the `summary` function in R. This function is different
+than the `summarize` function, which we used in Course 1. `summarize` is part of
+the `tidyverse` set of packages and useful for looking at summary statistics in
+tibbles; `summary` is a helper function for "unpacking" fitted regression
+models, such as quantifying uncertainty.
+
+```{r}
+summary(htn_smk_model)
+```
+
+Several results are printed to the screen, the most important of which fall
+under `Coefficients`. The `(Intercept)` parameter in the first row is the estimate
+of $\beta_0$, the log-odds of hypertension for non-smokers, and it is estimated
+to be approximately -1.3714, with a standard error of 0.0821. From Dr.
+Mukherjee's lecture and our work above, we can infer that the estimated *odds*
+of hypertension for non-smokers are exp{-1.3714}, or `r round(exp(-1.3714),
+4)`, and the estimated *probability* of hypertension for non-smokers are
+exp{-1.3714}/(1+exp{-1.3714}), or `r round(exp(-1.3714)/(1+exp(-1.3714)), 4)`. 
+The final column, `Pr(>|z|)`, gives
+the p-value corresponding to a hypothesis test that the corresponding parameter
+is equal to zero. Usually, there is little interest in testing whether the
+intercept is equal to zero; the p-values are more often more useful for the
+remaining parameters.
+
+Looking in the second row, `smokingTRUE` gives the estimate of $\beta_1$, which
+is the *change in the log-odds* of hypertension between non-smokers and smokers.
+It is 0.6222, meaning that the log-odds are larger for smokers than for
+non-smokers, and the p-value in the last column is 0.0135, which suggests that
+this change is statistically significant. If we exponentiate this change in the
+log-odds, i.e. exp{0.6222}, we get the odds ratio of hypertension comparing
+smokers to non-smokers. This value is `r round(exp(0.6222),4)`, which means that
+the odds of hypertension are `r round(exp(0.6222),4)` greater for smokers than
+they are for non-smokers.
+
+We can also calculate the log-odds, odds, and probability of hypertension 
+for smokers, respectively, -1.3714+0.6222, exp{-1.3714+0.6222}, and 
+exp{-1.3714+0.6222}/(1 + exp{-1.3714+0.6222}). These simplify to 
+-0.7492 (log-odds), 0.4727 (odds), and 0.3210 (probability). 
+
+### Confidence intervals from simple logistic regression
+
+We are also often interested in obtaining confidence intervals for parameters of interest. To do
+so, we use the `confint` function in R:
+
+```{r}
+confint(htn_smk_model)
+```
+
+This function calculates 95% confidence intervals for all of the parameters in a
+regression. Just like p-values, the formal interpretation of a confidence
+interval requires imagining that we could repeat this identical experiment many
+times: if we were to conduct a large number of identical but independent studies
+in this population, then 95% of the confidence intervals that we generate would
+cover the true population parameter. In real analyses we do not (and cannot)
+know whether our one single interval has covered the true parameter or not.
+Informally, confidence intervals quantify uncertainty that we have about our
+parameter estimate: wider intervals correspond to greater uncertainty and
+narrower intervals correspond to less uncertainty.
+
+The confidence intervals are given on the scale of the parameters. So, for
+example, a 95% confidence interval for the change in the log-odds of
+hypertension between non-smokers and smokers is given by (0.1153, 1.1061). Just
+like the estimates themselves, we can exponentiate these confidence intervals to
+make their interpretation easier. For example, a 95% confidence interval for the
+odds-ratio of hypertension between non-smokers and smokers is (exp{0.1153},
+exp{1.1061}), or (1.1222, 3.0227). If the *true* odds ratio were 1, then the odds of
+hypertension between non-smokers and smokers would be equal; because the
+entire confidence interval lies above 1, we would conclude therefore that there
+is a statistically significant difference in the odds of hypertension between
+non-smokers and smokers. 
