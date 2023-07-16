@@ -1,0 +1,57 @@
+---
+title: "Introduction to blood pressure data"
+output: 
+  html_document:
+  html_notebook:
+editor_options: 
+  chunk_output_type: console
+bibliography: references.bib
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(out.extra='style="background-color: #999999; padding:7px; display: inline-block;"')
+```
+
+
+```{r klippy, echo = FALSE, include = TRUE}
+klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
+```
+
+In this course, we will analyze synthetic data that mimics -- but is distinct
+from -- actual data reported in a study by @bhadoria.jfcm. We created these
+data rather than using real data for simplicity and ease of logistics.
+
+@bhadoria.jfcm invited 939 adults age 20 and older across 48 villages and 15
+urban wards from Jabalpur district in central India to respond to a survey about
+hypertension and cardiovascular risk factors. Nine-hundred-and-eleven, or 97%,
+of the invited participants completed the survey. The primary objective of the
+survey was to investigate the distribution of hypertension and risk factors for
+hypertension in both urban and rural populations in India.
+
+Survey questions covered demographic, anthropometric, behavioral, and dietary
+characteristics, including systolic and diastolic blood pressure. Hypertension
+is characterized by high blood pressure. In addition to the continuously valued
+blood pressure measurements, there was also a yes/no-valued measurement of
+hypertension, defined according to criteria from the World Health Organization:
+either a systolic blood pressure measurement exceeding 140 mmHG or a diastolic
+blood pressure exceeding 90 mmHG.
+
+We created three separate datasets that mimiced the real blood pressure data
+from the urban subpopulation studied in  @bhadoria.jfcm. These datasetes are
+called `BPUrban300`, `BPUrban500`, and `BPUrban1000` and respectively contain
+300, 500, and 100 hypothetical individuals from the same surveyed population.
+These datasets are included in the `healthds` R package that you installed at
+the beginning of this course and so they should be immediately available to you
+upon loading the package by running the command `library(healthds)`.
+
+The individuals in the `BPUrban300`, `BPUrban500`, and `BPUrban1000` datasets
+are simulated, and so while the distributions of each variable and the
+associations between variables are intended to mimic what one might expect to
+see in this Indian population, these datasets cannot be used to make
+scientific conclusions about the risk of hypertension. Rather, Dr. Mukherjee and
+Dr. Boonstra will use these data in the video lectures, guided practices, and
+independent guides to demonstrate the statistical ideas and R commands covered
+in this course.
+
+
+#### References
