@@ -221,11 +221,10 @@ To install `tidyverse`, run the following line of code in your console:
 install.packages("tidyverse")
 ```
 
-Installation of the `tidyverse` 
-may take a few minutes, since your computer will need to find the package on 
-the internet, download it, and install it (along with other packages that the 
-`tidyverse` requires, called dependencies). A successful installation should
-print a message like this to the console:
+Installation of `tidyverse` may take a few minutes, since your computer will
+need to find the package on the internet, download it, and install it (along
+with other packages that `tidyverse` requires, called dependencies). A
+successful installation should print a message like this to the console:
 
 ```{r, eval = TRUE, echo = FALSE}
 install.packages("tidyverse", repos = "https://cloud.r-project.org")
@@ -233,7 +232,7 @@ install.packages("tidyverse", repos = "https://cloud.r-project.org")
 
 Upon successful installation, the `tidyverse` package is now in State 2: 
 installed on your computer but not yet loaded into your R session. Run the 
-following code to move the tidyverse from State 2 to State 1. 
+following code to move `tidyverse` from State 2 to State 1. 
 
 ```{r}
 library(tidyverse)
@@ -246,10 +245,10 @@ existed in our R sessions. You cannot have two identically named functions at on
 so the `tidyverse` versions are taking precedence, or 'masking', the ones that
 were previously there. 
 
-You will not need to re-install the `tidyverse` if you close RStudio, but you will
+You will not need to re-install `tidyverse` if you close RStudio, but you will
 need to re-load it, i.e. using the `library` command. Therefore, you should
 put `library(tidyverse)` at the top of any script inside which you intend
-to use functions from the tidyverse. Put `library(tidyverse)` on the very first
+to use functions from `tidyverse`. Put `library(tidyverse)` on the very first
 line of `IndicatorTable.R` now and save the script. 
 
 ### How to install `healthds`
