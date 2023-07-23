@@ -26,30 +26,28 @@ library(tidyverse)
 
 As you read about just before the Guided Practice, the `healthds` package 
 contains several synthetic datasets for purposes of practicing statistical 
-methods. Please refer to that reading for additional details.
+methods. Please refer that reading for additional details.
 
-Having loaded the `healthds` package, we can access these synthetic data using the 
+Loading the `healthds` package gives us access to these synthetic data using the 
 following command:
 
-```{r}
-data(BPUrban300)
-```
+(in the Guided Practice video, Dr. Boonstra mistakenly said that you first need to
+use the `data("BPUrban300")` command -- that is not true.)
 
-(in the Guided Practice video, Dr. Boonstra mistakenly said that you could not put double
-quotes around the object -- that is not true.)
-
-These data are stored as so-called data.frames and not tibbles, which is how most
-of the data we've encountered so far are stored. For tibbles, R will automatically trim the rows and columns that are printed, but for data.frame it will not. The practical implication is that
-if you try to print these data to the screen, it will be too much data for the screen.
-Instead, you can type `View(BPUrban300)` in your console to open up a spreadsheet-like
-interface in RStudio, or you can use the `head` function to view just the first
-few rows of the data:
+These data are stored as so-called data.frames and not tibbles, which is how
+most of the data we've encountered so far are stored. For tibbles, R will
+automatically trim the rows and columns that are printed, but for data.frame it
+will not. The practical implication is that if you try to print these data to
+the screen, it will be too much data for the screen. Instead, you can type
+`View(BPUrban300)` in your console to open up a spreadsheet-like interface in
+RStudio, or you can use the `head` function to view just the first few rows of
+the data:
 
 ```{r}
 head(BPUrban300)
 ```
 
-Let's first inspect some of the variables in these data. The distribution of systolic
+Let's first inspect some of the variables in these data. A histogram of systolic
 blood pressure (`systolic`) in these data can be constructed as such:
 
 ```{r}

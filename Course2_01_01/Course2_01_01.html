@@ -529,14 +529,16 @@ and the t-test</h1>
 <p>Open a new R script. At the top of this script, load the
 <code>tidyverse</code> by writing the following in your script:</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.3.6     ✔ purrr   1.0.1
-## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
-## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-## ✔ readr   2.1.2     ✔ forcats 0.5.1
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.1     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.1     
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 <div id="pseudo-random-numbers-in-r" class="section level2">
 <h2>Pseudo-random numbers in R</h2>
 <p>There are many reasons why it’s helpful to be able to generate random
@@ -638,12 +640,12 @@ t-distribution, centered at zero, with approximately 44.32 degrees of
 freedom. This t-statistic will tend to be ‘close’ to zero if the null
 hypothesis is true. The p-value is the probability that this
 t-statistic, or an even larger t-statistic, could have arisen from this
-null t-distribution. It is incredibly small:
-<code>p-value = 2.2e-16</code> is R’s notation for <span class="math inline">\(2.2\times 10^{-16}\)</span>. Thus, we would
-conclude that these data are extremely unlikely to have come from
-distributions where the null hypothesis is true.</p>
-<p>It is tempting, but incorrect, to say that the p-value is the
-probability that the null hypothesis is true.</p>
+null t-distribution. It is incredibly small: <code>2.2e-16</code> is R’s
+notation for <span class="math inline">\(2.2\times 10^{-16}\)</span>.
+Thus, we would conclude that these data are extremely unlikely to have
+come from distributions where the null hypothesis is true.</p>
+<p><strong>It is tempting, but incorrect, to say that the p-value is the
+probability that the null hypothesis is true.</strong></p>
 <p>We also have a 95 confidence interval for the difference in the
 means. The probability that this interval covers the true difference in
 the means is 0.95. Or, put differently, if we were to repeat this

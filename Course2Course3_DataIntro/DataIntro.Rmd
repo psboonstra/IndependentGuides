@@ -21,7 +21,7 @@ In this course, we will analyze synthetic data that mimics -- but is distinct
 from -- actual data reported in a study by @bhadoria.jfcm. We created these
 data rather than using real data for simplicity and ease of logistics.
 
-@bhadoria.jfcm invited 939 adults age 20 and older across 48 villages and 15
+@bhadoria.jfcm invited 939 adults aged 20 and older across 48 villages and 15
 urban wards from Jabalpur district in central India to respond to a survey about
 hypertension and cardiovascular risk factors. Nine-hundred-and-eleven, or 97%,
 of the invited participants completed the survey. The primary objective of the
@@ -36,10 +36,10 @@ hypertension, defined according to criteria from the World Health Organization:
 either a systolic blood pressure measurement exceeding 140 mmHG or a diastolic
 blood pressure exceeding 90 mmHG.
 
-We created three separate datasets that mimiced the real blood pressure data
-from the urban subpopulation studied in  @bhadoria.jfcm. These datasetes are
+We created three separate datasets that mimicked the real blood pressure data
+from the urban subpopulation studied in  @bhadoria.jfcm. These datasets are
 called `BPUrban300`, `BPUrban500`, and `BPUrban1000` and respectively contain
-300, 500, and 100 hypothetical individuals from the same surveyed population.
+300, 500, and 1000 hypothetical individuals from the same surveyed population.
 These datasets are included in the `healthds` R package that you installed at
 the beginning of this course and so they should be immediately available to you
 upon loading the package by running the command `library(healthds)`.

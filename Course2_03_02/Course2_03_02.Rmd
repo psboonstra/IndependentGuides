@@ -85,7 +85,7 @@ estimated association is not inconsistent with something that we would observe
 if the true association between smoking and systolic blood pressure was zero. 
 
 One final comment about this model. The interpretation of the estimated
-intercept has also changed, because we now must set-to-zero all of the
+intercept has also changed, because we now must set to zero all of the
 variables: the intercept is interpreted as the estimated systolic blood pressure
 for someone whose age is in the reference category (younger than 66 years),
 whose BMI is equal to zero, and whose smoking status is in the reference

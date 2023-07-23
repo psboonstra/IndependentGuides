@@ -118,12 +118,12 @@ centered at zero, with approximately 44.32 degrees of freedom. This
 t-statistic will tend to be 'close' to zero if the null hypothesis is true. The
 p-value is the probability that this t-statistic, or an even larger t-statistic,
 could have arisen from this null t-distribution. It is incredibly small:
-`p-value = 2.2e-16` is R's notation for $2.2\times 10^{-16}$. Thus, we would
+`2.2e-16` is R's notation for $2.2\times 10^{-16}$. Thus, we would
 conclude that these data are extremely unlikely to have come from distributions
 where the null hypothesis is true. 
 
-It is tempting, but incorrect, to say that the p-value is the probability that
-the null hypothesis is true.  
+**It is tempting, but incorrect, to say that the p-value is the probability that
+the null hypothesis is true.**
 
 We also have a 95 confidence interval for the difference in the means. The probability
 that this interval covers the true difference in the means is 0.95. Or, put differently,

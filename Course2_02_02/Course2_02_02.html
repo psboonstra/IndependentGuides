@@ -529,14 +529,16 @@ person’s age (<code>age</code>) and using the <code>lm</code> function
 to do so:</p>
 <pre class="r"><code>library(healthds)
 library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.3.6     ✔ purrr   1.0.1
-## ✔ tibble  3.2.1     ✔ dplyr   1.1.1
-## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-## ✔ readr   2.1.2     ✔ forcats 0.5.1
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.1     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.1     
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 <pre class="r"><code>BPUrban300 %&gt;% 
   lm(formula = systolic ~ age)</code></pre>
 <pre><code>## 
@@ -713,8 +715,8 @@ suggest that the <em>true</em> intercept parameter, which we’ve
 <em>estimated</em> to be 93.9, is not equal to 0. Translating this to
 the context of the problem, we have strong evidence to suggest that, for
 someone who is zero years old, the mean systolic blood pressure is not
-equal to zero. This is answers a question that no one is asking and is
-why Dr. Mukherjee said that inference on the intercept parameter is not
+equal to zero. This answers a question that no one is asking and is why
+Dr. Mukherjee said that inference on the intercept parameter is not
 usually of interest.</p>
 <p>More interesting is the other p-value: <code>6.75e-10</code> or <span class="math inline">\(6.75\times 10^{-10}\)</span>. This is also
 incredibly small. Following the same logic as before, we would conclude
@@ -733,8 +735,10 @@ unexplained variability in our model. For example, the first and the
 third quartiles are -12.9 and 13.9, respectively, meaning that for half
 of our sample, the discrepancy between the actual systolic blood
 pressure and predicted systolic blood pressure is less than -12.9 points
-or greater than 13.9 points. Despite the highly significant association
-with age, age alone is not good at predicting blood pressure.</p>
+or greater than 13.9 points. Thus, we arrive at a perhaps
+counterintuitive conclusion that, despite the highly significant
+association between the two variables, age alone is not good at
+predicting blood pressure.</p>
 <p>In additional to calculating standard errors and p-values, we are
 also often interested in obtaining confidence intervals for parameters
 of interest. To do so, we use the <code>confint</code> function in

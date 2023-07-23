@@ -18,12 +18,12 @@ klippy::klippy(position = c("top", "right"), tooltip_message = "Copy")
 
 This document is intended for learners who skipped Course 1 from this series and
 already have some familiarity with R and RStudio, including either having
-downloaded and installed these programs on your own computer or having access to
-cloud-based versions of these programs via https://posit.cloud/. If you've
-completed Course 1 from this series, you should already be familiar with the
+downloaded and installed these programs on their own computer or having access
+to cloud-based versions of these programs via https://posit.cloud/. Learners who
+have completed Course 1 from this series should already be familiar with the
 purpose of independent guides for this course and do not need to read the rest
-of this document. If you are brand new to R and RStudio, we recommend you work
-through Course 1 in this series before proceeding.
+of this document. We recommend that those who are brand new to R and RStudio
+work through Course 1 in this series before proceeding.
 
 The pattern of learning for this course will generally proceed through the following
 steps:
@@ -31,8 +31,8 @@ steps:
 1. **Learning** about ideas through lecture-style videos.
 2. **Implementing** those ideas together in a guided practice video, where the
 instructor demonstrates the use of specific functions in R, and learners can repeat
-the steps that the instructors demonstrates.
-3. Repeating Steps 1 and 2 for the all topics in a lesson. 
+the steps that the instructor demonstrates.
+3. Repeating Steps 1 and 2 for all topics in a lesson. 
 4. **Reinforcing** on your own by following along a series of written
 steps called 'independent guides', which cover all topics in a lesson.
 5. **Practicing** your understanding of these ideas through non-graded quizzes. 
@@ -40,7 +40,7 @@ steps called 'independent guides', which cover all topics in a lesson.
 In this document, we provide some context for the independent guides in Step 4, 
 namely: what they will cover, when to work them, and how to use them. 
 
-#### Independent guides will re-visit the content covered in the guided practice
+#### Independent guides will re-visit the content covered in the guided practices
 
 For some, the most efficient way to learn to code is by watching and repeating,
 whereas for others it is by reading and copying. Step 2 (implementing via guided
@@ -57,11 +57,11 @@ Written communication provides opportunities for nuance and multiple
 simultaneous lines of thought that can be more challenging in oral
 communication. In addition, topics within one lesson often share important
 connections. Thus, the independent guides in Step 4, being written summations of
-many videos/topics in a lesson, are able to provide additional background on a
+many videos/topics in a lesson, provide additional background on a
 key concept or on the relationship between multiple topics. *For this reason, we
 recommend you read the independent guides for all topics.*
 
-#### Work through the independent guides after watching the guided practice
+#### Work through the independent guides after watching the guided practices
 
 As stated above, the independent guides are intended to complement and enhance
 the guided practice videos from a single lesson. After working through all
@@ -155,7 +155,7 @@ knitr::include_graphics(normalizePath("01_03/01_03g.png"), rel_path = FALSE)
 
 A new window should have appeared in your RStudio console. It will be blank. R
 scripts are like recipes: they contain a list of step-by-step instructions for
-conducting your analysis. Also like recipes, scripts are not useful unless you
+conducting your analysis. And like recipes, scripts are not useful unless you
 actually implement the instructions, meaning that you can type code in an R
 script, but unless you run that code in the console, it won't do anything. To
 run code from a script into the console, put your cursor on the line of code you

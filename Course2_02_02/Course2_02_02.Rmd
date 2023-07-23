@@ -174,7 +174,7 @@ infer that we have strong evidence to suggest that the *true* intercept
 parameter, which we've *estimated* to be 93.9, is not equal to 0. Translating
 this to the context of the problem, we have strong evidence to suggest that, for
 someone who is zero years old, the mean systolic blood pressure is not equal to
-zero. This is answers a question that no one is asking and is why Dr. Mukherjee
+zero. This answers a question that no one is asking and is why Dr. Mukherjee
 said that inference on the intercept parameter is not usually of interest.
 
 More interesting is the other p-value: `6.75e-10` or $6.75\times 10^{-10}$. This
@@ -192,8 +192,9 @@ quartiles, and the largest residual. We can use these to get a sense of the unex
 variability in our model. For example, the first and the third quartiles are
 -12.9 and 13.9, respectively, meaning that for half of our sample, the
 discrepancy between the actual systolic blood pressure and predicted systolic
-blood pressure is less than -12.9 points or greater than 13.9 points. Despite
-the highly significant association with age, age alone is not good at
+blood pressure is less than -12.9 points or greater than 13.9 points. Thus, 
+we arrive at a perhaps counterintuitive conclusion that, despite
+the highly significant association between the two variables, age alone is not good at
 predicting blood pressure.
 
 In additional to calculating standard errors and p-values, we are also often
