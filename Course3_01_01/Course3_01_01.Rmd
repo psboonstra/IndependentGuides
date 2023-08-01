@@ -1,5 +1,5 @@
 ---
-title: "Module 1, Lesson 1: Tests for comparing two proportions"
+title: "Module 1, Lesson 2: Tests for comparing two proportions"
 output: 
   html_document:
   html_notebook:

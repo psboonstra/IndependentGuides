@@ -1,5 +1,5 @@
 ---
-title: "Module 3, Lesson 1: Assessing the predictive ability of your model"
+title: "Module 3, Lesson 3: Assessing the predictive ability of your model"
 output: 
   html_document:
   html_notebook:

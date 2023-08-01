@@ -1,5 +1,5 @@
 ---
-title: "Module 2, Lesson 2: Digging into SLR"
+title: "Module 2, Lesson 2a: Digging into SLR"
 output: 
   html_document:
   html_notebook:

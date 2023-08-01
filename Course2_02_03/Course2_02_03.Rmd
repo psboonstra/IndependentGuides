@@ -1,5 +1,5 @@
 ---
-title: "Module 2, Lesson 3: SLR with dichotomized predictors"
+title: "Module 2, Lesson 2b: SLR with dichotomized predictors"
 output: 
   html_document:
   html_notebook:
