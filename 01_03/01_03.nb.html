@@ -1511,7 +1511,7 @@ window.initializeCodeFolding = function(show) {
     $(this).detach().appendTo(div);
 
     // add a show code button right above
-    var showCodeText = $('<span>' + (showThis ? 'Hide' : 'Code') + '</span>');
+    var showCodeText = $('<span>' + (showThis ? 'Hide' : 'Show') + '</span>');
     var showCodeButton = $('<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm code-folding-btn pull-right float-right"></button>');
     showCodeButton.append(showCodeText);
     showCodeButton
@@ -1537,7 +1537,7 @@ window.initializeCodeFolding = function(show) {
     //   * Change text
     //   * add a class for intermediate states styling
     div.on('hide.bs.collapse', function () {
-      showCodeText.text('Code');
+      showCodeText.text('Show');
       showCodeButton.addClass('btn-collapsing');
     });
     div.on('hidden.bs.collapse', function () {
@@ -1682,23 +1682,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -1761,10 +1755,14 @@ RStudio</h1>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiIn0= -->
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiIn0= -->
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>In this Independent Guide, we will work through content covered in
@@ -1783,216 +1781,474 @@ circumference to its diameter). Your ‘Enter’ key may be labeled as
 ‘Return’ – on American keyboards it’s at the far right.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGlcbmBgYCJ9 -->
-<pre class="r"><code>pi</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>This works because <code>pi</code> is also an object that exists in
-any R session.</p>
-<p>However, if you type the name of an object that doesn’t exist in the
-R console, you will get an error:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueFxuYGBgIn0= -->
-<pre class="r"><code>x</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>This occurs because there is no object called <code>x</code> in a new
-R session. However, you can create any object you want. To do so, you
-use the assignment operator: <code>&lt;-</code>. On the left of the
-assignment operator goes the name of the object you want to create, and
-on the right goes the object that you want to assign. As an example, we
-can create <code>x</code> and assign to it the value 10:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueCA8LSAxMFxuYGBgIn0= -->
-<pre class="r"><code>x &lt;- 10</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Now <code>x</code> exists, and if we type it in the console we get
-its value:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueFxuYGBgIn0= -->
-<pre class="r"><code>x</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>We can now use <code>x</code> (and any other extant objects) to
-create <em>new</em> objects:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueSA8LSB4ICsgMlxuYGBgIn0= -->
-<pre class="r"><code>y &lt;- x + 2</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Now we’ve created a second new object, called <code>y</code>, which
-is equal to 12. These assignments are static, meaning that if we change
-the value of <code>x</code>, we won’t also change the value of
-<code>y</code>, even though when we created it, it depended on
-<code>x</code>. For example, here we re-assign <code>x</code> and then
-ask R what the value of <code>y</code> is:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueCA8LSAyXG55XG5gYGAifQ== -->
-<pre class="r"><code>x &lt;- 2
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWNHbGNibUJnWUZ4dVlHQmdJbjA9IC0tPlxuXG5gYGByXG5gYGByXG5waVxuYGBgXG5gYGBcblxuPCEtLSBybmItc291cmNlLWVuZCAtLT5cbiJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucGlcbmBgYFxuYGBgIn0= -->
+<pre class="r"><code>```r
+pi</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+This works because `pi` is also an object that exists in any R session. 
+
+However, if you type the name of an object that doesn&#39;t exist in the R console,
+you will get an error:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWVGeHVZR0JnWEc1Z1lHQWlmUT09IC0tPlxuXG5gYGByXG5gYGByXG54XG5gYGBcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxueFxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+x</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+This occurs because there is no object called `x` in a new R session. However, 
+you can create any object you want. To do so, you use the assignment operator: `&lt;-`. 
+On the left of the assignment operator goes the name of the object you want to 
+create, and on the right goes the object that you want to assign. As an example,
+we can create `x` and assign to it the value 10:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWVDQThMU0F4TUZ4dVlHQmdYRzVnWUdBaWZRPT0gLS0+XG5cbmBgYHJcbmBgYHJcbnggPC0gMTBcbmBgYFxuYGBgXG5cbjwhLS0gcm5iLXNvdXJjZS1lbmQgLS0+XG4ifQ== --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxueCA8LSAxMFxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+x &lt;- 10</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Now `x` exists, and if we type it in the console we get its value:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWVGeHVZR0JnWEc1Z1lHQWlmUT09IC0tPlxuXG5gYGByXG5gYGByXG54XG5gYGBcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxueFxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+x</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+We can now use `x` (and any other extant objects) to create *new* objects:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWVTQThMU0I0SUNzZ01seHVZR0JnWEc1Z1lHQWlmUT09IC0tPlxuXG5gYGByXG5gYGByXG55IDwtIHggKyAyXG5gYGBcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxueSA8LSB4ICsgMlxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+y &lt;- x + 2</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Now we&#39;ve created a second new object, called `y`, which is equal to 12. 
+These assignments are static, meaning that if we change the value of `x`, we won&#39;t
+also change the value of `y`, even though when we created it, it depended on `x`. 
+For example, here we re-assign `x` and then ask R what the value of `y` is:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWVDQThMU0F5WEc1NVhHNWdZR0JjYm1CZ1lDSjkgLS0+XG5cbmBgYHJcbmBgYHJcbnggPC0gMlxueVxuYGBgXG5gYGBcblxuPCEtLSBybmItc291cmNlLWVuZCAtLT5cbiJ9 --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxueCA8LSAyXG55XG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+x &lt;- 2
 y</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>The object <code>y</code> has retained its original value despite
-<code>x</code> being changed.</p>
-<p>Although <code>&lt;-</code> is the intended way to create
-assignments, you can alternatively use the more simple <code>=</code>,
-as in</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueCA9IDJcbmBgYCJ9 -->
-<pre class="r"><code>x = 2</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="r-projects" class="section level2">
-<h2>R projects</h2>
-<p>R projects are files ending in <code>.Rproj</code>. You create such a
-file from within RStudio, and when you do so, then RStudio will treat
-the folder (or directory) that contains the <code>.Rproj</code> file as
-its “home directory”. Here we will create two R projects, entitled
-<code>GlobalFindex.Rproj</code> and <code>Lessons.Rproj</code>. The
-former is intended to contain code to create the Indicator Table and
-Figure 1.1. The latter is intended to be used for any other work you do
-in future Independent Guides.</p>
-<p>If you are working from your own computer, first create two regular
-folders called GlobalFindex and Lessons (if you are working on
-rstudio.cloud, you may skip to the end of this section). Next, create a
-new R project by going to ‘File &gt; New Project…’:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>A new window will pop up. Choose the option to create the project in
-an ‘Existing Directory’:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Then navigate to the folder named ‘GlobalFindex’ that you just
-created.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Upon clicking Create Project, RStudio will restart, this time within
-the GlobalFindex project that you just created. You can confirm that
-this is true by inspecting the top-right corner of your screen, where
-you should now see an image of a cube containing the R symbol followed
-by the name of the current project:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>In addition, the bottom right of your screen, which shows the default
-or “home” directory that R is working from, indicates that it is indeed
-the GlobalFindex folder:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Repeat this step for the folder named ‘Lessons’, i.e. create a new R
-project in the existing Lessons folder.</p>
-<div id="projects-in-rstudio.cloud" class="section level3">
-<h3>Projects in rstudio.cloud</h3>
-<p>R projects are the <strong>only</strong> way to use RStudio on
-rstudio.cloud. In fact, you’ve already created a project on
-rstudio.cloud: recall that the first thing you did after logging in was
-create a new project named ‘GlobalFindex’.</p>
-<p>To create a different project, look for the link in the top left that
-says ‘Your Workspace’. Click that link, which will take you to a list of
-all the projects you’ve made (there should be only one right now).
-Create a second new project called ‘Lessons’.</p>
-</div>
-</div>
-<div id="scripts" class="section level2">
-<h2>Scripts</h2>
-<p>Whether you are working from your own computer or rstudio.cloud, for
-this next step, switch back to the ‘GlobalFindex’ project, which you can
-do by clicking the drop-down menu in the top right and choosing
-‘GlobalFindex’ from the list:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>R scripts are files that you create in RStudio. From the
-‘GlobalFindex’ project, open a new script by pressing ‘Cmd+Shift+N’ on
-your Mac or ‘Ctrl+Shift+N’ on your Windows computer. Or, from the
-dropdown menu, go to ‘File &gt; New File &gt; R Script’:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>A new window should have appeared in your RStudio console. It will be
-blank. R scripts are like recipes: they contain a list of step-by-step
-instructions for conducting your analysis. Also like recipes, scripts
-are not useful unless you actually implement the instructions, meaning
-that you can type code in an R script, but unless you run that code in
-the console, it won’t do anything.</p>
-<p>Type something simple in your script, like <code>3+3</code>. Then,
-making sure your cursor is on that line of code, press ‘Cmd+Enter’ or
-‘Ctrl+Enter’. That line of code should have been sent and run in the
-console. You have now made changes to your script that are not saved. To
-see this, the upper-left tab of your script should say <span style="color: red;"><code>Untitled1*</code></span> in red font. The
-<code>Untited1</code> is a default name that R chooses, and the red font
-means that it contains unsaved changes. To save your script, press
-‘Cmd+S’ or ‘Ctrl+S’ or go to ‘File &gt; Save’ from the dropdown
-menu.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>We will put all of our code for creating the Indicator Table in this
-script, so save this script as <code>IndicatorTable.R</code>. For now,
-save it on your desktop or somewhere else that you’ll remember. In the
-upper-left tab of your script, where it previously said <span style="color: red;"><code>Untitled1*</code></span> in red font, it
-should now say <code>IndicatorTable.R</code> in black font. Anything
-that you had put in this script up until the moment that you saved it is
-now permanently saved on your harddrive, even after you close RStudio
-(or navigate out of rstudio.cloud). If you make additional changes to
-the script, the font color will change back to red and an asterisk will
-appear after its name, both, indicating that this file now includes some
-code that is not saved. To see this, <em>delete</em> the
-<code>3+3</code> that you just put in the script. Now the file name
-looks like <span style="color: red;"><code>IndicatorTable.R*</code></span>. Save your
-script again by pressing ‘Cmd+S’ or ‘Ctrl+S’, and the file name once
-again becomes <code>IndicatorTable.R</code>. In Module 2, you will begin
-to put code in this script.</p>
-</div>
-<div id="packages" class="section level2">
-<h2>Packages</h2>
-<p>Packages are pre-constructed sets of objects, which may include
-functions or datasets. Some packages come pre-installed with R, perhaps
-the most important being the <code>base</code> package. However, the
-<code>base</code> package is unique in that you will never need to
-install or even load it. Using the terminology from the video, it is
-always and permanently a ‘State 1’ package.</p>
-<p>Two packages that we will be using in this course that <em>do
-not</em> come pre-installed are <code>tidyverse</code> and
-<code>healthds</code>. At the moment you are first reading this, they
-are ‘State 3’ packages: they are not yet installed on your computer. The
-following sections describe how to install packages and will apply
-whether you are working on your own computer or on rstudio.cloud.</p>
-<div id="how-to-install-tidyverse" class="section level3">
-<h3>How to install <code>tidyverse</code></h3>
-<p>To install <code>tidyverse</code>, run the following line of code in
-your console:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiaW5zdGFsbC5wYWNrYWdlcyhcInRpZHl2ZXJzZVwiKSJ9 -->
-<pre class="r"><code>install.packages(&quot;tidyverse&quot;)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+The object `y` has retained its original value despite `x` being changed. 
+
+Although `&lt;-` is the intended way to create assignments, you can alternatively
+use the more simple `=`, as in 
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWVDQTlJREpjYm1CZ1lGeHVZR0JnSW4wPSAtLT5cblxuYGBgclxuYGBgclxueCA9IDJcbmBgYFxuYGBgXG5cbjwhLS0gcm5iLXNvdXJjZS1lbmQgLS0+XG4ifQ== --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxueCA9IDJcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+x = 2</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+## R projects
+
+R projects are files ending in `.Rproj`. You create such a file from within
+RStudio, and when you do so, then RStudio will treat the folder (or directory)
+that contains the `.Rproj` file as its &quot;home directory&quot;. Here we will create
+two R projects, entitled `GlobalFindex.Rproj` and `Lessons.Rproj`. The former
+is intended to contain code to create the Indicator Table and Figure 1.1. The 
+latter is intended to be used for any other work you do in future Independent Guides. 
+
+If you are working from your own computer, first create two regular folders called GlobalFindex
+and Lessons (if you are working on posit.cloud, you may skip to the end of this 
+section). Next, create a new R project by going to &#39;File &gt; New Project...&#39;:
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiIn0= --&gt;
+
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+A new window will pop up. Choose the option to create the project in an 
+&#39;Existing Directory&#39;:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiIn0= --&gt;
+
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Then navigate to the folder named &#39;GlobalFindex&#39; that you just created. 
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiIn0= --&gt;
+
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Upon clicking Create Project, RStudio will restart, this time within the 
+GlobalFindex project that you just created. You can confirm that this is true
+by inspecting the top-right corner of your screen, where you should now see
+an image of a cube containing the R symbol followed by the name of the current
+project:
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiIn0= --&gt;
+
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+In addition, the bottom right of your screen, which shows the default or &quot;home&quot; directory
+that R is working from, indicates that it is indeed the GlobalFindex folder:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiIn0= --&gt;
+
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Repeat this step for the folder named &#39;Lessons&#39;, i.e. create a new R project
+in the existing Lessons folder. 
+
+### Projects in posit.cloud
+
+R projects are the **only** way to use RStudio on posit.cloud. In fact, 
+you&#39;ve already created a project on posit.cloud: recall that 
+the first thing you did after logging in was create a new project named &#39;GlobalFindex&#39;.
+
+To create a different project, look for the link in the top left that says
+&#39;Your Workspace&#39;. Click that link, which will take you to a list of all the 
+projects you&#39;ve made (there should be only one right now). Create a second
+new project called &#39;Lessons&#39;. 
+
+## Scripts
+
+Whether you are working from your own computer or posit.cloud, for this next
+step, switch back to the &#39;GlobalFindex&#39; project, which you can do by clicking the 
+drop-down menu in the top right and choosing &#39;GlobalFindex&#39; from the list:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiIn0= --&gt;
+
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+R scripts are files that you create in RStudio. From the &#39;GlobalFindex&#39; project,
+open a new script by pressing &#39;Cmd+Shift+N&#39; on your Mac or &#39;Ctrl+Shift+N&#39; 
+on your Windows computer. Or, from the dropdown menu, go to &#39;File &gt; New File &gt; R Script&#39;:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiIn0= --&gt;
+
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+A new window should have appeared in your RStudio console. It will be blank. 
+R scripts are like recipes: they contain a list of step-by-step instructions
+for conducting your analysis. Also like recipes, scripts are not useful unless 
+you actually implement the instructions, meaning that you can type code in an R 
+script, but unless you run that code in the console, it won&#39;t do anything.
+
+Type something simple in your script, like `3+3`. Then, making sure your cursor
+is on that line of code, press &#39;Cmd+Enter&#39; or &#39;Ctrl+Enter&#39;. That line of code should
+have been sent and run in the console. You have now made changes to your script
+that are not saved. To see this, the upper-left tab of your script should
+say &lt;span style=&quot;color: red;&quot;&gt;`Untitled1*`&lt;/span&gt; in red font. The `Untited1` 
+is a default name that R chooses, and the red font means that it contains
+unsaved changes. To save your script, press &#39;Cmd+S&#39; or &#39;Ctrl+S&#39; 
+or go to &#39;File &gt; Save&#39; from the dropdown menu. 
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiIn0= --&gt;
+
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+We will put all of our code for creating the Indicator Table in this script, 
+so save this script as `IndicatorTable.R`. For now, save it on your desktop or
+somewhere else that you&#39;ll remember. In the upper-left tab of your script, 
+where it previously said &lt;span style=&quot;color: red;&quot;&gt;`Untitled1*`&lt;/span&gt; in red font, 
+it should now say `IndicatorTable.R` in black font. Anything that you had put in 
+this script up until the moment that you saved it is now permanently saved
+on your harddrive, even after you close RStudio (or navigate out of posit.cloud). 
+If you make additional changes to the script, the font color will change back to red 
+and an asterisk will appear after its name, both, indicating that this file now 
+includes some code that is not saved. To see this, *delete* the `3+3` that
+you just put in the script. Now the file name looks like &lt;span style=&quot;color: red;&quot;&gt;`IndicatorTable.R*`&lt;/span&gt;. 
+Save your script again by pressing &#39;Cmd+S&#39; or &#39;Ctrl+S&#39;, and the file name
+once again becomes `IndicatorTable.R`. In Module 2, you will begin to put code 
+in this script. 
+
+## Packages
+
+Packages are pre-constructed sets of objects, which may include functions or datasets. 
+Some packages come pre-installed with R, perhaps the most important being the `base` package. 
+However, the `base` package is unique in that you will never need to install or 
+even load it. Using the terminology from the video, it is always and permanently a &#39;State 1&#39; package. 
+
+Two packages that we will be using in this course that *do not* come pre-installed 
+are `tidyverse` and `healthds`. At the moment you are first reading this, 
+they are &#39;State 3&#39; packages: they are not yet installed on your computer. The 
+following sections describe how to install packages and will apply whether you are
+working on your own computer or on posit.cloud.
+
+### How to install `tidyverse`
+
+To install `tidyverse`, run the following line of code in your console:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiaW5zdGFsbC5wYWNrYWdlcyhcInRpZHl2ZXJzZVwiKSJ9 --&gt;
+
+``` r
+install.packages(&quot;tidyverse&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2003,6 +2259,8 @@ it, and install it (along with other packages that
 installation should print a message like this to the console:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiIn0= -->
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Upon successful installation, the <code>tidyverse</code> package is
@@ -2011,49 +2269,65 @@ R session. Run the following code to move <code>tidyverse</code> from
 State 2 to State 1.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Having run this, you see a couple of messages. First, because
-<code>tidyverse</code> is in fact a package of packages, we are told
-which packages are loaded and their version numbers. Second, we are told
-that there are two functions, <code>filter</code> and <code>lag</code>,
-that already existed in our R sessions. You cannot have two identically
-named functions at once, and so the <code>tidyverse</code> versions are
-taking precedence, or ‘masking’, the ones that were previously
-there.</p>
-<p>You will not need to re-install <code>tidyverse</code> if you close
-RStudio, but you will need to re-load it, i.e. using the
-<code>library</code> command. Therefore, you should put
-<code>library(tidyverse)</code> at the top of any script inside which
-you intend to use functions from <code>tidyverse</code>. Put
-<code>library(tidyverse)</code> on the very first line of
-<code>IndicatorTable.R</code> now and save the script.</p>
-</div>
-<div id="how-to-install-healthds" class="section level3">
-<h3>How to install <code>healthds</code></h3>
-<p>Installing the <code>healthds</code> package is slightly more
-complicated because it has been developed specifically for learners in
-this course, and it is not located in the usual repositories that the
-<code>install.packages</code> function would look in. To install
-<code>healthds</code>, we first need to install and load a package
-called <code>remotes</code>:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImluc3RhbGwucGFja2FnZXMoXCJyZW1vdGVzXCIpIiwibGlicmFyeShyZW1vdGVzKSJdfQ== -->
-<pre class="r"><code>install.packages(&quot;remotes&quot;)
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWJHbGljbUZ5ZVNoMGFXUjVkbVZ5YzJVcFhHNWdZR0JjYm1CZ1lDSjkgLS0+XG5cbmBgYHJcbmBgYHJcbmxpYnJhcnkodGlkeXZlcnNlKVxuYGBgXG5gYGBcblxuPCEtLSBybmItc291cmNlLWVuZCAtLT5cbiJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGBcbmBgYCJ9 -->
+<pre class="r"><code>```r
+library(tidyverse)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Having run this, you see a couple of messages. First, because `tidyverse` is in
+fact a package of packages, we are told which packages are loaded and their version numbers. 
+Second, we are told that there are two functions, `filter` and `lag`, that already
+existed in our R sessions. You cannot have two identically named functions at once, and
+so the `tidyverse` versions are taking precedence, or &#39;masking&#39;, the ones that
+were previously there. 
+
+You will not need to re-install `tidyverse` if you close RStudio, but you will
+need to re-load it, i.e. using the `library` command. Therefore, you should
+put `library(tidyverse)` at the top of any script inside which you intend
+to use functions from `tidyverse`. Put `library(tidyverse)` on the very first
+line of `IndicatorTable.R` now and save the script. 
+
+### How to install `healthds`
+
+Installing the `healthds` package is slightly more complicated because it has been
+developed specifically for learners in this course, and it is not located in
+the usual repositories that the `install.packages` function would look in. 
+To install `healthds`, we first need to install and load a package called `remotes`:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjpbImluc3RhbGwucGFja2FnZXMoXCJyZW1vdGVzXCIpIiwibGlicmFyeShyZW1vdGVzKSJdfQ== --&gt;
+
+``` r
+install.packages(&quot;remotes&quot;)
 library(remotes)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiIn0= -->
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Next, we will use a function from the <code>remotes</code> package
-called <code>install_github</code>. This function acts similarly to
+called <code>install_git</code>. This function acts similarly to
 <code>install.packages</code> but allows us to install packages that are
 hosted on GitHub, a repository where any user can develop and publicly
 share software. To install <code>healthds</code>, run the following line
@@ -2061,22 +2335,45 @@ of code (it is easiest to copy-paste this directly into your R
 console):</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5zdGFsbF9naXRodWIoXCJ1bWljaC1iaW9zdGF0aXN0aWNzL2hlYWx0aGRzXCIsIHVwZ3JhZGUgPSBcIm5ldmVyXCIpXG5gYGAifQ== -->
-<pre class="r"><code>install_github(&quot;umich-biostatistics/healthds&quot;, upgrade = &quot;never&quot;)</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWFXNXpkR0ZzYkY5bmFYUm9kV0lvWEZ4MWJXbGphQzFpYVc5emRHRjBhWE4wYVdOekwyaGxZV3gwYUdSelhGd3NJSFZ3WjNKaFpHVWdQU0JjWEc1bGRtVnlYRndwWEc1Z1lHQmNibUJnWUNKOSAtLT5cblxuYGBgclxuYGBgclxuaW5zdGFsbF9naXRodWIoXFx1bWljaC1iaW9zdGF0aXN0aWNzL2hlYWx0aGRzXFwsIHVwZ3JhZGUgPSBcXG5ldmVyXFwpXG5gYGBcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuaW5zdGFsbF9naXRodWIoXFx1bWljaC1iaW9zdGF0aXN0aWNzL2hlYWx0aGRzXFwsIHVwZ3JhZGUgPSBcXG5ldmVyXFwpXG5gYGBcbmBgYCJ9 -->
+<pre class="r"><code>```r
+install_github(\umich-biostatistics/healthds\, upgrade = \never\)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+If you run the above line of code without first having installed and loaded
+`remotes`, you will get an error message that the function `install_git` is not 
+found. Upon successfully running this line of code, the `healthds` package will 
+be in State 2, and we can move it to State 1 by using `library`:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dWJHbGljbUZ5ZVNob1pXRnNkR2hrY3lsY2JtQmdZRnh1WUdCZ0luMD0gLS0+XG5cbmBgYHJcbmBgYHJcbmxpYnJhcnkoaGVhbHRoZHMpXG5gYGBcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeShoZWFsdGhkcylcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+library(healthds)</code></pre>
+<p>```</p>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>If you run the above line of code without first having installed and
-loaded <code>remotes</code>, you will get an error message that the
-function <code>install_gitub</code> is not found. Upon successfully
-running this line of code, the <code>healthds</code> package will be in
-State 2, and we can move it to State 1 by using
-<code>library</code>:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZWFsdGhkcylcbmBgYCJ9 -->
-<pre class="r"><code>library(healthds)</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>You will not need the <code>healthds</code> package for creating the
@@ -2087,9 +2384,8 @@ Independent Guide to create a script that uses <code>healthds</code>.
 For now it is sufficient to have installed it on our computer.</p>
 <!-- rnb-text-end -->
 </div>
-</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiTW9kdWxlIDEsIExlc3NvbiAzOiBOYXZpZ2F0aW5nIFIgYW5kIFJTdHVkaW8iCm91dHB1dDogCiAgaHRtbF9kb2N1bWVudDoKICBodG1sX25vdGVib29rOgplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGlubGluZQotLS0KCmBgYHtyIHNldHVwLCBlY2hvID0gRkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChvdXQuZXh0cmE9J3N0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiAjOTk5OTk5OyBwYWRkaW5nOjdweDsgZGlzcGxheTogaW5saW5lLWJsb2NrOyInKQpgYGAKCmBgYHtyIGtsaXBweSwgZWNobyA9IEZBTFNFLCBpbmNsdWRlID0gVFJVRX0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCJ0b3AiLCAicmlnaHQiKSwgdG9vbHRpcF9tZXNzYWdlID0gIkNvcHkiKQpgYGAKCkluIHRoaXMgSW5kZXBlbmRlbnQgR3VpZGUsIHdlIHdpbGwgd29yayB0aHJvdWdoIGNvbnRlbnQgY292ZXJlZCBpbiBMZXNzb24gMyBidXQKaW4gYSBzbGlnaHRseSBtb2RpZmllZCBvcmRlci4gQWZ0ZXIgdGFsa2luZyBhYm91dCBhc3NpZ25tZW50cyBhbmQgb2JqZWN0cywgd2Ugd2lsbApjcmVhdGUgdHdvIG5ldyBSIHByb2plY3RzLiBXZSB3aWxsIGNyZWF0ZSBhIG5ldyBSIHNjcmlwdCB0byBwdXQgaW4gb25lIG9mIHRoZXNlIApwcm9qZWN0cy4gRmluYWxseSwgd2Ugd2lsbCBpbnN0YWxsIHR3byBSIHBhY2thZ2VzIGZvciB1c2UgaW4gdGhlIHJlbWFpbmRlciBvZiB0aGlzCmNvdXJzZS4gCgojIyBBc3NpZ25tZW50cyBhbmQgb2JqZWN0cwoKV2hlbiB5b3Ugb3BlbiBhIG5ldyBSIHNlc3Npb24sIHRoZXJlIGFyZSBtYW55IHNvLWNhbGxlZCAnb2JqZWN0cycgYWxyZWFkeSBpbiAKeW91ciBlbnZpcm9ubWVudC4gTnVtYmVycyBhcmUgb2JqZWN0cyAoYDFgLCBgMmAsIGV0Yy4pLiBTbGlnaHRseSBtb3JlIGludGVyZXN0aW5nLAp0eXBlIGBwaWAgaW4gdGhlIGNvbnNvbGUsIHByZXNzICdFbnRlcicsIGFuZCB5b3Ugd2lsbCBzZWUgdGhlIGZpcnN0IGRpZ2l0cyBvZiB0aGUgCm51bWJlciAkXHBpJCAodGhlIHJhdGlvIG9mIGEgY2lyY2xlJ3MgY2lyY3VtZmVyZW5jZSB0byBpdHMgZGlhbWV0ZXIpLiBZb3VyIAonRW50ZXInIGtleSBtYXkgYmUgbGFiZWxlZCBhcyAnUmV0dXJuJyAtLSBvbiBBbWVyaWNhbiBrZXlib2FyZHMgaXQncyAKYXQgdGhlIGZhciByaWdodC4gCgpgYGB7cn0KcGkKYGBgCgoKVGhpcyB3b3JrcyBiZWNhdXNlIGBwaWAgaXMgYWxzbyBhbiBvYmplY3QgdGhhdCBleGlzdHMgaW4gYW55IFIgc2Vzc2lvbi4gCgpIb3dldmVyLCBpZiB5b3UgdHlwZSB0aGUgbmFtZSBvZiBhbiBvYmplY3QgdGhhdCBkb2Vzbid0IGV4aXN0IGluIHRoZSBSIGNvbnNvbGUsCnlvdSB3aWxsIGdldCBhbiBlcnJvcjoKCmBgYHtyLCBlcnJvcj1UUlVFfQp4CmBgYAoKVGhpcyBvY2N1cnMgYmVjYXVzZSB0aGVyZSBpcyBubyBvYmplY3QgY2FsbGVkIGB4YCBpbiBhIG5ldyBSIHNlc3Npb24uIEhvd2V2ZXIsIAp5b3UgY2FuIGNyZWF0ZSBhbnkgb2JqZWN0IHlvdSB3YW50LiBUbyBkbyBzbywgeW91IHVzZSB0aGUgYXNzaWdubWVudCBvcGVyYXRvcjogYDwtYC4gCk9uIHRoZSBsZWZ0IG9mIHRoZSBhc3NpZ25tZW50IG9wZXJhdG9yIGdvZXMgdGhlIG5hbWUgb2YgdGhlIG9iamVjdCB5b3Ugd2FudCB0byAKY3JlYXRlLCBhbmQgb24gdGhlIHJpZ2h0IGdvZXMgdGhlIG9iamVjdCB0aGF0IHlvdSB3YW50IHRvIGFzc2lnbi4gQXMgYW4gZXhhbXBsZSwKd2UgY2FuIGNyZWF0ZSBgeGAgYW5kIGFzc2lnbiB0byBpdCB0aGUgdmFsdWUgMTA6CgpgYGB7cn0KeCA8LSAxMApgYGAKCk5vdyBgeGAgZXhpc3RzLCBhbmQgaWYgd2UgdHlwZSBpdCBpbiB0aGUgY29uc29sZSB3ZSBnZXQgaXRzIHZhbHVlOgoKYGBge3J9CngKYGBgCgpXZSBjYW4gbm93IHVzZSBgeGAgKGFuZCBhbnkgb3RoZXIgZXh0YW50IG9iamVjdHMpIHRvIGNyZWF0ZSAqbmV3KiBvYmplY3RzOgoKYGBge3J9CnkgPC0geCArIDIKYGBgCgpOb3cgd2UndmUgY3JlYXRlZCBhIHNlY29uZCBuZXcgb2JqZWN0LCBjYWxsZWQgYHlgLCB3aGljaCBpcyBlcXVhbCB0byAxMi4gClRoZXNlIGFzc2lnbm1lbnRzIGFyZSBzdGF0aWMsIG1lYW5pbmcgdGhhdCBpZiB3ZSBjaGFuZ2UgdGhlIHZhbHVlIG9mIGB4YCwgd2Ugd29uJ3QKYWxzbyBjaGFuZ2UgdGhlIHZhbHVlIG9mIGB5YCwgZXZlbiB0aG91Z2ggd2hlbiB3ZSBjcmVhdGVkIGl0LCBpdCBkZXBlbmRlZCBvbiBgeGAuIApGb3IgZXhhbXBsZSwgaGVyZSB3ZSByZS1hc3NpZ24gYHhgIGFuZCB0aGVuIGFzayBSIHdoYXQgdGhlIHZhbHVlIG9mIGB5YCBpczoKCmBgYHtyfQp4IDwtIDIKeQpgYGAKClRoZSBvYmplY3QgYHlgIGhhcyByZXRhaW5lZCBpdHMgb3JpZ2luYWwgdmFsdWUgZGVzcGl0ZSBgeGAgYmVpbmcgY2hhbmdlZC4gCgpBbHRob3VnaCBgPC1gIGlzIHRoZSBpbnRlbmRlZCB3YXkgdG8gY3JlYXRlIGFzc2lnbm1lbnRzLCB5b3UgY2FuIGFsdGVybmF0aXZlbHkKdXNlIHRoZSBtb3JlIHNpbXBsZSBgPWAsIGFzIGluIAoKYGBge3J9CnggPSAyCmBgYAoKIyMgUiBwcm9qZWN0cwoKUiBwcm9qZWN0cyBhcmUgZmlsZXMgZW5kaW5nIGluIGAuUnByb2pgLiBZb3UgY3JlYXRlIHN1Y2ggYSBmaWxlIGZyb20gd2l0aGluClJTdHVkaW8sIGFuZCB3aGVuIHlvdSBkbyBzbywgdGhlbiBSU3R1ZGlvIHdpbGwgdHJlYXQgdGhlIGZvbGRlciAob3IgZGlyZWN0b3J5KQp0aGF0IGNvbnRhaW5zIHRoZSBgLlJwcm9qYCBmaWxlIGFzIGl0cyAiaG9tZSBkaXJlY3RvcnkiLiBIZXJlIHdlIHdpbGwgY3JlYXRlCnR3byBSIHByb2plY3RzLCBlbnRpdGxlZCBgR2xvYmFsRmluZGV4LlJwcm9qYCBhbmQgYExlc3NvbnMuUnByb2pgLiBUaGUgZm9ybWVyCmlzIGludGVuZGVkIHRvIGNvbnRhaW4gY29kZSB0byBjcmVhdGUgdGhlIEluZGljYXRvciBUYWJsZSBhbmQgRmlndXJlIDEuMS4gVGhlIApsYXR0ZXIgaXMgaW50ZW5kZWQgdG8gYmUgdXNlZCBmb3IgYW55IG90aGVyIHdvcmsgeW91IGRvIGluIGZ1dHVyZSBJbmRlcGVuZGVudCBHdWlkZXMuIAoKSWYgeW91IGFyZSB3b3JraW5nIGZyb20geW91ciBvd24gY29tcHV0ZXIsIGZpcnN0IGNyZWF0ZSB0d28gcmVndWxhciBmb2xkZXJzIGNhbGxlZCBHbG9iYWxGaW5kZXgKYW5kIExlc3NvbnMgKGlmIHlvdSBhcmUgd29ya2luZyBvbiByc3R1ZGlvLmNsb3VkLCB5b3UgbWF5IHNraXAgdG8gdGhlIGVuZCBvZiB0aGlzIApzZWN0aW9uKS4gTmV4dCwgY3JlYXRlIGEgbmV3IFIgcHJvamVjdCBieSBnb2luZyB0byAnRmlsZSA+IE5ldyBQcm9qZWN0Li4uJzoKCgpgYGB7ciBlY2hvID0gRkFMU0UsIG91dC53aWR0aD0nMzAlJywgZmlnLmNhcCA9ICIqKkltYWdlIGRlc2NyaXB0aW9uOiBjcmVhdGluZyBhIG5ldyBSIHByb2plY3QqKiJ9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKG5vcm1hbGl6ZVBhdGgoIjAxXzAzLzAxXzAzYS5wbmciKSwgcmVsX3BhdGggPSBGQUxTRSkKYGBgCgpBIG5ldyB3aW5kb3cgd2lsbCBwb3AgdXAuIENob29zZSB0aGUgb3B0aW9uIHRvIGNyZWF0ZSB0aGUgcHJvamVjdCBpbiBhbiAKJ0V4aXN0aW5nIERpcmVjdG9yeSc6CgpgYGB7ciBlY2hvID0gRkFMU0UsIG91dC53aWR0aD0nNDAlJywgZmlnLmNhcCA9ICIqKkltYWdlIGRlc2NyaXB0aW9uOiBjaG9vc2UgJ0V4aXN0aW5nIERpcmVjdG9yeScgdG8gcHV0IHlvdXIgcHJvamVjdCBmaWxlIGluc2lkZSBhbiBleGlzdGluZyBmb2xkZXIqKiJ9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKG5vcm1hbGl6ZVBhdGgoIjAxXzAzLzAxXzAzYi5wbmciKSwgcmVsX3BhdGggPSBGQUxTRSkKYGBgCgpUaGVuIG5hdmlnYXRlIHRvIHRoZSBmb2xkZXIgbmFtZWQgJ0dsb2JhbEZpbmRleCcgdGhhdCB5b3UganVzdCBjcmVhdGVkLiAKCmBgYHtyIGVjaG8gPSBGQUxTRSwgb3V0LndpZHRoPSc0MCUnLCBmaWcuY2FwID0gIioqSW1hZ2UgZGVzY3JpcHRpb246IG5hdmlnYXRlIHRvIHRoZSBmb2xkZXIgdGhhdCB5b3Ugd2FudCB0byBhc3NvY2lhdGUgd2l0aCB5b3VyIFIgcHJvamVjdCoqIn0Ka25pdHI6OmluY2x1ZGVfZ3JhcGhpY3Mobm9ybWFsaXplUGF0aCgiMDFfMDMvMDFfMDNjLnBuZyIpLCByZWxfcGF0aCA9IEZBTFNFKQpgYGAKClVwb24gY2xpY2tpbmcgQ3JlYXRlIFByb2plY3QsIFJTdHVkaW8gd2lsbCByZXN0YXJ0LCB0aGlzIHRpbWUgd2l0aGluIHRoZSAKR2xvYmFsRmluZGV4IHByb2plY3QgdGhhdCB5b3UganVzdCBjcmVhdGVkLiBZb3UgY2FuIGNvbmZpcm0gdGhhdCB0aGlzIGlzIHRydWUKYnkgaW5zcGVjdGluZyB0aGUgdG9wLXJpZ2h0IGNvcm5lciBvZiB5b3VyIHNjcmVlbiwgd2hlcmUgeW91IHNob3VsZCBub3cgc2VlCmFuIGltYWdlIG9mIGEgY3ViZSBjb250YWluaW5nIHRoZSBSIHN5bWJvbCBmb2xsb3dlZCBieSB0aGUgbmFtZSBvZiB0aGUgY3VycmVudApwcm9qZWN0OgoKCmBgYHtyIGVjaG8gPSBGQUxTRSwgb3V0LndpZHRoPSczMCUnLCBmaWcuY2FwID0gIioqSW1hZ2UgZGVzY3JpcHRpb246IHRoZSB0b3AgcmlnaHQgb2YgeW91ciBzY3JlZW4gaW5kaWNhdGVzIHRoYXQgeW91IGFyZSBpbiB0aGUgR2xvYmFsRmluZGV4IHByb2plY3QqKiJ9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKG5vcm1hbGl6ZVBhdGgoIjAxXzAzLzAxXzAzZC5wbmciKSwgcmVsX3BhdGggPSBGQUxTRSkKYGBgCgpJbiBhZGRpdGlvbiwgdGhlIGJvdHRvbSByaWdodCBvZiB5b3VyIHNjcmVlbiwgd2hpY2ggc2hvd3MgdGhlIGRlZmF1bHQgb3IgImhvbWUiIGRpcmVjdG9yeQp0aGF0IFIgaXMgd29ya2luZyBmcm9tLCBpbmRpY2F0ZXMgdGhhdCBpdCBpcyBpbmRlZWQgdGhlIEdsb2JhbEZpbmRleCBmb2xkZXI6CgpgYGB7ciBlY2hvID0gRkFMU0UsIG91dC53aWR0aD0nNzAlJywgZmlnLmNhcCA9ICIqKkltYWdlIGRlc2NyaXB0aW9uOiB0aGUgZGVmYXVsdCBvciBob21lIGRpcmVjdG9yeSBpcyBub3cgdGhlIEdsb2JhbEZpbmRleCBmb2xkZXIqKiJ9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKG5vcm1hbGl6ZVBhdGgoIjAxXzAzLzAxXzAzZS5wbmciKSwgcmVsX3BhdGggPSBGQUxTRSkKYGBgCgpSZXBlYXQgdGhpcyBzdGVwIGZvciB0aGUgZm9sZGVyIG5hbWVkICdMZXNzb25zJywgaS5lLiBjcmVhdGUgYSBuZXcgUiBwcm9qZWN0CmluIHRoZSBleGlzdGluZyBMZXNzb25zIGZvbGRlci4gCgojIyMgUHJvamVjdHMgaW4gcnN0dWRpby5jbG91ZAoKUiBwcm9qZWN0cyBhcmUgdGhlICoqb25seSoqIHdheSB0byB1c2UgUlN0dWRpbyBvbiByc3R1ZGlvLmNsb3VkLiBJbiBmYWN0LCAKeW91J3ZlIGFscmVhZHkgY3JlYXRlZCBhIHByb2plY3Qgb24gcnN0dWRpby5jbG91ZDogcmVjYWxsIHRoYXQgCnRoZSBmaXJzdCB0aGluZyB5b3UgZGlkIGFmdGVyIGxvZ2dpbmcgaW4gd2FzIGNyZWF0ZSBhIG5ldyBwcm9qZWN0IG5hbWVkICdHbG9iYWxGaW5kZXgnLgoKVG8gY3JlYXRlIGEgZGlmZmVyZW50IHByb2plY3QsIGxvb2sgZm9yIHRoZSBsaW5rIGluIHRoZSB0b3AgbGVmdCB0aGF0IHNheXMKJ1lvdXIgV29ya3NwYWNlJy4gQ2xpY2sgdGhhdCBsaW5rLCB3aGljaCB3aWxsIHRha2UgeW91IHRvIGEgbGlzdCBvZiBhbGwgdGhlIApwcm9qZWN0cyB5b3UndmUgbWFkZSAodGhlcmUgc2hvdWxkIGJlIG9ubHkgb25lIHJpZ2h0IG5vdykuIENyZWF0ZSBhIHNlY29uZApuZXcgcHJvamVjdCBjYWxsZWQgJ0xlc3NvbnMnLiAKCiMjIFNjcmlwdHMKCldoZXRoZXIgeW91IGFyZSB3b3JraW5nIGZyb20geW91ciBvd24gY29tcHV0ZXIgb3IgcnN0dWRpby5jbG91ZCwgZm9yIHRoaXMgbmV4dApzdGVwLCBzd2l0Y2ggYmFjayB0byB0aGUgJ0dsb2JhbEZpbmRleCcgcHJvamVjdCwgd2hpY2ggeW91IGNhbiBkbyBieSBjbGlja2luZyB0aGUgCmRyb3AtZG93biBtZW51IGluIHRoZSB0b3AgcmlnaHQgYW5kIGNob29zaW5nICdHbG9iYWxGaW5kZXgnIGZyb20gdGhlIGxpc3Q6CgpgYGB7ciBlY2hvID0gRkFMU0UsIG91dC53aWR0aD0nMzAlJywgZmlnLmNhcCA9ICIqKkltYWdlIGRlc2NyaXB0aW9uOiBzd2l0Y2hpbmcgYmV0d2VlbiBSIHByb2plY3RzKioifQprbml0cjo6aW5jbHVkZV9ncmFwaGljcyhub3JtYWxpemVQYXRoKCIwMV8wMy8wMV8wM2YucG5nIiksIHJlbF9wYXRoID0gRkFMU0UpCmBgYAoKUiBzY3JpcHRzIGFyZSBmaWxlcyB0aGF0IHlvdSBjcmVhdGUgaW4gUlN0dWRpby4gRnJvbSB0aGUgJ0dsb2JhbEZpbmRleCcgcHJvamVjdCwKb3BlbiBhIG5ldyBzY3JpcHQgYnkgcHJlc3NpbmcgJ0NtZCtTaGlmdCtOJyBvbiB5b3VyIE1hYyBvciAnQ3RybCtTaGlmdCtOJyAKb24geW91ciBXaW5kb3dzIGNvbXB1dGVyLiBPciwgZnJvbSB0aGUgZHJvcGRvd24gbWVudSwgZ28gdG8gJ0ZpbGUgPiBOZXcgRmlsZSA+IFIgU2NyaXB0JzoKCmBgYHtyIGVjaG8gPSBGQUxTRSwgb3V0LndpZHRoPSc0NSUnLCBmaWcuY2FwID0gIioqSW1hZ2UgZGVzY3JpcHRpb246IGNyZWF0aW5nIGEgbmV3IHNjcmlwdCB1c2luZyBkcm9wZG93biBtZW51cyoqIn0Ka25pdHI6OmluY2x1ZGVfZ3JhcGhpY3Mobm9ybWFsaXplUGF0aCgiMDFfMDMvMDFfMDNnLnBuZyIpLCByZWxfcGF0aCA9IEZBTFNFKQpgYGAKCkEgbmV3IHdpbmRvdyBzaG91bGQgaGF2ZSBhcHBlYXJlZCBpbiB5b3VyIFJTdHVkaW8gY29uc29sZS4gSXQgd2lsbCBiZSBibGFuay4gClIgc2NyaXB0cyBhcmUgbGlrZSByZWNpcGVzOiB0aGV5IGNvbnRhaW4gYSBsaXN0IG9mIHN0ZXAtYnktc3RlcCBpbnN0cnVjdGlvbnMKZm9yIGNvbmR1Y3RpbmcgeW91ciBhbmFseXNpcy4gQWxzbyBsaWtlIHJlY2lwZXMsIHNjcmlwdHMgYXJlIG5vdCB1c2VmdWwgdW5sZXNzIAp5b3UgYWN0dWFsbHkgaW1wbGVtZW50IHRoZSBpbnN0cnVjdGlvbnMsIG1lYW5pbmcgdGhhdCB5b3UgY2FuIHR5cGUgY29kZSBpbiBhbiBSIApzY3JpcHQsIGJ1dCB1bmxlc3MgeW91IHJ1biB0aGF0IGNvZGUgaW4gdGhlIGNvbnNvbGUsIGl0IHdvbid0IGRvIGFueXRoaW5nLgoKVHlwZSBzb21ldGhpbmcgc2ltcGxlIGluIHlvdXIgc2NyaXB0LCBsaWtlIGAzKzNgLiBUaGVuLCBtYWtpbmcgc3VyZSB5b3VyIGN1cnNvcgppcyBvbiB0aGF0IGxpbmUgb2YgY29kZSwgcHJlc3MgJ0NtZCtFbnRlcicgb3IgJ0N0cmwrRW50ZXInLiBUaGF0IGxpbmUgb2YgY29kZSBzaG91bGQKaGF2ZSBiZWVuIHNlbnQgYW5kIHJ1biBpbiB0aGUgY29uc29sZS4gWW91IGhhdmUgbm93IG1hZGUgY2hhbmdlcyB0byB5b3VyIHNjcmlwdAp0aGF0IGFyZSBub3Qgc2F2ZWQuIFRvIHNlZSB0aGlzLCB0aGUgdXBwZXItbGVmdCB0YWIgb2YgeW91ciBzY3JpcHQgc2hvdWxkCnNheSA8c3BhbiBzdHlsZT0iY29sb3I6IHJlZDsiPmBVbnRpdGxlZDEqYDwvc3Bhbj4gaW4gcmVkIGZvbnQuIFRoZSBgVW50aXRlZDFgIAppcyBhIGRlZmF1bHQgbmFtZSB0aGF0IFIgY2hvb3NlcywgYW5kIHRoZSByZWQgZm9udCBtZWFucyB0aGF0IGl0IGNvbnRhaW5zCnVuc2F2ZWQgY2hhbmdlcy4gVG8gc2F2ZSB5b3VyIHNjcmlwdCwgcHJlc3MgJ0NtZCtTJyBvciAnQ3RybCtTJyAKb3IgZ28gdG8gJ0ZpbGUgPiBTYXZlJyBmcm9tIHRoZSBkcm9wZG93biBtZW51LiAKCmBgYHtyIGVjaG8gPSBGQUxTRSwgb3V0LndpZHRoPScyNSUnLGZpZy5jYXAgPSAiKipJbWFnZSBkZXNjcmlwdGlvbjogc2F2aW5nIGEgc2NyaXB0KioifQprbml0cjo6aW5jbHVkZV9ncmFwaGljcyhub3JtYWxpemVQYXRoKCIwMV8wMy8wMV8wM2gucG5nIiksIHJlbF9wYXRoID0gRkFMU0UpCmBgYAoKV2Ugd2lsbCBwdXQgYWxsIG9mIG91ciBjb2RlIGZvciBjcmVhdGluZyB0aGUgSW5kaWNhdG9yIFRhYmxlIGluIHRoaXMgc2NyaXB0LCAKc28gc2F2ZSB0aGlzIHNjcmlwdCBhcyBgSW5kaWNhdG9yVGFibGUuUmAuIEZvciBub3csIHNhdmUgaXQgb24geW91ciBkZXNrdG9wIG9yCnNvbWV3aGVyZSBlbHNlIHRoYXQgeW91J2xsIHJlbWVtYmVyLiBJbiB0aGUgdXBwZXItbGVmdCB0YWIgb2YgeW91ciBzY3JpcHQsIAp3aGVyZSBpdCBwcmV2aW91c2x5IHNhaWQgPHNwYW4gc3R5bGU9ImNvbG9yOiByZWQ7Ij5gVW50aXRsZWQxKmA8L3NwYW4+IGluIHJlZCBmb250LCAKaXQgc2hvdWxkIG5vdyBzYXkgYEluZGljYXRvclRhYmxlLlJgIGluIGJsYWNrIGZvbnQuIEFueXRoaW5nIHRoYXQgeW91IGhhZCBwdXQgaW4gCnRoaXMgc2NyaXB0IHVwIHVudGlsIHRoZSBtb21lbnQgdGhhdCB5b3Ugc2F2ZWQgaXQgaXMgbm93IHBlcm1hbmVudGx5IHNhdmVkCm9uIHlvdXIgaGFyZGRyaXZlLCBldmVuIGFmdGVyIHlvdSBjbG9zZSBSU3R1ZGlvIChvciBuYXZpZ2F0ZSBvdXQgb2YgcnN0dWRpby5jbG91ZCkuIApJZiB5b3UgbWFrZSBhZGRpdGlvbmFsIGNoYW5nZXMgdG8gdGhlIHNjcmlwdCwgdGhlIGZvbnQgY29sb3Igd2lsbCBjaGFuZ2UgYmFjayB0byByZWQgCmFuZCBhbiBhc3RlcmlzayB3aWxsIGFwcGVhciBhZnRlciBpdHMgbmFtZSwgYm90aCwgaW5kaWNhdGluZyB0aGF0IHRoaXMgZmlsZSBub3cgCmluY2x1ZGVzIHNvbWUgY29kZSB0aGF0IGlzIG5vdCBzYXZlZC4gVG8gc2VlIHRoaXMsICpkZWxldGUqIHRoZSBgMyszYCB0aGF0CnlvdSBqdXN0IHB1dCBpbiB0aGUgc2NyaXB0LiBOb3cgdGhlIGZpbGUgbmFtZSBsb29rcyBsaWtlIDxzcGFuIHN0eWxlPSJjb2xvcjogcmVkOyI+YEluZGljYXRvclRhYmxlLlIqYDwvc3Bhbj4uIApTYXZlIHlvdXIgc2NyaXB0IGFnYWluIGJ5IHByZXNzaW5nICdDbWQrUycgb3IgJ0N0cmwrUycsIGFuZCB0aGUgZmlsZSBuYW1lCm9uY2UgYWdhaW4gYmVjb21lcyBgSW5kaWNhdG9yVGFibGUuUmAuIEluIE1vZHVsZSAyLCB5b3Ugd2lsbCBiZWdpbiB0byBwdXQgY29kZSAKaW4gdGhpcyBzY3JpcHQuIAoKIyMgUGFja2FnZXMKClBhY2thZ2VzIGFyZSBwcmUtY29uc3RydWN0ZWQgc2V0cyBvZiBvYmplY3RzLCB3aGljaCBtYXkgaW5jbHVkZSBmdW5jdGlvbnMgb3IgZGF0YXNldHMuIApTb21lIHBhY2thZ2VzIGNvbWUgcHJlLWluc3RhbGxlZCB3aXRoIFIsIHBlcmhhcHMgdGhlIG1vc3QgaW1wb3J0YW50IGJlaW5nIHRoZSBgYmFzZWAgcGFja2FnZS4gCkhvd2V2ZXIsIHRoZSBgYmFzZWAgcGFja2FnZSBpcyB1bmlxdWUgaW4gdGhhdCB5b3Ugd2lsbCBuZXZlciBuZWVkIHRvIGluc3RhbGwgb3IgCmV2ZW4gbG9hZCBpdC4gVXNpbmcgdGhlIHRlcm1pbm9sb2d5IGZyb20gdGhlIHZpZGVvLCBpdCBpcyBhbHdheXMgYW5kIHBlcm1hbmVudGx5IGEgJ1N0YXRlIDEnIHBhY2thZ2UuIAoKVHdvIHBhY2thZ2VzIHRoYXQgd2Ugd2lsbCBiZSB1c2luZyBpbiB0aGlzIGNvdXJzZSB0aGF0ICpkbyBub3QqIGNvbWUgcHJlLWluc3RhbGxlZCAKYXJlIGB0aWR5dmVyc2VgIGFuZCBgaGVhbHRoZHNgLiBBdCB0aGUgbW9tZW50IHlvdSBhcmUgZmlyc3QgcmVhZGluZyB0aGlzLCAKdGhleSBhcmUgJ1N0YXRlIDMnIHBhY2thZ2VzOiB0aGV5IGFyZSBub3QgeWV0IGluc3RhbGxlZCBvbiB5b3VyIGNvbXB1dGVyLiBUaGUgCmZvbGxvd2luZyBzZWN0aW9ucyBkZXNjcmliZSBob3cgdG8gaW5zdGFsbCBwYWNrYWdlcyBhbmQgd2lsbCBhcHBseSB3aGV0aGVyIHlvdSBhcmUKd29ya2luZyBvbiB5b3VyIG93biBjb21wdXRlciBvciBvbiByc3R1ZGlvLmNsb3VkLgoKIyMjIEhvdyB0byBpbnN0YWxsIGB0aWR5dmVyc2VgCgpUbyBpbnN0YWxsIGB0aWR5dmVyc2VgLCBydW4gdGhlIGZvbGxvd2luZyBsaW5lIG9mIGNvZGUgaW4geW91ciBjb25zb2xlOgoKYGBge3IsIGV2YWwgPSBGQUxTRSwgY2FjaGUgPSBUUlVFfQppbnN0YWxsLnBhY2thZ2VzKCJ0aWR5dmVyc2UiKQpgYGAKCkluc3RhbGxhdGlvbiBvZiBgdGlkeXZlcnNlYCBtYXkgdGFrZSBhIGZldyBtaW51dGVzLCBzaW5jZSB5b3VyIGNvbXB1dGVyIHdpbGwKbmVlZCB0byBmaW5kIHRoZSBwYWNrYWdlIG9uIHRoZSBpbnRlcm5ldCwgZG93bmxvYWQgaXQsIGFuZCBpbnN0YWxsIGl0IChhbG9uZwp3aXRoIG90aGVyIHBhY2thZ2VzIHRoYXQgYHRpZHl2ZXJzZWAgcmVxdWlyZXMsIGNhbGxlZCBkZXBlbmRlbmNpZXMpLiBBCnN1Y2Nlc3NmdWwgaW5zdGFsbGF0aW9uIHNob3VsZCBwcmludCBhIG1lc3NhZ2UgbGlrZSB0aGlzIHRvIHRoZSBjb25zb2xlOgoKYGBge3IsIGV2YWwgPSBUUlVFLCBlY2hvID0gRkFMU0V9Cmluc3RhbGwucGFja2FnZXMoInRpZHl2ZXJzZSIsIHJlcG9zID0gImh0dHBzOi8vY2xvdWQuci1wcm9qZWN0Lm9yZyIpCmBgYAoKVXBvbiBzdWNjZXNzZnVsIGluc3RhbGxhdGlvbiwgdGhlIGB0aWR5dmVyc2VgIHBhY2thZ2UgaXMgbm93IGluIFN0YXRlIDI6IAppbnN0YWxsZWQgb24geW91ciBjb21wdXRlciBidXQgbm90IHlldCBsb2FkZWQgaW50byB5b3VyIFIgc2Vzc2lvbi4gUnVuIHRoZSAKZm9sbG93aW5nIGNvZGUgdG8gbW92ZSBgdGlkeXZlcnNlYCBmcm9tIFN0YXRlIDIgdG8gU3RhdGUgMS4gCgpgYGB7cn0KbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKSGF2aW5nIHJ1biB0aGlzLCB5b3Ugc2VlIGEgY291cGxlIG9mIG1lc3NhZ2VzLiBGaXJzdCwgYmVjYXVzZSBgdGlkeXZlcnNlYCBpcyBpbgpmYWN0IGEgcGFja2FnZSBvZiBwYWNrYWdlcywgd2UgYXJlIHRvbGQgd2hpY2ggcGFja2FnZXMgYXJlIGxvYWRlZCBhbmQgdGhlaXIgdmVyc2lvbiBudW1iZXJzLiAKU2Vjb25kLCB3ZSBhcmUgdG9sZCB0aGF0IHRoZXJlIGFyZSB0d28gZnVuY3Rpb25zLCBgZmlsdGVyYCBhbmQgYGxhZ2AsIHRoYXQgYWxyZWFkeQpleGlzdGVkIGluIG91ciBSIHNlc3Npb25zLiBZb3UgY2Fubm90IGhhdmUgdHdvIGlkZW50aWNhbGx5IG5hbWVkIGZ1bmN0aW9ucyBhdCBvbmNlLCBhbmQKc28gdGhlIGB0aWR5dmVyc2VgIHZlcnNpb25zIGFyZSB0YWtpbmcgcHJlY2VkZW5jZSwgb3IgJ21hc2tpbmcnLCB0aGUgb25lcyB0aGF0CndlcmUgcHJldmlvdXNseSB0aGVyZS4gCgpZb3Ugd2lsbCBub3QgbmVlZCB0byByZS1pbnN0YWxsIGB0aWR5dmVyc2VgIGlmIHlvdSBjbG9zZSBSU3R1ZGlvLCBidXQgeW91IHdpbGwKbmVlZCB0byByZS1sb2FkIGl0LCBpLmUuIHVzaW5nIHRoZSBgbGlicmFyeWAgY29tbWFuZC4gVGhlcmVmb3JlLCB5b3Ugc2hvdWxkCnB1dCBgbGlicmFyeSh0aWR5dmVyc2UpYCBhdCB0aGUgdG9wIG9mIGFueSBzY3JpcHQgaW5zaWRlIHdoaWNoIHlvdSBpbnRlbmQKdG8gdXNlIGZ1bmN0aW9ucyBmcm9tIGB0aWR5dmVyc2VgLiBQdXQgYGxpYnJhcnkodGlkeXZlcnNlKWAgb24gdGhlIHZlcnkgZmlyc3QKbGluZSBvZiBgSW5kaWNhdG9yVGFibGUuUmAgbm93IGFuZCBzYXZlIHRoZSBzY3JpcHQuIAoKIyMjIEhvdyB0byBpbnN0YWxsIGBoZWFsdGhkc2AKCkluc3RhbGxpbmcgdGhlIGBoZWFsdGhkc2AgcGFja2FnZSBpcyBzbGlnaHRseSBtb3JlIGNvbXBsaWNhdGVkIGJlY2F1c2UgaXQgaGFzIGJlZW4KZGV2ZWxvcGVkIHNwZWNpZmljYWxseSBmb3IgbGVhcm5lcnMgaW4gdGhpcyBjb3Vyc2UsIGFuZCBpdCBpcyBub3QgbG9jYXRlZCBpbgp0aGUgdXN1YWwgcmVwb3NpdG9yaWVzIHRoYXQgdGhlIGBpbnN0YWxsLnBhY2thZ2VzYCBmdW5jdGlvbiB3b3VsZCBsb29rIGluLiAKVG8gaW5zdGFsbCBgaGVhbHRoZHNgLCB3ZSBmaXJzdCBuZWVkIHRvIGluc3RhbGwgYW5kIGxvYWQgYSBwYWNrYWdlIGNhbGxlZCBgcmVtb3Rlc2A6CgpgYGB7ciwgZXZhbCA9IEZBTFNFfQppbnN0YWxsLnBhY2thZ2VzKCJyZW1vdGVzIikKbGlicmFyeShyZW1vdGVzKQpgYGAKCmBgYHtyLCBlY2hvID0gRkFMU0V9CmxpYnJhcnkocmVtb3RlcykKYGBgCgpOZXh0LCB3ZSB3aWxsIHVzZSBhIGZ1bmN0aW9uIGZyb20gdGhlIGByZW1vdGVzYCBwYWNrYWdlIGNhbGxlZCBgaW5zdGFsbF9naXRodWJgLiAKVGhpcyBmdW5jdGlvbiBhY3RzIHNpbWlsYXJseSB0byBgaW5zdGFsbC5wYWNrYWdlc2AgYnV0IGFsbG93cyB1cyB0byBpbnN0YWxsCnBhY2thZ2VzIHRoYXQgYXJlIGhvc3RlZCBvbiBHaXRIdWIsIGEgcmVwb3NpdG9yeSB3aGVyZSBhbnkgdXNlciBjYW4gZGV2ZWxvcCBhbmQKcHVibGljbHkgc2hhcmUgc29mdHdhcmUuIFRvIGluc3RhbGwgYGhlYWx0aGRzYCwgcnVuIHRoZSBmb2xsb3dpbmcgbGluZSAKb2YgY29kZSAoaXQgaXMgZWFzaWVzdCB0byBjb3B5LXBhc3RlIHRoaXMgZGlyZWN0bHkgaW50byB5b3VyIFIgY29uc29sZSk6CgpgYGB7ciwgY2FjaGUgPSBUUlVFfQppbnN0YWxsX2dpdGh1YigidW1pY2gtYmlvc3RhdGlzdGljcy9oZWFsdGhkcyIsIHVwZ3JhZGUgPSAibmV2ZXIiKQpgYGAKCklmIHlvdSBydW4gdGhlIGFib3ZlIGxpbmUgb2YgY29kZSB3aXRob3V0IGZpcnN0IGhhdmluZyBpbnN0YWxsZWQgYW5kIGxvYWRlZApgcmVtb3Rlc2AsIHlvdSB3aWxsIGdldCBhbiBlcnJvciBtZXNzYWdlIHRoYXQgdGhlIGZ1bmN0aW9uIGBpbnN0YWxsX2dpdHViYCBpcyBub3QgCmZvdW5kLiBVcG9uIHN1Y2Nlc3NmdWxseSBydW5uaW5nIHRoaXMgbGluZSBvZiBjb2RlLCB0aGUgYGhlYWx0aGRzYCBwYWNrYWdlIHdpbGwgCmJlIGluIFN0YXRlIDIsIGFuZCB3ZSBjYW4gbW92ZSBpdCB0byBTdGF0ZSAxIGJ5IHVzaW5nIGBsaWJyYXJ5YDoKCmBgYHtyfQpsaWJyYXJ5KGhlYWx0aGRzKQpgYGAKCllvdSB3aWxsIG5vdCBuZWVkIHRoZSBgaGVhbHRoZHNgIHBhY2thZ2UgZm9yIGNyZWF0aW5nIHRoZSBJbmRpY2F0b3IgVGFibGUgb3IgRmlndXJlIDEuMSwgCnNvIHlvdSBkbyBub3QgbmVlZCB0byBwdXQgYGxpYnJhcnkoaGVhbHRoZHMpYCBhdCB0aGUgdG9wIG9mIGBJbmRpY2F0b3JUYWJsZS5SYC4gCldlIHdpbGwgd2FpdCB1bnRpbCB0aGUgbmV4dCBNb2R1bGUncyBJbmRlcGVuZGVudCBHdWlkZSB0byBjcmVhdGUgYSBzY3JpcHQgdGhhdAp1c2VzIGBoZWFsdGhkc2AuIEZvciBub3cgaXQgaXMgc3VmZmljaWVudCB0byBoYXZlIGluc3RhbGxlZCBpdCBvbiBvdXIgY29tcHV0ZXIuICAKCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTW9kdWxlIDEsIExlc3NvbiAzOiBOYXZpZ2F0aW5nIFIgYW5kIFJTdHVkaW8iCm91dHB1dDogCiAgaHRtbF9kb2N1bWVudDoKICBodG1sX25vdGVib29rOgplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGlubGluZQotLS0KCmBgYHtyIHNldHVwLCBlY2hvID0gRkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChvdXQuZXh0cmE9J3N0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiAjOTk5OTk5OyBwYWRkaW5nOjdweDsgZGlzcGxheTogaW5saW5lLWJsb2NrOyInKQpgYGAKCmBgYHtyIGtsaXBweSwgZWNobyA9IEZBTFNFLCBpbmNsdWRlID0gVFJVRX0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCJ0b3AiLCAicmlnaHQiKSwgdG9vbHRpcF9tZXNzYWdlID0gIkNvcHkiKQpgYGAKCkluIHRoaXMgSW5kZXBlbmRlbnQgR3VpZGUsIHdlIHdpbGwgd29yayB0aHJvdWdoIGNvbnRlbnQgY292ZXJlZCBpbiBMZXNzb24gMyBidXQKaW4gYSBzbGlnaHRseSBtb2RpZmllZCBvcmRlci4gQWZ0ZXIgdGFsa2luZyBhYm91dCBhc3NpZ25tZW50cyBhbmQgb2JqZWN0cywgd2Ugd2lsbApjcmVhdGUgdHdvIG5ldyBSIHByb2plY3RzLiBXZSB3aWxsIGNyZWF0ZSBhIG5ldyBSIHNjcmlwdCB0byBwdXQgaW4gb25lIG9mIHRoZXNlIApwcm9qZWN0cy4gRmluYWxseSwgd2Ugd2lsbCBpbnN0YWxsIHR3byBSIHBhY2thZ2VzIGZvciB1c2UgaW4gdGhlIHJlbWFpbmRlciBvZiB0aGlzCmNvdXJzZS4gCgojIyBBc3NpZ25tZW50cyBhbmQgb2JqZWN0cwoKV2hlbiB5b3Ugb3BlbiBhIG5ldyBSIHNlc3Npb24sIHRoZXJlIGFyZSBtYW55IHNvLWNhbGxlZCAnb2JqZWN0cycgYWxyZWFkeSBpbiAKeW91ciBlbnZpcm9ubWVudC4gTnVtYmVycyBhcmUgb2JqZWN0cyAoYDFgLCBgMmAsIGV0Yy4pLiBTbGlnaHRseSBtb3JlIGludGVyZXN0aW5nLAp0eXBlIGBwaWAgaW4gdGhlIGNvbnNvbGUsIHByZXNzICdFbnRlcicsIGFuZCB5b3Ugd2lsbCBzZWUgdGhlIGZpcnN0IGRpZ2l0cyBvZiB0aGUgCm51bWJlciAkXHBpJCAodGhlIHJhdGlvIG9mIGEgY2lyY2xlJ3MgY2lyY3VtZmVyZW5jZSB0byBpdHMgZGlhbWV0ZXIpLiBZb3VyIAonRW50ZXInIGtleSBtYXkgYmUgbGFiZWxlZCBhcyAnUmV0dXJuJyAtLSBvbiBBbWVyaWNhbiBrZXlib2FyZHMgaXQncyAKYXQgdGhlIGZhciByaWdodC4gCgpgYGB7cn0KcGkKYGBgCgoKVGhpcyB3b3JrcyBiZWNhdXNlIGBwaWAgaXMgYWxzbyBhbiBvYmplY3QgdGhhdCBleGlzdHMgaW4gYW55IFIgc2Vzc2lvbi4gCgpIb3dldmVyLCBpZiB5b3UgdHlwZSB0aGUgbmFtZSBvZiBhbiBvYmplY3QgdGhhdCBkb2Vzbid0IGV4aXN0IGluIHRoZSBSIGNvbnNvbGUsCnlvdSB3aWxsIGdldCBhbiBlcnJvcjoKCmBgYHtyLCBlcnJvcj1UUlVFfQp4CmBgYAoKVGhpcyBvY2N1cnMgYmVjYXVzZSB0aGVyZSBpcyBubyBvYmplY3QgY2FsbGVkIGB4YCBpbiBhIG5ldyBSIHNlc3Npb24uIEhvd2V2ZXIsIAp5b3UgY2FuIGNyZWF0ZSBhbnkgb2JqZWN0IHlvdSB3YW50LiBUbyBkbyBzbywgeW91IHVzZSB0aGUgYXNzaWdubWVudCBvcGVyYXRvcjogYDwtYC4gCk9uIHRoZSBsZWZ0IG9mIHRoZSBhc3NpZ25tZW50IG9wZXJhdG9yIGdvZXMgdGhlIG5hbWUgb2YgdGhlIG9iamVjdCB5b3Ugd2FudCB0byAKY3JlYXRlLCBhbmQgb24gdGhlIHJpZ2h0IGdvZXMgdGhlIG9iamVjdCB0aGF0IHlvdSB3YW50IHRvIGFzc2lnbi4gQXMgYW4gZXhhbXBsZSwKd2UgY2FuIGNyZWF0ZSBgeGAgYW5kIGFzc2lnbiB0byBpdCB0aGUgdmFsdWUgMTA6CgpgYGB7cn0KeCA8LSAxMApgYGAKCk5vdyBgeGAgZXhpc3RzLCBhbmQgaWYgd2UgdHlwZSBpdCBpbiB0aGUgY29uc29sZSB3ZSBnZXQgaXRzIHZhbHVlOgoKYGBge3J9CngKYGBgCgpXZSBjYW4gbm93IHVzZSBgeGAgKGFuZCBhbnkgb3RoZXIgZXh0YW50IG9iamVjdHMpIHRvIGNyZWF0ZSAqbmV3KiBvYmplY3RzOgoKYGBge3J9CnkgPC0geCArIDIKYGBgCgpOb3cgd2UndmUgY3JlYXRlZCBhIHNlY29uZCBuZXcgb2JqZWN0LCBjYWxsZWQgYHlgLCB3aGljaCBpcyBlcXVhbCB0byAxMi4gClRoZXNlIGFzc2lnbm1lbnRzIGFyZSBzdGF0aWMsIG1lYW5pbmcgdGhhdCBpZiB3ZSBjaGFuZ2UgdGhlIHZhbHVlIG9mIGB4YCwgd2Ugd29uJ3QKYWxzbyBjaGFuZ2UgdGhlIHZhbHVlIG9mIGB5YCwgZXZlbiB0aG91Z2ggd2hlbiB3ZSBjcmVhdGVkIGl0LCBpdCBkZXBlbmRlZCBvbiBgeGAuIApGb3IgZXhhbXBsZSwgaGVyZSB3ZSByZS1hc3NpZ24gYHhgIGFuZCB0aGVuIGFzayBSIHdoYXQgdGhlIHZhbHVlIG9mIGB5YCBpczoKCmBgYHtyfQp4IDwtIDIKeQpgYGAKClRoZSBvYmplY3QgYHlgIGhhcyByZXRhaW5lZCBpdHMgb3JpZ2luYWwgdmFsdWUgZGVzcGl0ZSBgeGAgYmVpbmcgY2hhbmdlZC4gCgpBbHRob3VnaCBgPC1gIGlzIHRoZSBpbnRlbmRlZCB3YXkgdG8gY3JlYXRlIGFzc2lnbm1lbnRzLCB5b3UgY2FuIGFsdGVybmF0aXZlbHkKdXNlIHRoZSBtb3JlIHNpbXBsZSBgPWAsIGFzIGluIAoKYGBge3J9CnggPSAyCmBgYAoKIyMgUiBwcm9qZWN0cwoKUiBwcm9qZWN0cyBhcmUgZmlsZXMgZW5kaW5nIGluIGAuUnByb2pgLiBZb3UgY3JlYXRlIHN1Y2ggYSBmaWxlIGZyb20gd2l0aGluClJTdHVkaW8sIGFuZCB3aGVuIHlvdSBkbyBzbywgdGhlbiBSU3R1ZGlvIHdpbGwgdHJlYXQgdGhlIGZvbGRlciAob3IgZGlyZWN0b3J5KQp0aGF0IGNvbnRhaW5zIHRoZSBgLlJwcm9qYCBmaWxlIGFzIGl0cyAiaG9tZSBkaXJlY3RvcnkiLiBIZXJlIHdlIHdpbGwgY3JlYXRlCnR3byBSIHByb2plY3RzLCBlbnRpdGxlZCBgR2xvYmFsRmluZGV4LlJwcm9qYCBhbmQgYExlc3NvbnMuUnByb2pgLiBUaGUgZm9ybWVyCmlzIGludGVuZGVkIHRvIGNvbnRhaW4gY29kZSB0byBjcmVhdGUgdGhlIEluZGljYXRvciBUYWJsZSBhbmQgRmlndXJlIDEuMS4gVGhlIApsYXR0ZXIgaXMgaW50ZW5kZWQgdG8gYmUgdXNlZCBmb3IgYW55IG90aGVyIHdvcmsgeW91IGRvIGluIGZ1dHVyZSBJbmRlcGVuZGVudCBHdWlkZXMuIAoKSWYgeW91IGFyZSB3b3JraW5nIGZyb20geW91ciBvd24gY29tcHV0ZXIsIGZpcnN0IGNyZWF0ZSB0d28gcmVndWxhciBmb2xkZXJzIGNhbGxlZCBHbG9iYWxGaW5kZXgKYW5kIExlc3NvbnMgKGlmIHlvdSBhcmUgd29ya2luZyBvbiBwb3NpdC5jbG91ZCwgeW91IG1heSBza2lwIHRvIHRoZSBlbmQgb2YgdGhpcyAKc2VjdGlvbikuIE5leHQsIGNyZWF0ZSBhIG5ldyBSIHByb2plY3QgYnkgZ29pbmcgdG8gJ0ZpbGUgPiBOZXcgUHJvamVjdC4uLic6CgoKYGBge3IgZWNobyA9IEZBTFNFLCBvdXQud2lkdGg9JzMwJScsIGZpZy5jYXAgPSAiKipJbWFnZSBkZXNjcmlwdGlvbjogY3JlYXRpbmcgYSBuZXcgUiBwcm9qZWN0KioifQprbml0cjo6aW5jbHVkZV9ncmFwaGljcyhub3JtYWxpemVQYXRoKCIwMV8wMy8wMV8wM2EucG5nIiksIHJlbF9wYXRoID0gRkFMU0UpCmBgYAoKQSBuZXcgd2luZG93IHdpbGwgcG9wIHVwLiBDaG9vc2UgdGhlIG9wdGlvbiB0byBjcmVhdGUgdGhlIHByb2plY3QgaW4gYW4gCidFeGlzdGluZyBEaXJlY3RvcnknOgoKYGBge3IgZWNobyA9IEZBTFNFLCBvdXQud2lkdGg9JzQwJScsIGZpZy5jYXAgPSAiKipJbWFnZSBkZXNjcmlwdGlvbjogY2hvb3NlICdFeGlzdGluZyBEaXJlY3RvcnknIHRvIHB1dCB5b3VyIHByb2plY3QgZmlsZSBpbnNpZGUgYW4gZXhpc3RpbmcgZm9sZGVyKioifQprbml0cjo6aW5jbHVkZV9ncmFwaGljcyhub3JtYWxpemVQYXRoKCIwMV8wMy8wMV8wM2IucG5nIiksIHJlbF9wYXRoID0gRkFMU0UpCmBgYAoKVGhlbiBuYXZpZ2F0ZSB0byB0aGUgZm9sZGVyIG5hbWVkICdHbG9iYWxGaW5kZXgnIHRoYXQgeW91IGp1c3QgY3JlYXRlZC4gCgpgYGB7ciBlY2hvID0gRkFMU0UsIG91dC53aWR0aD0nNDAlJywgZmlnLmNhcCA9ICIqKkltYWdlIGRlc2NyaXB0aW9uOiBuYXZpZ2F0ZSB0byB0aGUgZm9sZGVyIHRoYXQgeW91IHdhbnQgdG8gYXNzb2NpYXRlIHdpdGggeW91ciBSIHByb2plY3QqKiJ9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKG5vcm1hbGl6ZVBhdGgoIjAxXzAzLzAxXzAzYy5wbmciKSwgcmVsX3BhdGggPSBGQUxTRSkKYGBgCgpVcG9uIGNsaWNraW5nIENyZWF0ZSBQcm9qZWN0LCBSU3R1ZGlvIHdpbGwgcmVzdGFydCwgdGhpcyB0aW1lIHdpdGhpbiB0aGUgCkdsb2JhbEZpbmRleCBwcm9qZWN0IHRoYXQgeW91IGp1c3QgY3JlYXRlZC4gWW91IGNhbiBjb25maXJtIHRoYXQgdGhpcyBpcyB0cnVlCmJ5IGluc3BlY3RpbmcgdGhlIHRvcC1yaWdodCBjb3JuZXIgb2YgeW91ciBzY3JlZW4sIHdoZXJlIHlvdSBzaG91bGQgbm93IHNlZQphbiBpbWFnZSBvZiBhIGN1YmUgY29udGFpbmluZyB0aGUgUiBzeW1ib2wgZm9sbG93ZWQgYnkgdGhlIG5hbWUgb2YgdGhlIGN1cnJlbnQKcHJvamVjdDoKCgpgYGB7ciBlY2hvID0gRkFMU0UsIG91dC53aWR0aD0nMzAlJywgZmlnLmNhcCA9ICIqKkltYWdlIGRlc2NyaXB0aW9uOiB0aGUgdG9wIHJpZ2h0IG9mIHlvdXIgc2NyZWVuIGluZGljYXRlcyB0aGF0IHlvdSBhcmUgaW4gdGhlIEdsb2JhbEZpbmRleCBwcm9qZWN0KioifQprbml0cjo6aW5jbHVkZV9ncmFwaGljcyhub3JtYWxpemVQYXRoKCIwMV8wMy8wMV8wM2QucG5nIiksIHJlbF9wYXRoID0gRkFMU0UpCmBgYAoKSW4gYWRkaXRpb24sIHRoZSBib3R0b20gcmlnaHQgb2YgeW91ciBzY3JlZW4sIHdoaWNoIHNob3dzIHRoZSBkZWZhdWx0IG9yICJob21lIiBkaXJlY3RvcnkKdGhhdCBSIGlzIHdvcmtpbmcgZnJvbSwgaW5kaWNhdGVzIHRoYXQgaXQgaXMgaW5kZWVkIHRoZSBHbG9iYWxGaW5kZXggZm9sZGVyOgoKYGBge3IgZWNobyA9IEZBTFNFLCBvdXQud2lkdGg9JzcwJScsIGZpZy5jYXAgPSAiKipJbWFnZSBkZXNjcmlwdGlvbjogdGhlIGRlZmF1bHQgb3IgaG9tZSBkaXJlY3RvcnkgaXMgbm93IHRoZSBHbG9iYWxGaW5kZXggZm9sZGVyKioifQprbml0cjo6aW5jbHVkZV9ncmFwaGljcyhub3JtYWxpemVQYXRoKCIwMV8wMy8wMV8wM2UucG5nIiksIHJlbF9wYXRoID0gRkFMU0UpCmBgYAoKUmVwZWF0IHRoaXMgc3RlcCBmb3IgdGhlIGZvbGRlciBuYW1lZCAnTGVzc29ucycsIGkuZS4gY3JlYXRlIGEgbmV3IFIgcHJvamVjdAppbiB0aGUgZXhpc3RpbmcgTGVzc29ucyBmb2xkZXIuIAoKIyMjIFByb2plY3RzIGluIHBvc2l0LmNsb3VkCgpSIHByb2plY3RzIGFyZSB0aGUgKipvbmx5Kiogd2F5IHRvIHVzZSBSU3R1ZGlvIG9uIHBvc2l0LmNsb3VkLiBJbiBmYWN0LCAKeW91J3ZlIGFscmVhZHkgY3JlYXRlZCBhIHByb2plY3Qgb24gcG9zaXQuY2xvdWQ6IHJlY2FsbCB0aGF0IAp0aGUgZmlyc3QgdGhpbmcgeW91IGRpZCBhZnRlciBsb2dnaW5nIGluIHdhcyBjcmVhdGUgYSBuZXcgcHJvamVjdCBuYW1lZCAnR2xvYmFsRmluZGV4Jy4KClRvIGNyZWF0ZSBhIGRpZmZlcmVudCBwcm9qZWN0LCBsb29rIGZvciB0aGUgbGluayBpbiB0aGUgdG9wIGxlZnQgdGhhdCBzYXlzCidZb3VyIFdvcmtzcGFjZScuIENsaWNrIHRoYXQgbGluaywgd2hpY2ggd2lsbCB0YWtlIHlvdSB0byBhIGxpc3Qgb2YgYWxsIHRoZSAKcHJvamVjdHMgeW91J3ZlIG1hZGUgKHRoZXJlIHNob3VsZCBiZSBvbmx5IG9uZSByaWdodCBub3cpLiBDcmVhdGUgYSBzZWNvbmQKbmV3IHByb2plY3QgY2FsbGVkICdMZXNzb25zJy4gCgojIyBTY3JpcHRzCgpXaGV0aGVyIHlvdSBhcmUgd29ya2luZyBmcm9tIHlvdXIgb3duIGNvbXB1dGVyIG9yIHBvc2l0LmNsb3VkLCBmb3IgdGhpcyBuZXh0CnN0ZXAsIHN3aXRjaCBiYWNrIHRvIHRoZSAnR2xvYmFsRmluZGV4JyBwcm9qZWN0LCB3aGljaCB5b3UgY2FuIGRvIGJ5IGNsaWNraW5nIHRoZSAKZHJvcC1kb3duIG1lbnUgaW4gdGhlIHRvcCByaWdodCBhbmQgY2hvb3NpbmcgJ0dsb2JhbEZpbmRleCcgZnJvbSB0aGUgbGlzdDoKCmBgYHtyIGVjaG8gPSBGQUxTRSwgb3V0LndpZHRoPSczMCUnLCBmaWcuY2FwID0gIioqSW1hZ2UgZGVzY3JpcHRpb246IHN3aXRjaGluZyBiZXR3ZWVuIFIgcHJvamVjdHMqKiJ9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKG5vcm1hbGl6ZVBhdGgoIjAxXzAzLzAxXzAzZi5wbmciKSwgcmVsX3BhdGggPSBGQUxTRSkKYGBgCgpSIHNjcmlwdHMgYXJlIGZpbGVzIHRoYXQgeW91IGNyZWF0ZSBpbiBSU3R1ZGlvLiBGcm9tIHRoZSAnR2xvYmFsRmluZGV4JyBwcm9qZWN0LApvcGVuIGEgbmV3IHNjcmlwdCBieSBwcmVzc2luZyAnQ21kK1NoaWZ0K04nIG9uIHlvdXIgTWFjIG9yICdDdHJsK1NoaWZ0K04nIApvbiB5b3VyIFdpbmRvd3MgY29tcHV0ZXIuIE9yLCBmcm9tIHRoZSBkcm9wZG93biBtZW51LCBnbyB0byAnRmlsZSA+IE5ldyBGaWxlID4gUiBTY3JpcHQnOgoKYGBge3IgZWNobyA9IEZBTFNFLCBvdXQud2lkdGg9JzQ1JScsIGZpZy5jYXAgPSAiKipJbWFnZSBkZXNjcmlwdGlvbjogY3JlYXRpbmcgYSBuZXcgc2NyaXB0IHVzaW5nIGRyb3Bkb3duIG1lbnVzKioifQprbml0cjo6aW5jbHVkZV9ncmFwaGljcyhub3JtYWxpemVQYXRoKCIwMV8wMy8wMV8wM2cucG5nIiksIHJlbF9wYXRoID0gRkFMU0UpCmBgYAoKQSBuZXcgd2luZG93IHNob3VsZCBoYXZlIGFwcGVhcmVkIGluIHlvdXIgUlN0dWRpbyBjb25zb2xlLiBJdCB3aWxsIGJlIGJsYW5rLiAKUiBzY3JpcHRzIGFyZSBsaWtlIHJlY2lwZXM6IHRoZXkgY29udGFpbiBhIGxpc3Qgb2Ygc3RlcC1ieS1zdGVwIGluc3RydWN0aW9ucwpmb3IgY29uZHVjdGluZyB5b3VyIGFuYWx5c2lzLiBBbHNvIGxpa2UgcmVjaXBlcywgc2NyaXB0cyBhcmUgbm90IHVzZWZ1bCB1bmxlc3MgCnlvdSBhY3R1YWxseSBpbXBsZW1lbnQgdGhlIGluc3RydWN0aW9ucywgbWVhbmluZyB0aGF0IHlvdSBjYW4gdHlwZSBjb2RlIGluIGFuIFIgCnNjcmlwdCwgYnV0IHVubGVzcyB5b3UgcnVuIHRoYXQgY29kZSBpbiB0aGUgY29uc29sZSwgaXQgd29uJ3QgZG8gYW55dGhpbmcuCgpUeXBlIHNvbWV0aGluZyBzaW1wbGUgaW4geW91ciBzY3JpcHQsIGxpa2UgYDMrM2AuIFRoZW4sIG1ha2luZyBzdXJlIHlvdXIgY3Vyc29yCmlzIG9uIHRoYXQgbGluZSBvZiBjb2RlLCBwcmVzcyAnQ21kK0VudGVyJyBvciAnQ3RybCtFbnRlcicuIFRoYXQgbGluZSBvZiBjb2RlIHNob3VsZApoYXZlIGJlZW4gc2VudCBhbmQgcnVuIGluIHRoZSBjb25zb2xlLiBZb3UgaGF2ZSBub3cgbWFkZSBjaGFuZ2VzIHRvIHlvdXIgc2NyaXB0CnRoYXQgYXJlIG5vdCBzYXZlZC4gVG8gc2VlIHRoaXMsIHRoZSB1cHBlci1sZWZ0IHRhYiBvZiB5b3VyIHNjcmlwdCBzaG91bGQKc2F5IDxzcGFuIHN0eWxlPSJjb2xvcjogcmVkOyI+YFVudGl0bGVkMSpgPC9zcGFuPiBpbiByZWQgZm9udC4gVGhlIGBVbnRpdGVkMWAgCmlzIGEgZGVmYXVsdCBuYW1lIHRoYXQgUiBjaG9vc2VzLCBhbmQgdGhlIHJlZCBmb250IG1lYW5zIHRoYXQgaXQgY29udGFpbnMKdW5zYXZlZCBjaGFuZ2VzLiBUbyBzYXZlIHlvdXIgc2NyaXB0LCBwcmVzcyAnQ21kK1MnIG9yICdDdHJsK1MnIApvciBnbyB0byAnRmlsZSA+IFNhdmUnIGZyb20gdGhlIGRyb3Bkb3duIG1lbnUuIAoKYGBge3IgZWNobyA9IEZBTFNFLCBvdXQud2lkdGg9JzI1JScsZmlnLmNhcCA9ICIqKkltYWdlIGRlc2NyaXB0aW9uOiBzYXZpbmcgYSBzY3JpcHQqKiJ9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKG5vcm1hbGl6ZVBhdGgoIjAxXzAzLzAxXzAzaC5wbmciKSwgcmVsX3BhdGggPSBGQUxTRSkKYGBgCgpXZSB3aWxsIHB1dCBhbGwgb2Ygb3VyIGNvZGUgZm9yIGNyZWF0aW5nIHRoZSBJbmRpY2F0b3IgVGFibGUgaW4gdGhpcyBzY3JpcHQsIApzbyBzYXZlIHRoaXMgc2NyaXB0IGFzIGBJbmRpY2F0b3JUYWJsZS5SYC4gRm9yIG5vdywgc2F2ZSBpdCBvbiB5b3VyIGRlc2t0b3Agb3IKc29tZXdoZXJlIGVsc2UgdGhhdCB5b3UnbGwgcmVtZW1iZXIuIEluIHRoZSB1cHBlci1sZWZ0IHRhYiBvZiB5b3VyIHNjcmlwdCwgCndoZXJlIGl0IHByZXZpb3VzbHkgc2FpZCA8c3BhbiBzdHlsZT0iY29sb3I6IHJlZDsiPmBVbnRpdGxlZDEqYDwvc3Bhbj4gaW4gcmVkIGZvbnQsIAppdCBzaG91bGQgbm93IHNheSBgSW5kaWNhdG9yVGFibGUuUmAgaW4gYmxhY2sgZm9udC4gQW55dGhpbmcgdGhhdCB5b3UgaGFkIHB1dCBpbiAKdGhpcyBzY3JpcHQgdXAgdW50aWwgdGhlIG1vbWVudCB0aGF0IHlvdSBzYXZlZCBpdCBpcyBub3cgcGVybWFuZW50bHkgc2F2ZWQKb24geW91ciBoYXJkZHJpdmUsIGV2ZW4gYWZ0ZXIgeW91IGNsb3NlIFJTdHVkaW8gKG9yIG5hdmlnYXRlIG91dCBvZiBwb3NpdC5jbG91ZCkuIApJZiB5b3UgbWFrZSBhZGRpdGlvbmFsIGNoYW5nZXMgdG8gdGhlIHNjcmlwdCwgdGhlIGZvbnQgY29sb3Igd2lsbCBjaGFuZ2UgYmFjayB0byByZWQgCmFuZCBhbiBhc3RlcmlzayB3aWxsIGFwcGVhciBhZnRlciBpdHMgbmFtZSwgYm90aCwgaW5kaWNhdGluZyB0aGF0IHRoaXMgZmlsZSBub3cgCmluY2x1ZGVzIHNvbWUgY29kZSB0aGF0IGlzIG5vdCBzYXZlZC4gVG8gc2VlIHRoaXMsICpkZWxldGUqIHRoZSBgMyszYCB0aGF0CnlvdSBqdXN0IHB1dCBpbiB0aGUgc2NyaXB0LiBOb3cgdGhlIGZpbGUgbmFtZSBsb29rcyBsaWtlIDxzcGFuIHN0eWxlPSJjb2xvcjogcmVkOyI+YEluZGljYXRvclRhYmxlLlIqYDwvc3Bhbj4uIApTYXZlIHlvdXIgc2NyaXB0IGFnYWluIGJ5IHByZXNzaW5nICdDbWQrUycgb3IgJ0N0cmwrUycsIGFuZCB0aGUgZmlsZSBuYW1lCm9uY2UgYWdhaW4gYmVjb21lcyBgSW5kaWNhdG9yVGFibGUuUmAuIEluIE1vZHVsZSAyLCB5b3Ugd2lsbCBiZWdpbiB0byBwdXQgY29kZSAKaW4gdGhpcyBzY3JpcHQuIAoKIyMgUGFja2FnZXMKClBhY2thZ2VzIGFyZSBwcmUtY29uc3RydWN0ZWQgc2V0cyBvZiBvYmplY3RzLCB3aGljaCBtYXkgaW5jbHVkZSBmdW5jdGlvbnMgb3IgZGF0YXNldHMuIApTb21lIHBhY2thZ2VzIGNvbWUgcHJlLWluc3RhbGxlZCB3aXRoIFIsIHBlcmhhcHMgdGhlIG1vc3QgaW1wb3J0YW50IGJlaW5nIHRoZSBgYmFzZWAgcGFja2FnZS4gCkhvd2V2ZXIsIHRoZSBgYmFzZWAgcGFja2FnZSBpcyB1bmlxdWUgaW4gdGhhdCB5b3Ugd2lsbCBuZXZlciBuZWVkIHRvIGluc3RhbGwgb3IgCmV2ZW4gbG9hZCBpdC4gVXNpbmcgdGhlIHRlcm1pbm9sb2d5IGZyb20gdGhlIHZpZGVvLCBpdCBpcyBhbHdheXMgYW5kIHBlcm1hbmVudGx5IGEgJ1N0YXRlIDEnIHBhY2thZ2UuIAoKVHdvIHBhY2thZ2VzIHRoYXQgd2Ugd2lsbCBiZSB1c2luZyBpbiB0aGlzIGNvdXJzZSB0aGF0ICpkbyBub3QqIGNvbWUgcHJlLWluc3RhbGxlZCAKYXJlIGB0aWR5dmVyc2VgIGFuZCBgaGVhbHRoZHNgLiBBdCB0aGUgbW9tZW50IHlvdSBhcmUgZmlyc3QgcmVhZGluZyB0aGlzLCAKdGhleSBhcmUgJ1N0YXRlIDMnIHBhY2thZ2VzOiB0aGV5IGFyZSBub3QgeWV0IGluc3RhbGxlZCBvbiB5b3VyIGNvbXB1dGVyLiBUaGUgCmZvbGxvd2luZyBzZWN0aW9ucyBkZXNjcmliZSBob3cgdG8gaW5zdGFsbCBwYWNrYWdlcyBhbmQgd2lsbCBhcHBseSB3aGV0aGVyIHlvdSBhcmUKd29ya2luZyBvbiB5b3VyIG93biBjb21wdXRlciBvciBvbiBwb3NpdC5jbG91ZC4KCiMjIyBIb3cgdG8gaW5zdGFsbCBgdGlkeXZlcnNlYAoKVG8gaW5zdGFsbCBgdGlkeXZlcnNlYCwgcnVuIHRoZSBmb2xsb3dpbmcgbGluZSBvZiBjb2RlIGluIHlvdXIgY29uc29sZToKCmBgYHtyLCBldmFsID0gRkFMU0UsIGNhY2hlID0gVFJVRX0KaW5zdGFsbC5wYWNrYWdlcygidGlkeXZlcnNlIikKYGBgCgpJbnN0YWxsYXRpb24gb2YgYHRpZHl2ZXJzZWAgbWF5IHRha2UgYSBmZXcgbWludXRlcywgc2luY2UgeW91ciBjb21wdXRlciB3aWxsCm5lZWQgdG8gZmluZCB0aGUgcGFja2FnZSBvbiB0aGUgaW50ZXJuZXQsIGRvd25sb2FkIGl0LCBhbmQgaW5zdGFsbCBpdCAoYWxvbmcKd2l0aCBvdGhlciBwYWNrYWdlcyB0aGF0IGB0aWR5dmVyc2VgIHJlcXVpcmVzLCBjYWxsZWQgZGVwZW5kZW5jaWVzKS4gQQpzdWNjZXNzZnVsIGluc3RhbGxhdGlvbiBzaG91bGQgcHJpbnQgYSBtZXNzYWdlIGxpa2UgdGhpcyB0byB0aGUgY29uc29sZToKCmBgYHtyLCBldmFsID0gVFJVRSwgZWNobyA9IEZBTFNFfQppbnN0YWxsLnBhY2thZ2VzKCJ0aWR5dmVyc2UiLCByZXBvcyA9ICJodHRwczovL2Nsb3VkLnItcHJvamVjdC5vcmciKQpgYGAKClVwb24gc3VjY2Vzc2Z1bCBpbnN0YWxsYXRpb24sIHRoZSBgdGlkeXZlcnNlYCBwYWNrYWdlIGlzIG5vdyBpbiBTdGF0ZSAyOiAKaW5zdGFsbGVkIG9uIHlvdXIgY29tcHV0ZXIgYnV0IG5vdCB5ZXQgbG9hZGVkIGludG8geW91ciBSIHNlc3Npb24uIFJ1biB0aGUgCmZvbGxvd2luZyBjb2RlIHRvIG1vdmUgYHRpZHl2ZXJzZWAgZnJvbSBTdGF0ZSAyIHRvIFN0YXRlIDEuIAoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCkhhdmluZyBydW4gdGhpcywgeW91IHNlZSBhIGNvdXBsZSBvZiBtZXNzYWdlcy4gRmlyc3QsIGJlY2F1c2UgYHRpZHl2ZXJzZWAgaXMgaW4KZmFjdCBhIHBhY2thZ2Ugb2YgcGFja2FnZXMsIHdlIGFyZSB0b2xkIHdoaWNoIHBhY2thZ2VzIGFyZSBsb2FkZWQgYW5kIHRoZWlyIHZlcnNpb24gbnVtYmVycy4gClNlY29uZCwgd2UgYXJlIHRvbGQgdGhhdCB0aGVyZSBhcmUgdHdvIGZ1bmN0aW9ucywgYGZpbHRlcmAgYW5kIGBsYWdgLCB0aGF0IGFscmVhZHkKZXhpc3RlZCBpbiBvdXIgUiBzZXNzaW9ucy4gWW91IGNhbm5vdCBoYXZlIHR3byBpZGVudGljYWxseSBuYW1lZCBmdW5jdGlvbnMgYXQgb25jZSwgYW5kCnNvIHRoZSBgdGlkeXZlcnNlYCB2ZXJzaW9ucyBhcmUgdGFraW5nIHByZWNlZGVuY2UsIG9yICdtYXNraW5nJywgdGhlIG9uZXMgdGhhdAp3ZXJlIHByZXZpb3VzbHkgdGhlcmUuIAoKWW91IHdpbGwgbm90IG5lZWQgdG8gcmUtaW5zdGFsbCBgdGlkeXZlcnNlYCBpZiB5b3UgY2xvc2UgUlN0dWRpbywgYnV0IHlvdSB3aWxsCm5lZWQgdG8gcmUtbG9hZCBpdCwgaS5lLiB1c2luZyB0aGUgYGxpYnJhcnlgIGNvbW1hbmQuIFRoZXJlZm9yZSwgeW91IHNob3VsZApwdXQgYGxpYnJhcnkodGlkeXZlcnNlKWAgYXQgdGhlIHRvcCBvZiBhbnkgc2NyaXB0IGluc2lkZSB3aGljaCB5b3UgaW50ZW5kCnRvIHVzZSBmdW5jdGlvbnMgZnJvbSBgdGlkeXZlcnNlYC4gUHV0IGBsaWJyYXJ5KHRpZHl2ZXJzZSlgIG9uIHRoZSB2ZXJ5IGZpcnN0CmxpbmUgb2YgYEluZGljYXRvclRhYmxlLlJgIG5vdyBhbmQgc2F2ZSB0aGUgc2NyaXB0LiAKCiMjIyBIb3cgdG8gaW5zdGFsbCBgaGVhbHRoZHNgCgpJbnN0YWxsaW5nIHRoZSBgaGVhbHRoZHNgIHBhY2thZ2UgaXMgc2xpZ2h0bHkgbW9yZSBjb21wbGljYXRlZCBiZWNhdXNlIGl0IGhhcyBiZWVuCmRldmVsb3BlZCBzcGVjaWZpY2FsbHkgZm9yIGxlYXJuZXJzIGluIHRoaXMgY291cnNlLCBhbmQgaXQgaXMgbm90IGxvY2F0ZWQgaW4KdGhlIHVzdWFsIHJlcG9zaXRvcmllcyB0aGF0IHRoZSBgaW5zdGFsbC5wYWNrYWdlc2AgZnVuY3Rpb24gd291bGQgbG9vayBpbi4gClRvIGluc3RhbGwgYGhlYWx0aGRzYCwgd2UgZmlyc3QgbmVlZCB0byBpbnN0YWxsIGFuZCBsb2FkIGEgcGFja2FnZSBjYWxsZWQgYHJlbW90ZXNgOgoKYGBge3IsIGV2YWwgPSBGQUxTRX0KaW5zdGFsbC5wYWNrYWdlcygicmVtb3RlcyIpCmxpYnJhcnkocmVtb3RlcykKYGBgCgpgYGB7ciwgZWNobyA9IEZBTFNFfQpsaWJyYXJ5KHJlbW90ZXMpCmBgYAoKTmV4dCwgd2Ugd2lsbCB1c2UgYSBmdW5jdGlvbiBmcm9tIHRoZSBgcmVtb3Rlc2AgcGFja2FnZSBjYWxsZWQgYGluc3RhbGxfZ2l0YC4gClRoaXMgZnVuY3Rpb24gYWN0cyBzaW1pbGFybHkgdG8gYGluc3RhbGwucGFja2FnZXNgIGJ1dCBhbGxvd3MgdXMgdG8gaW5zdGFsbApwYWNrYWdlcyB0aGF0IGFyZSBob3N0ZWQgb24gR2l0SHViLCBhIHJlcG9zaXRvcnkgd2hlcmUgYW55IHVzZXIgY2FuIGRldmVsb3AgYW5kCnB1YmxpY2x5IHNoYXJlIHNvZnR3YXJlLiBUbyBpbnN0YWxsIGBoZWFsdGhkc2AsIHJ1biB0aGUgZm9sbG93aW5nIGxpbmUgCm9mIGNvZGUgKGl0IGlzIGVhc2llc3QgdG8gY29weS1wYXN0ZSB0aGlzIGRpcmVjdGx5IGludG8geW91ciBSIGNvbnNvbGUpOgoKYGBge3IsIGNhY2hlID0gVFJVRSwgbWVzc2FnZSA9IEZBTFNFfQppbnN0YWxsX2dpdCgiaHR0cHM6Ly9naXRodWIuY29tL3VtaWNoLWJpb3N0YXRpc3RpY3MvaGVhbHRoZHMiLCB1cGdyYWRlID0gIm5ldmVyIikKYGBgCgpJZiB5b3UgcnVuIHRoZSBhYm92ZSBsaW5lIG9mIGNvZGUgd2l0aG91dCBmaXJzdCBoYXZpbmcgaW5zdGFsbGVkIGFuZCBsb2FkZWQKYHJlbW90ZXNgLCB5b3Ugd2lsbCBnZXQgYW4gZXJyb3IgbWVzc2FnZSB0aGF0IHRoZSBmdW5jdGlvbiBgaW5zdGFsbF9naXRgIGlzIG5vdCAKZm91bmQuIFVwb24gc3VjY2Vzc2Z1bGx5IHJ1bm5pbmcgdGhpcyBsaW5lIG9mIGNvZGUsIHRoZSBgaGVhbHRoZHNgIHBhY2thZ2Ugd2lsbCAKYmUgaW4gU3RhdGUgMiwgYW5kIHdlIGNhbiBtb3ZlIGl0IHRvIFN0YXRlIDEgYnkgdXNpbmcgYGxpYnJhcnlgOgoKYGBge3J9CmxpYnJhcnkoaGVhbHRoZHMpCmBgYAoKWW91IHdpbGwgbm90IG5lZWQgdGhlIGBoZWFsdGhkc2AgcGFja2FnZSBmb3IgY3JlYXRpbmcgdGhlIEluZGljYXRvciBUYWJsZSBvciBGaWd1cmUgMS4xLCAKc28geW91IGRvIG5vdCBuZWVkIHRvIHB1dCBgbGlicmFyeShoZWFsdGhkcylgIGF0IHRoZSB0b3Agb2YgYEluZGljYXRvclRhYmxlLlJgLiAKV2Ugd2lsbCB3YWl0IHVudGlsIHRoZSBuZXh0IE1vZHVsZSdzIEluZGVwZW5kZW50IEd1aWRlIHRvIGNyZWF0ZSBhIHNjcmlwdCB0aGF0CnVzZXMgYGhlYWx0aGRzYC4gRm9yIG5vdyBpdCBpcyBzdWZmaWNpZW50IHRvIGhhdmUgaW5zdGFsbGVkIGl0IG9uIG91ciBjb21wdXRlci4gIAoKCgo=</div>
 
 
 

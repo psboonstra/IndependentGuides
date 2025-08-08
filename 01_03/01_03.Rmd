@@ -95,7 +95,7 @@ is intended to contain code to create the Indicator Table and Figure 1.1. The
 latter is intended to be used for any other work you do in future Independent Guides. 
 
 If you are working from your own computer, first create two regular folders called GlobalFindex
-and Lessons (if you are working on rstudio.cloud, you may skip to the end of this 
+and Lessons (if you are working on posit.cloud, you may skip to the end of this 
 section). Next, create a new R project by going to 'File > New Project...':
 
 
@@ -137,10 +137,10 @@ knitr::include_graphics(normalizePath("01_03/01_03e.png"), rel_path = FALSE)
 Repeat this step for the folder named 'Lessons', i.e. create a new R project
 in the existing Lessons folder. 
 
-### Projects in rstudio.cloud
+### Projects in posit.cloud
 
-R projects are the **only** way to use RStudio on rstudio.cloud. In fact, 
-you've already created a project on rstudio.cloud: recall that 
+R projects are the **only** way to use RStudio on posit.cloud. In fact, 
+you've already created a project on posit.cloud: recall that 
 the first thing you did after logging in was create a new project named 'GlobalFindex'.
 
 To create a different project, look for the link in the top left that says
@@ -150,7 +150,7 @@ new project called 'Lessons'.
 
 ## Scripts
 
-Whether you are working from your own computer or rstudio.cloud, for this next
+Whether you are working from your own computer or posit.cloud, for this next
 step, switch back to the 'GlobalFindex' project, which you can do by clicking the 
 drop-down menu in the top right and choosing 'GlobalFindex' from the list:
 
@@ -191,7 +191,7 @@ somewhere else that you'll remember. In the upper-left tab of your script,
 where it previously said <span style="color: red;">`Untitled1*`</span> in red font, 
 it should now say `IndicatorTable.R` in black font. Anything that you had put in 
 this script up until the moment that you saved it is now permanently saved
-on your harddrive, even after you close RStudio (or navigate out of rstudio.cloud). 
+on your harddrive, even after you close RStudio (or navigate out of posit.cloud). 
 If you make additional changes to the script, the font color will change back to red 
 and an asterisk will appear after its name, both, indicating that this file now 
 includes some code that is not saved. To see this, *delete* the `3+3` that
@@ -211,7 +211,7 @@ Two packages that we will be using in this course that *do not* come pre-install
 are `tidyverse` and `healthds`. At the moment you are first reading this, 
 they are 'State 3' packages: they are not yet installed on your computer. The 
 following sections describe how to install packages and will apply whether you are
-working on your own computer or on rstudio.cloud.
+working on your own computer or on posit.cloud.
 
 ### How to install `tidyverse`
 
@@ -267,18 +267,18 @@ library(remotes)
 library(remotes)
 ```
 
-Next, we will use a function from the `remotes` package called `install_github`. 
+Next, we will use a function from the `remotes` package called `install_git`. 
 This function acts similarly to `install.packages` but allows us to install
 packages that are hosted on GitHub, a repository where any user can develop and
 publicly share software. To install `healthds`, run the following line 
 of code (it is easiest to copy-paste this directly into your R console):
 
-```{r, cache = TRUE}
-install_github("umich-biostatistics/healthds", upgrade = "never")
+```{r, cache = TRUE, message = FALSE}
+install_git("https://github.com/umich-biostatistics/healthds", upgrade = "never")
 ```
 
 If you run the above line of code without first having installed and loaded
-`remotes`, you will get an error message that the function `install_gitub` is not 
+`remotes`, you will get an error message that the function `install_git` is not 
 found. Upon successfully running this line of code, the `healthds` package will 
 be in State 2, and we can move it to State 1 by using `library`:
 

@@ -183,18 +183,18 @@ library(remotes)
 library(remotes)
 ```
 
-Next, we will use a function from the `remotes` package called `install_github`. 
+Next, we will use a function from the `remotes` package called `install_git`. 
 This function acts similarly to `install.packages` but allows us to install
 packages that are hosted on GitHub, a repository where any user can develop and
 publicly share software. To install `healthds`, run the following line 
 of code (it is easiest to copy-paste this directly into your R console):
 
-```{r, eval = FALSE}
-install_github("umich-biostatistics/healthds", upgrade = "never")
+```{r, cache = TRUE, message = FALSE}
+install_git("https://github.com/umich-biostatistics/healthds", upgrade = "never")
 ```
 
 If you run the above line of code without first having installed and loaded
-`remotes`, you will get an error message that the function `install_gitub` is not 
+`remotes`, you will get an error message that the function `install_git` is not 
 found. Just as with `tidyverse`, you must load `healthds` using the `library`
 command. Therefore, type `library(healthds)` in your script, just below
 `library(tidyverse)`. 
